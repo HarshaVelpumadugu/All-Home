@@ -1,0 +1,28 @@
+<template>
+  <div class="arrow-right">
+    <img
+      class="vuesaxoutlinearrow-right-icon"
+      alt=""
+      src="../assets/vuesax/outline/arrow-right.svg"
+    />
+  </div>
+</template>
+<style scoped>
+.vuesaxoutlinearrow-right-icon {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  left: 0%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.arrow-right {
+  width: 100%;
+  position: relative;
+  height: 48px;
+}
+</style>
