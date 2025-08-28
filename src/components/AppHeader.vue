@@ -23,9 +23,12 @@ const { goToSlide } = useSliderStore();
 
 <style lang="scss" scoped>
 .image-1-parent {
+  position: fixed; /* ✅ keep it fixed at top */
+  top: 0;
+  left: 0;
   width: 100%;
-  position: relative;
-  background-color: var(--color-white);
+  z-index: 10000;
+  background-color: var(--color-white); /* ensure it has background */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -38,20 +41,17 @@ const { goToSlide } = useSliderStore();
 
   .image-1-icon {
     width: 67px;
-    position: relative;
     max-height: 100%;
     object-fit: cover;
   }
 
   .colour-coats {
-    position: relative;
     font-weight: 500;
     cursor: pointer;
   }
 
   .item-button-search-applec {
     width: 31px;
-    position: relative;
     height: 44px;
   }
 }

@@ -76,7 +76,8 @@ body,
 .slider-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 44px);
+  // height: calc(100vh - 44px);
+  height: 100vh;
   margin: 0;
   border-radius: 0;
   overflow: hidden;

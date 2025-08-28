@@ -56,7 +56,9 @@ defineProps({
 <style lang="scss" scoped>
 .image-1-parent {
   width: 100%;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   background-color: var(--color-white);
   display: flex;
   flex-direction: row;
@@ -67,6 +69,8 @@ defineProps({
   font-size: var(--font-size-14);
   color: var(--color-darkgray);
   font-family: var(--font-nunito);
+  //   padding: 12px 20px;
+  //   border-bottom: 1px solid #eee;
 
   .image-1-icon {
     width: 67px;

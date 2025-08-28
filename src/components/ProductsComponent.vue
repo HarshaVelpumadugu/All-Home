@@ -9,23 +9,20 @@
     </div>
 
     <div class="image-4-parent">
-      <img
-        v-for="(img, i) in images"
-        :key="i"
-        :src="img"
-        class="image-4-icon"
-      />
-      <div class="frame-group" v-if="images.length">
-        <div class="fusion-parent">
-          <div class="fusion">{{ category }}</div>
-          <div class="inr-24999">INR 24,999</div>
-        </div>
-        <div class="arrow-right">
-          <img
-            class="vuesaxoutlinearrow-right-icon"
-            alt=""
-            src="../assets/vuesax/outline/arrow-right.svg"
-          />
+      <div class="image-wrapper" v-for="(img, i) in images" :key="i">
+        <img :src="img" class="image-4-icon" />
+        <div class="frame-group">
+          <div class="fusion-parent">
+            <div class="fusion">Fusion</div>
+            <div class="inr-24999">INR 24,999</div>
+          </div>
+          <div class="arrow-right">
+            <img
+              class="vuesaxoutlinearrow-right-icon"
+              alt=""
+              src="../assets/vuesax/outline/arrow-right.svg"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -72,7 +69,7 @@ const images = computed(() => imageSets[props.category] || []);
   gap: var(--gap-40);
   text-align: left;
   font-size: 40px;
-  color: var(--color-gray);
+  color: var(--color-darkgray);
   font-family: var(--font-nunito);
 
   .fiamarc-exterior-handles-parent {
@@ -115,100 +112,71 @@ const images = computed(() => imageSets[props.category] || []);
     color: var(--color-white);
     font-family: var(--font-inter);
 
-    .image-4-icon,
-    .image-5-icon,
-    .image-6-icon,
-    .image-7-icon {
-      width: 250px;
+    .image-wrapper {
       position: relative;
-      border-radius: var(--br-4);
-      max-height: 100%;
-      object-fit: cover;
-    }
+      display: inline-block;
 
-    .image-4-icon {
-      z-index: 0;
-    }
-    .image-5-icon {
-      z-index: 1;
-    }
-    .image-6-icon {
-      z-index: 2;
-    }
-    .image-7-icon {
-      z-index: 3;
-    }
+      .image-4-icon {
+        width: 250px;
+        border-radius: var(--br-4);
+        object-fit: cover;
+        display: block;
+      }
 
-    .frame-group {
-      width: 226px;
-      margin: 0 !important;
-      position: absolute;
-      top: 198px;
-      left: 12px;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 0px;
-      z-index: 4;
-
-      .fusion-parent {
+      .frame-group {
+        width: 226px;
+        position: absolute;
+        top: 198px;
+        left: 12px;
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 4px;
-
-        .fusion {
-          position: relative;
-          font-weight: 500;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .inr-24999 {
-          position: relative;
-          font-size: 14px;
-          font-weight: 500;
-        }
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 0px;
+        z-index: 4;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
-      .arrow-right {
-        width: 24px;
-        position: relative;
-        height: 24px;
-
-        .vuesaxoutlinearrow-right-icon {
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          top: 0%;
-          right: 0%;
-          bottom: 0%;
-          left: 0%;
-          max-width: 100%;
-          overflow: hidden;
-          max-height: 100%;
-        }
+      &:hover .frame-group {
+        opacity: 1;
       }
     }
-  }
 
-  .image-4-group {
-    align-self: stretch;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--gap-40);
+    .fusion-parent {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 4px;
 
-    .image-4-icon1 {
-      width: 250px;
+      .fusion {
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .inr-24999 {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+
+    .arrow-right {
+      width: 24px;
+      height: 24px;
       position: relative;
-      border-radius: var(--br-4);
-      max-height: 100%;
-      object-fit: cover;
+
+      .vuesaxoutlinearrow-right-icon {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        max-height: 100%;
+      }
     }
   }
 }
