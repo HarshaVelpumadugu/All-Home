@@ -12,27 +12,8 @@
     />
   </div>
 </template>
-<style scoped>
-.image-1-icon {
-  width: 67px;
-  position: relative;
-  max-height: 100%;
-  object-fit: cover;
-}
-.textures {
-  position: relative;
-  font-weight: 500;
-}
-.handles {
-  position: relative;
-  font-weight: 500;
-  color: var(--color-gray);
-}
-.item-button-search-applec {
-  width: 31px;
-  position: relative;
-  height: 44px;
-}
+
+<style lang="scss" scoped>
 .image-1-parent {
   width: 100%;
   position: relative;
@@ -46,5 +27,29 @@
   font-size: var(--font-size-14);
   color: var(--color-darkgray);
   font-family: var(--font-nunito);
+
+  .image-1-icon {
+    width: 67px;
+    position: relative;
+    max-height: 100%;
+    object-fit: cover;
+  }
+
+  .textures {
+    position: relative;
+    font-weight: 500;
+  }
+
+  .handles {
+    position: relative;
+    font-weight: 500;
+    color: var(--color-gray);
+  }
+
+  .item-button-search-applec {
+    width: 31px;
+    position: relative;
+    height: 44px;
+  }
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
   <div class="image-1-parent">
     <img class="image-1-icon" alt="" src="../assets/image1.png" />
-    <div class="colour-coats">COLOUR COATS</div>
-    <div class="colour-coats">THE HOUSE OF W</div>
-    <div class="colour-coats">METALIA</div>
+
+    <div class="colour-coats" @click="goToSlide(0)">COLOUR COATS</div>
+    <div class="colour-coats" @click="goToSlide(1)">THE HOUSE OF W</div>
+    <div class="colour-coats" @click="goToSlide(2)">METALIA</div>
     <div class="colour-coats">FIAMARC</div>
+
     <img
       class="item-button-search-applec"
       alt=""
@@ -12,22 +14,14 @@
     />
   </div>
 </template>
-<style scoped>
-.image-1-icon {
-  width: 67px;
-  position: relative;
-  max-height: 100%;
-  object-fit: cover;
-}
-.colour-coats {
-  position: relative;
-  font-weight: 500;
-}
-.item-button-search-applec {
-  width: 31px;
-  position: relative;
-  height: 44px;
-}
+
+<script setup>
+import { useSliderStore } from "../stores/userSliderStore.js";
+
+const { goToSlide } = useSliderStore();
+</script>
+
+<style lang="scss" scoped>
 .image-1-parent {
   width: 100%;
   position: relative;
@@ -41,5 +35,24 @@
   font-size: var(--font-size-14);
   color: var(--color-darkgray);
   font-family: var(--font-nunito);
+
+  .image-1-icon {
+    width: 67px;
+    position: relative;
+    max-height: 100%;
+    object-fit: cover;
+  }
+
+  .colour-coats {
+    position: relative;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .item-button-search-applec {
+    width: 31px;
+    position: relative;
+    height: 44px;
+  }
 }
 </style>
