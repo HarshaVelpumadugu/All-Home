@@ -1,23 +1,19 @@
 <template>
-  <AppHeader></AppHeader>
-  <SliderComponent></SliderComponent>
-  <ProductsHeader></ProductsHeader>
-  <ProductsComponent></ProductsComponent>
+  <AppHeader />
+  <SliderComponent />
+  <ProductsHeader
+    :active-category="selectedCategory"
+    @change-category="selectedCategory = $event"
+  />
+  <ProductsComponent :category="selectedCategory" />
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import SliderComponent from "./components/SliderComponent.vue";
 import ProductsHeader from "./components/ProductsHeader.vue";
 import ProductsComponent from "./components/ProductsComponent.vue";
 
-export default {
-  name: "App",
-  components: {
-    AppHeader,
-    SliderComponent,
-    ProductsHeader,
-    ProductsComponent,
-  },
-};
+const selectedCategory = ref("handles");
 </script>

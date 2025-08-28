@@ -3,20 +3,21 @@
     <div class="fiamarc-exterior-handles-parent">
       <div class="fiamarc-exterior-handles">
         <p class="fiamarc">Fiamarc</p>
-        <p class="fiamarc">Exterior Handles</p>
+        <p class="fiamarc">Facades</p>
       </div>
       <div class="frame-child" />
     </div>
 
     <div class="image-4-parent">
-      <img class="image-4-icon" alt="" src="../assets/image 4.png" />
-      <img class="image-5-icon" alt="" src="../assets/image 5.png" />
-      <img class="image-6-icon" alt="" src="../assets/image 6.png" />
-      <img class="image-7-icon" alt="" src="../assets/image 7.png" />
-
-      <div class="frame-group">
+      <img
+        v-for="(img, i) in images"
+        :key="i"
+        :src="img"
+        class="image-4-icon"
+      />
+      <div class="frame-group" v-if="images.length">
         <div class="fusion-parent">
-          <div class="fusion">Fusion</div>
+          <div class="fusion">{{ category }}</div>
           <div class="inr-24999">INR 24,999</div>
         </div>
         <div class="arrow-right">
@@ -28,15 +29,35 @@
         </div>
       </div>
     </div>
-
-    <div class="image-4-group">
-      <img class="image-4-icon1" alt="" src="../assets/image 4.png" />
-      <img class="image-4-icon1" alt="" src="../assets/image 5.png" />
-      <img class="image-4-icon1" alt="" src="../assets/image 6.png" />
-      <img class="image-4-icon1" alt="" src="../assets/image 7.png" />
-    </div>
   </div>
 </template>
+
+<script setup>
+import { computed } from "vue";
+import { defineProps } from "vue";
+
+// import images so Vite resolves them
+import img4 from "../assets/image 4.png";
+import img5 from "../assets/image 5.png";
+import img6 from "../assets/image 6.png";
+import img7 from "../assets/image 7.png";
+
+const props = defineProps({
+  category: {
+    type: String,
+    default: "handles",
+  },
+});
+
+const imageSets = {
+  textures: [img4, img5, img4, img5, img7, img6],
+  handles: [img4, img5, img6, img7, img4],
+  kitchen: [img4, img5, img6],
+  facades: [img4, img5],
+};
+
+const images = computed(() => imageSets[props.category] || []);
+</script>
 
 <style lang="scss" scoped>
 .frame-parent {
@@ -84,9 +105,10 @@
   .image-4-parent {
     align-self: stretch;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     position: relative;
     gap: var(--gap-40);
     font-size: 16px;

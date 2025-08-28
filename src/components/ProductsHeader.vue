@@ -1,10 +1,39 @@
 <template>
   <div class="image-1-parent">
     <img class="image-1-icon" alt="" src="../assets/image1.png" />
-    <div class="textures">TEXTURES</div>
-    <div class="handles">HANDLES</div>
-    <div class="textures">KITCHEN</div>
-    <div class="textures">FACADES</div>
+
+    <div
+      class="menu-item"
+      :class="{ active: activeCategory === 'textures' }"
+      @click="$emit('change-category', 'textures')"
+    >
+      TEXTURES
+    </div>
+
+    <div
+      class="menu-item"
+      :class="{ active: activeCategory === 'handles' }"
+      @click="$emit('change-category', 'handles')"
+    >
+      HANDLES
+    </div>
+
+    <div
+      class="menu-item"
+      :class="{ active: activeCategory === 'kitchen' }"
+      @click="$emit('change-category', 'kitchen')"
+    >
+      KITCHEN
+    </div>
+
+    <div
+      class="menu-item"
+      :class="{ active: activeCategory === 'facades' }"
+      @click="$emit('change-category', 'facades')"
+    >
+      FACADES
+    </div>
+
     <img
       class="item-button-search-applec"
       alt=""
@@ -12,6 +41,17 @@
     />
   </div>
 </template>
+
+<script setup>
+import { defineProps } from "vue";
+
+defineProps({
+  activeCategory: {
+    type: String,
+    default: "handles",
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 .image-1-parent {
@@ -35,15 +75,21 @@
     object-fit: cover;
   }
 
-  .textures {
+  .menu-item {
     position: relative;
     font-weight: 500;
-  }
-
-  .handles {
-    position: relative;
-    font-weight: 500;
+    cursor: pointer;
     color: var(--color-gray);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--color-darkgray);
+    }
+
+    &.active {
+      color: var(--color-darkgray);
+      font-weight: 600;
+    }
   }
 
   .item-button-search-applec {

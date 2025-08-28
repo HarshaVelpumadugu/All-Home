@@ -6,8 +6,9 @@ body {
 }
 :root {
   /* Color */
-  --color-gray: #121212;
+  --color-darkgray: #121212;
   --color-white: #fff;
+  --color-gray: #444444;
   /* Gap */
   --gap-40: 40px;
   /* BorderRadius */
