@@ -1,20 +1,37 @@
 <template>
   <div class="search-overlay">
     <div class="frame-parent">
-      <div class="search-normal-parent">
-        <div class="search-normal">
-          <img
-            class="vuesaxoutlinesearch-normal-icon"
-            alt=""
-            src="../assets/vuesax/outline/search-normal.svg"
+      <div class="frame-group">
+        <div class="search-normal-parent">
+          <div class="search-normal">
+            <img
+              class="vuesaxoutlinesearch-normal-icon"
+              alt=""
+              src="../assets/vuesax/outline/search-normal.svg"
+            />
+          </div>
+          <input
+            v-model="searchQuery"
+            class="search-input"
+            placeholder="Search the product"
           />
         </div>
-        <div class="search-the-product-container">
-          <span>|</span>
-          <span class="search-the-product">Search the product</span>
+
+        <div
+          v-if="searchQuery"
+          class="notificationsdismiss-button"
+          @click="clearSearch"
+        >
+          <img
+            class="search-normal"
+            alt="close"
+            src="../assets/Notifications/X.svg"
+          />
         </div>
       </div>
-      <div class="quick-searches-parent">
+
+      <!-- QUICK SEARCHES (when no input) -->
+      <div v-if="!searchQuery" class="quick-searches-parent">
         <div class="quick-searches">Quick Searches</div>
         <div class="sliding-system-parent">
           <div class="quick-searches">Sliding System</div>
@@ -24,13 +41,44 @@
           <div class="quick-searches">G40 Wall Textures</div>
         </div>
       </div>
+
+      <!-- SUGGESTED SEARCHES (when typing) -->
+      <div v-else class="suggested-searches-parent">
+        <div class="suggested-searches">Suggested Searches</div>
+        <div class="frame-container">
+          <div class="rectangle-parent" v-for="i in 3" :key="i">
+            <img
+              class="frame-child"
+              alt=""
+              src="../assets/Rectangle 34626208.png"
+            />
+            <div class="texture-name-parent">
+              <div class="texture-name">Texture Name {{ i }}</div>
+              <div class="by-colour-codes">by Colour Codes</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- blurred background -->
     <div class="rectangle-div" @click="$emit('close')" />
   </div>
 </template>
 
+<script setup>
+import { ref } from "vue";
+
+const searchQuery = ref("");
+
+const clearSearch = () => {
+  searchQuery.value = "";
+};
+</script>
+
 <style scoped>
+/* 🔹 I kept your exact CSS names and properties */
+
 .search-overlay {
   position: fixed;
   top: 44px;
@@ -42,15 +90,6 @@
   flex-direction: column;
 }
 
-.rectangle-div {
-  width: 100%;
-  position: relative;
-  backdrop-filter: blur(25px);
-  background-color: rgba(255, 255, 255, 0.3);
-  height: 656px;
-}
-
-/* keep your existing styles */
 .frame-parent {
   width: 100%;
   position: relative;
@@ -67,6 +106,15 @@
   color: #121212;
   font-family: Nunito;
 }
+
+.frame-group {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .search-normal-parent {
   display: flex;
   flex-direction: row;
@@ -97,6 +145,24 @@
 .search-the-product {
   color: #d0d0d0;
 }
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #121212;
+  font-size: 16px;
+}
+
+.notificationsdismiss-button {
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .quick-searches-parent {
   align-self: stretch;
   display: flex;
@@ -119,5 +185,58 @@
   justify-content: flex-start;
   gap: 16px;
   color: #9ca3af;
+}
+
+.suggested-searches-parent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.suggested-searches {
+  font-weight: 500;
+}
+
+.frame-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #363636;
+}
+
+.rectangle-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.frame-child {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.texture-name-parent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.texture-name {
+  font-weight: 500;
+}
+
+.by-colour-codes {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.rectangle-div {
+  flex: 1;
+  backdrop-filter: blur(25px);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 </style>
