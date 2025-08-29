@@ -55,11 +55,12 @@ defineProps({
 
 <style lang="scss" scoped>
 .image-1-parent {
-  width: 100%;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  left: 0;
   background-color: var(--color-white);
+  z-index: 1000;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -69,8 +70,6 @@ defineProps({
   font-size: var(--font-size-14);
   color: var(--color-darkgray);
   font-family: var(--font-nunito);
-  //   padding: 12px 20px;
-  //   border-bottom: 1px solid #eee;
 
   .image-1-icon {
     width: 67px;
@@ -83,16 +82,14 @@ defineProps({
     position: relative;
     font-weight: 500;
     cursor: pointer;
-    color: var(--color-gray);
     transition: color 0.2s ease;
 
     &:hover {
-      color: var(--color-darkgray);
+      color: var(--color-gray);
     }
 
     &.active {
-      color: var(--color-darkgray);
-      font-weight: 600;
+      color: var(--color-gray);
     }
   }
 

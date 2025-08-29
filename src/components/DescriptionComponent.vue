@@ -61,15 +61,22 @@
   }
 
   .explore-proudtcs-wrapper {
+    position: relative;
     backdrop-filter: blur(10px);
     border-radius: 100px;
     background-color: var(--color-gray);
+    width: 172px;
     height: 42px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     padding: 8px 24px;
+    box-sizing: border-box;
+    text-align: center;
     font-size: 16px;
+    color: var(--color-white);
+    font-family: var(--font-nunito);
 
     .explore-proudtcs {
       position: relative;

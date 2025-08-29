@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
 
 body {
   margin: 0;
@@ -6,14 +7,21 @@ body {
 }
 :root {
   /* Color */
-  --color-darkgray: #121212;
+  --color-whitesmoke: #f9f9f9;
   --color-white: #fff;
-  --color-gray: #444444;
+  --color-darkgray: #9ca3af;
+  --color-gray: #121212;
+
   /* Gap */
   --gap-40: 40px;
+
   /* BorderRadius */
   --br-4: 4px;
+
   /* Font */
   --font-nunito: Nunito;
   --font-inter: Inter;
+
+  /* FontSize */
+  --font-size-14: 14px;
 }

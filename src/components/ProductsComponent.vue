@@ -3,7 +3,7 @@
     <div class="fiamarc-exterior-handles-parent">
       <div class="fiamarc-exterior-handles">
         <p class="fiamarc">Fiamarc</p>
-        <p class="fiamarc">Facades</p>
+        <p class="fiamarc">Exterior Handles</p>
       </div>
       <div class="frame-child" />
     </div>
@@ -58,10 +58,11 @@ const images = computed(() => imageSets[props.category] || []);
 
 <style lang="scss" scoped>
 .frame-parent {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   position: relative;
+  top: 76px;
+  left: 123px;
+  width: 1120px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -69,7 +70,7 @@ const images = computed(() => imageSets[props.category] || []);
   gap: var(--gap-40);
   text-align: left;
   font-size: 40px;
-  color: var(--color-darkgray);
+  color: var(--color-gray);
   font-family: var(--font-nunito);
 
   .fiamarc-exterior-handles-parent {
@@ -81,9 +82,12 @@ const images = computed(() => imageSets[props.category] || []);
 
     .fiamarc-exterior-handles {
       position: relative;
+      font-size: 40px;
       letter-spacing: 2px;
       font-weight: 300;
-      opacity: 0.8;
+      font-family: var(--font-nunito);
+      color: var(--color-gray);
+      text-align: left;
 
       .fiamarc {
         margin: 0;
@@ -92,7 +96,7 @@ const images = computed(() => imageSets[props.category] || []);
 
     .frame-child {
       height: 2px;
-      width: 40%;
+      width: 30%;
       position: relative;
       background-color: var(--color-gray);
       opacity: 0.8;
