@@ -1,7 +1,28 @@
 <template>
   <div class="image-1-parent">
-    <img class="image-1-icon" alt="" src="../assets/image1.png" />
+    <!-- Logo -->
+    <img class="image-1-icon" alt="Logo" src="../assets/image1.png" />
 
+    <!-- Tablet: Search + Menu icons -->
+    <div class="search-normal-parent">
+      <div class="search-normal">
+        <img
+          class="vuesaxoutlinesearch-normal-icon"
+          alt="Search"
+          src="../assets/vuesax/outline/search-normal.svg"
+          @click="$emit('toggle-search')"
+        />
+      </div>
+      <div class="menu">
+        <img
+          class="vuesaxoutlinesearch-normal-icon"
+          alt="Menu"
+          src="../assets/vuesax/outline/menu.svg"
+        />
+      </div>
+    </div>
+
+    <!-- Desktop: Navigation links -->
     <div
       class="colour-coats"
       :class="{ active: sliderStore.currentSlide === 0 }"
@@ -30,9 +51,10 @@
       FIAMARC
     </div>
 
+    <!-- Desktop Search icon -->
     <img
       class="item-button-search-applec"
-      alt=""
+      alt="Search"
       src="../assets/searchIcon.svg"
       @click="$emit('toggle-search')"
     />
@@ -41,7 +63,6 @@
 
 <script setup>
 import { useSliderStore } from "../stores/userSliderStore.js";
-
 const sliderStore = useSliderStore();
 const { goToSlide } = sliderStore;
 </script>
@@ -61,28 +82,80 @@ const { goToSlide } = sliderStore;
   font-family: var(--font-nunito);
 
   .image-1-icon {
-    width: 67px;
+    width: 67px; // smaller logo on desktop
     max-height: 100%;
     object-fit: cover;
   }
 
+  .search-normal-parent {
+    display: none;
+  }
+
   .colour-coats {
+    display: block;
     font-weight: 500;
     cursor: pointer;
     transition: color 0.3s ease;
 
-    &:hover {
-      color: var(--color-gray); /* hover turns gray */
+    &.active {
+      color: var(--color-gray);
     }
 
-    &.active {
-      color: var(--color-gray); /* active stays gray */
+    &:hover {
+      color: var(--color-gray);
     }
   }
 
   .item-button-search-applec {
+    display: block;
     width: 31px;
     height: 44px;
+  }
+}
+
+@media (max-width: 768px) {
+  .image-1-parent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    .image-1-icon {
+      width: 91px;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Tablet icons */
+    .search-normal-parent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 24px;
+
+      .search-normal,
+      .menu {
+        width: 24px;
+        height: 24px;
+        position: relative;
+
+        .vuesaxoutlinesearch-normal-icon {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    /* Desktop nav links and search */
+    .colour-coats,
+    .item-button-search-applec {
+      display: none;
+    }
   }
 }
 </style>

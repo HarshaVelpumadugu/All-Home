@@ -57,6 +57,7 @@ const images = computed(() => imageSets[props.category] || []);
 </script>
 
 <style lang="scss" scoped>
+// Your existing desktop styles (keep as-is)
 .frame-parent {
   position: relative;
   top: 76px;
@@ -180,6 +181,106 @@ const images = computed(() => imageSets[props.category] || []);
         left: 0;
         max-width: 100%;
         max-height: 100%;
+      }
+    }
+  }
+}
+
+// FIXED MEDIA QUERY - Match the specificity of desktop styles
+@media (max-width: 768px) {
+  .frame-parent {
+    position: relative;
+    top: 76px;
+    left: 0px;
+    width: 100%;
+    box-sizing: border-box;
+    height: auto;
+    padding: 20px;
+    gap: 40px;
+    font-size: 40px;
+    color: #121212;
+    font-family: Nunito;
+
+    .fiamarc-exterior-handles-parent {
+      .fiamarc-exterior-handles {
+        font-size: 32px; // Smaller for mobile
+        letter-spacing: 2px;
+        font-weight: 300;
+        opacity: 0.8;
+
+        .fiamarc {
+          margin: 0;
+        }
+      }
+
+      .frame-child {
+        height: 2px;
+        width: 30%;
+        background-color: var(--color-gray);
+        opacity: 0.8;
+      }
+    }
+
+    .image-4-parent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 18px;
+      font-size: 16px;
+      color: #fff;
+      font-family: Inter;
+
+      .image-wrapper {
+        .image-4-icon {
+          width: 220px;
+          border-radius: 4px;
+          object-fit: cover;
+        }
+
+        .frame-group {
+          width: 196px; // Adjust for smaller image
+          position: absolute;
+          top: 189px;
+          left: 12px;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+          justify-content: space-between;
+          z-index: 4;
+          opacity: 1; // Show by default on mobile
+        }
+      }
+
+      .fusion-parent {
+        .fusion {
+          font-weight: 500;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .inr-24999 {
+          // font-size: 14px;
+          // font-weight: 500;
+          display: none;
+        }
+      }
+
+      .arrow-right {
+        display: none;
+        // width: 24px;
+        // height: 24px;
+
+        // .vuesaxoutlinearrow-right-icon {
+        //   position: absolute;
+        //   height: 100%;
+        //   width: 100%;
+        //   top: 0;
+        //   left: 0;
+        //   max-width: 100%;
+        //   max-height: 100%;
+        // }
       }
     }
   }

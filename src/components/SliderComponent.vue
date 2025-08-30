@@ -144,8 +144,38 @@ const nextSlide = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+
+            svg {
+              width: 24px;
+              height: 24px;
+              color: #333;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .slider-container {
+    .slider-wrapper {
+      .slide {
+        .slide-content {
+          padding: 40px;
+
+          .arrow-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             cursor: pointer;
 
