@@ -583,7 +583,7 @@ export default {
 }
 @media (max-width: 1024px) {
   .frame-parent {
-    left: 5px;
+    margin-left: 5px;
   }
 }
 
