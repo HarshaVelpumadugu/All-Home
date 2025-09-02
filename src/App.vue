@@ -1,7 +1,8 @@
 <template>
+  <!-- Header stays -->
   <transition name="fade" mode="out-in">
     <AppHeader
-      v-if="!showProductsHeader"
+      v-if="$route.name !== 'products' && $route.name !== 'product-details'"
       key="app-header"
       @toggle-search="showSearch = !showSearch"
     />
@@ -12,58 +13,70 @@
       @change-category="selectedCategory = $event"
     />
   </transition>
-  <SearchPanel v-if="showSearch" @close="showSearch = false" />
-  <SliderComponent />
 
-  <ProductsComponent ref="productsRef" :category="selectedCategory" />
+  <!-- Search -->
+  <SearchPanel v-if="showSearch" @close="showSearch = false" />
+
+  <!-- Route-based views -->
+  <transition name="slide-up" mode="out-in">
+    <router-view />
+  </transition>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref } from "vue";
 import AppHeader from "./components/AppHeader.vue";
-import SliderComponent from "./components/SliderComponent.vue";
 import ProductsHeader from "./components/ProductsHeader.vue";
-import ProductsComponent from "./components/ProductsComponent.vue";
 import SearchPanel from "./components/SearchPanel.vue";
 
-const selectedCategory = ref("handles");
-const showProductsHeader = ref(false);
-const productsRef = ref(null);
 const showSearch = ref(false);
+const selectedCategory = ref(null);
+// const showProducts = ref(false);
+// const selectedProduct = ref(null);
 
-let observer;
-
-onMounted(() => {
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-          showProductsHeader.value = true;
-          console.log("true");
-        } else {
-          showProductsHeader.value = false;
-          console.log("false");
-        }
-      });
-    },
-    { threshold: [0.8] }
-  );
-
-  if (productsRef.value?.$el) {
-    observer.observe(productsRef.value.$el);
-  }
-});
-
-onBeforeUnmount(() => {
-  if (productsRef.value?.$el) {
-    observer.unobserve(productsRef.value.$el);
-  }
-});
-watch(showSearch, (newVal) => {
-  if (newVal) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
-});
+// function handleExplore() {
+//   showProducts.value = true;
+// }
+// function openProduct(product) {
+//   selectedProduct.value = product;
+// }
 </script>
+
+<style scoped>
+.products-wrapper,
+.product-description-wrapper {
+  position: fixed;
+  top: 44px; /* leave space for header */
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 44px);
+  background: #fff;
+  overflow-y: auto;
+  z-index: 22093;
+}
+
+/* Animations */
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.slide-up-enter-to,
+.slide-up-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

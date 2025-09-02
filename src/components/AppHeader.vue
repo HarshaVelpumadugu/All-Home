@@ -70,7 +70,8 @@ const { goToSlide } = sliderStore;
 <style lang="scss" scoped>
 .image-1-parent {
   background-color: var(--color-white);
-  width: 1366px;
+  width: 100%;
+  max-width: 1366px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -82,7 +83,7 @@ const { goToSlide } = sliderStore;
   font-family: var(--font-nunito);
 
   .image-1-icon {
-    width: 67px; // smaller logo on desktop
+    width: 67px;
     max-height: 100%;
     object-fit: cover;
   }
@@ -94,6 +95,8 @@ const { goToSlide } = sliderStore;
   .colour-coats {
     display: block;
     font-weight: 500;
+    font-size: 14px;
+    font-family: var(--font-nunito);
     cursor: pointer;
     transition: color 0.3s ease;
 
@@ -108,12 +111,12 @@ const { goToSlide } = sliderStore;
 
   .item-button-search-applec {
     display: block;
-    width: 31px;
+    width: 15px;
     height: 44px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .image-1-parent {
     display: flex;
     align-items: center;
@@ -137,16 +140,28 @@ const { goToSlide } = sliderStore;
       justify-content: flex-start;
       gap: 24px;
 
-      .search-normal,
-      .menu {
+      .search-normal {
         width: 24px;
         height: 24px;
         position: relative;
 
         .vuesaxoutlinesearch-normal-icon {
-          position: absolute;
           width: 100%;
           height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+      }
+      .menu {
+        width: 32px;
+        height: 32px;
+        position: relative;
+
+        .vuesaxoutlinesearch-normal-icon {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
         }
       }
     }

@@ -4,7 +4,9 @@
 body {
   margin: 0;
   line-height: normal;
+  overflow: hidden;
 }
+
 :root {
   /* Color */
   --color-whitesmoke: #f9f9f9;

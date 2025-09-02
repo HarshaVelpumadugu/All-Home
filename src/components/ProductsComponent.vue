@@ -61,7 +61,7 @@ const images = computed(() => imageSets[props.category] || []);
 .frame-parent {
   position: relative;
   top: 76px;
-  left: 123px;
+  left: 0px;
   width: 1120px;
   height: 700px;
   display: flex;
@@ -71,6 +71,7 @@ const images = computed(() => imageSets[props.category] || []);
   gap: var(--gap-40);
   text-align: left;
   font-size: 40px;
+  margin: 0 auto;
   color: var(--color-gray);
   font-family: var(--font-nunito);
 
@@ -186,11 +187,10 @@ const images = computed(() => imageSets[props.category] || []);
   }
 }
 
-// FIXED MEDIA QUERY - Match the specificity of desktop styles
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .frame-parent {
     position: relative;
-    top: 76px;
+    top: 38px;
     left: 0px;
     width: 100%;
     box-sizing: border-box;
@@ -202,8 +202,9 @@ const images = computed(() => imageSets[props.category] || []);
     font-family: Nunito;
 
     .fiamarc-exterior-handles-parent {
+      padding-left: 25px;
       .fiamarc-exterior-handles {
-        font-size: 32px; // Smaller for mobile
+        font-size: 32px;
         letter-spacing: 2px;
         font-weight: 300;
         opacity: 0.8;
@@ -227,6 +228,7 @@ const images = computed(() => imageSets[props.category] || []);
       align-items: center;
       justify-content: flex-start;
       gap: 18px;
+      padding-left: 25px;
       font-size: 16px;
       color: #fff;
       font-family: Inter;
@@ -239,7 +241,7 @@ const images = computed(() => imageSets[props.category] || []);
         }
 
         .frame-group {
-          width: 196px; // Adjust for smaller image
+          width: 196px;
           position: absolute;
           top: 189px;
           left: 12px;
@@ -248,7 +250,7 @@ const images = computed(() => imageSets[props.category] || []);
           align-items: flex-end;
           justify-content: space-between;
           z-index: 4;
-          opacity: 1; // Show by default on mobile
+          opacity: 1;
         }
       }
 
@@ -282,6 +284,30 @@ const images = computed(() => imageSets[props.category] || []);
         //   max-height: 100%;
         // }
       }
+    }
+  }
+}
+@media (max-width: 820px) {
+  .frame-parent {
+    .image-4-parent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 30px;
+      font-size: 16px;
+      color: #fff;
+      font-family: Inter;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .frame-parent {
+    .fiamarc-exterior-handles-parent {
+      padding-left: 0px;
+    }
+    .image-4-parent {
+      padding-left: 0px;
     }
   }
 }

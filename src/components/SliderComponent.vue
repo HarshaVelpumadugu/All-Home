@@ -20,7 +20,7 @@
         <div class="slide-overlay"></div>
         <div class="slide-content">
           <div class="content-wrapper">
-            <DescriptionComponent />
+            <DescriptionComponent @explore="$emit('explore')" />
             <ArrowRight class="arrow-btn" @click="nextSlide" />
           </div>
         </div>

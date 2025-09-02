@@ -10,7 +10,7 @@
       <div class="frame-child"></div>
     </div>
 
-    <div class="explore-proudtcs-wrapper">
+    <div class="explore-proudtcs-wrapper" @click="$router.push('/products')">
       <div class="explore-proudtcs">Explore Products</div>
     </div>
   </div>

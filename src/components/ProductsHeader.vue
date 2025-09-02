@@ -1,7 +1,26 @@
 <template>
   <div class="image-1-parent">
     <img class="image-1-icon" alt="" src="../assets/image1.png" />
+    <!-- Tablet Icons -->
+    <div class="search-normal-parent">
+      <div class="search-normal">
+        <img
+          class="vuesaxoutlinesearch-normal-icon"
+          alt="Search"
+          src="../assets/vuesax/outline/search-normal.svg"
+          @click="$emit('toggle-search')"
+        />
+      </div>
+      <div class="menu">
+        <img
+          class="vuesaxoutlinesearch-normal-icon"
+          alt="Menu"
+          src="../assets/vuesax/outline/menu.svg"
+        />
+      </div>
+    </div>
 
+    <!-- Desktop Links -->
     <div
       class="menu-item"
       :class="{ active: activeCategory === 'textures' }"
@@ -60,7 +79,7 @@ defineProps({
   left: 0;
   background-color: var(--color-white);
   z-index: 1000;
-  width: 100%;
+  width: 1366px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -76,6 +95,10 @@ defineProps({
     position: relative;
     max-height: 100%;
     object-fit: cover;
+  }
+
+  .search-normal-parent {
+    display: none;
   }
 
   .menu-item {
@@ -97,6 +120,63 @@ defineProps({
     width: 31px;
     position: relative;
     height: 44px;
+  }
+}
+@media (max-width: 1024px) {
+  .image-1-parent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    .image-1-icon {
+      width: 91px;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Tablet icons */
+    .search-normal-parent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 24px;
+
+      .search-normal {
+        width: 24px;
+        height: 24px;
+        position: relative;
+
+        .vuesaxoutlinesearch-normal-icon {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+      }
+      .menu {
+        width: 32px;
+        height: 32px;
+        position: relative;
+
+        .vuesaxoutlinesearch-normal-icon {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+      }
+    }
+
+    /* Desktop nav links and search */
+    .menu-item,
+    .item-button-search-applec {
+      display: none;
+    }
   }
 }
 </style>
