@@ -125,57 +125,143 @@
     <div class="video-section">
       <video
         class="product-video"
+        :style="{ transform: `scale(${videoScale})` }"
         src="https://allhome.foyr.com/assets/house-of-w-slider-bg-video-21d207c3.mp4"
         autoplay
         loop
         muted
         playsinline
       ></video>
+      <!-- Overlay Section -->
+      <div class="overlay-content">
+        <!-- Left Overlay -->
+        <div class="overlay-left">
+          <h2 class="overlay-title">{{ slides[currentSlide].title }}</h2>
+          <p class="overlay-description">
+            {{ slides[currentSlide].description }}
+          </p>
+        </div>
+
+        <!-- Right Overlay -->
+        <div class="overlay-right">
+          <img
+            class="overlay-image"
+            :src="slides[currentSlide].image"
+            :alt="slides[currentSlide].title"
+          />
+
+          <!-- Navigation Dots -->
+          <div class="nav-dots">
+            <span
+              v-for="(slide, index) in slides"
+              :key="index"
+              class="dot"
+              :class="{ active: currentSlide === index }"
+              @click="currentSlide = index"
+            ></span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "ProductDescription",
-  data() {
-    return {
-      mainImage:
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png", // Second thumbnail as default
-      selectedThumbnail:
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png", // Initially selected
-      thumbnails: [
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTBRVNU_00266_THUMBNAIL.png",
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png",
-      ],
-      similarProducts: [
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
-      ],
-    };
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
+/* ------------------------------
+   Thumbnails & Main Image
+------------------------------ */
+const mainImage = ref(
+  "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png"
+);
+const selectedThumbnail = ref(
+  "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png"
+);
+const thumbnails = ref([
+  "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTBRVNU_00266_THUMBNAIL.png",
+  "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png",
+]);
+const similarProducts = ref([
+  "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
+]);
+
+function setMainImage(img) {
+  mainImage.value = img;
+  if (thumbnails.value.includes(img)) {
+    selectedThumbnail.value = img;
+  } else {
+    selectedThumbnail.value = null;
+  }
+}
+
+/* ------------------------------
+   Video Scale on Scroll
+------------------------------ */
+const videoScale = ref(0.2);
+let rafId = null;
+
+function updateVideoScale() {
+  const section = document.querySelector(".video-section");
+  if (!section) return;
+
+  const rect = section.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
+
+  let visible = 0;
+  if (rect.top < windowHeight && rect.bottom > 0) {
+    const visibleHeight =
+      Math.min(windowHeight, rect.bottom) - Math.max(0, rect.top);
+    visible = visibleHeight / rect.height; // 0 → 1
+  }
+
+  // Interpolate between 0.5 (50%) and 1.0 (100%)
+  videoScale.value = 0.5 + visible * 0.5;
+}
+
+function onScroll() {
+  if (rafId !== null) return;
+  rafId = requestAnimationFrame(() => {
+    updateVideoScale();
+    rafId = null;
+  });
+}
+
+onMounted(() => {
+  window.addEventListener("scroll", onScroll);
+  updateVideoScale();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onScroll);
+  if (rafId) cancelAnimationFrame(rafId);
+});
+
+/* ------------------------------
+   Overlay Slides
+------------------------------ */
+const slides = ref([
+  {
+    title: "Harmony",
+    description:
+      "Your bathroom is your personal space. At Waterways we define this space, a space which is connected to one’s own senses and needs a place for inner contemplation, regeneration, and revitalization.",
+    image: "https://allhome.foyr.com/assets/how-slider-1-d52f6aea.png",
   },
-  methods: {
-    setMainImage(img) {
-      console.log("Setting main image to:", img); // Debug log
-      console.log("Is thumbnail?", this.thumbnails.includes(img)); // Debug log
-      console.log("Current selectedThumbnail:", this.selectedThumbnail); // Debug log
-
-      this.mainImage = img;
-
-      // Only set selectedThumbnail if clicked image is from thumbnails
-      if (this.thumbnails.includes(img)) {
-        this.selectedThumbnail = img;
-        console.log("New selectedThumbnail:", this.selectedThumbnail); // Debug log
-      } else {
-        // Clear selection when clicking similar products or non-thumbnail images
-        this.selectedThumbnail = null;
-        console.log("Cleared thumbnail selection"); // Debug log
-      }
-
-      // Force reactivity update
-      this.$forceUpdate();
-    },
+  {
+    title: "Serenity",
+    description:
+      "Step into indulgence, we redefine bathrooms into luxurious escapes, where every detail whispers comfort, elegance, and timeless sophistication.",
+    image: "https://allhome.foyr.com/assets/how-slider-2-8a61f89b.png",
   },
-};
+  {
+    title: "Essence",
+    description:
+      "Your bathroom should breathe life, we design spaces inspired by nature, bringing harmony, freshness, and the calm of the outdoors into your home.",
+    image: "https://allhome.foyr.com/assets/how-slider-3-3bd3662f.png",
+  },
+]);
+
+const currentSlide = ref(0);
 </script>
 
 <style scoped>
@@ -194,13 +280,14 @@ export default {
 
 .frame-parent {
   margin-top: 76px;
-  margin-left: 103px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 20px;
+  padding-left: 123px;
   gap: 32px;
+  box-sizing: border-box;
   color: rgba(255, 255, 255, 0.75);
   width: calc(100% - 40px);
 }
@@ -519,17 +606,92 @@ export default {
 }
 
 .video-section {
+  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 40px 0; /* space above and below */
+  height: 80vh;
+  padding: 32px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .product-video {
-  width: 95%; /* leave some space on both ends */
-  max-width: 1200px; /* optional max width for large screens */
-  border-radius: 8px; /* rounded corners for aesthetics */
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  width: calc(100% - 64px);
+  height: calc(100% - 64px);
   object-fit: cover;
+  border-radius: 12px;
+  transform-origin: bottom right;
+  transform: scale(0.5);
+  transition: transform 0.05s linear;
+  z-index: 1;
+}
+
+/* Overlay */
+.overlay-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 48px;
+  z-index: 2;
+  color: #fff;
+}
+
+.overlay-left {
+  flex: 1;
+  max-width: 50%;
+}
+
+.overlay-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 16px;
+  letter-spacing: 0.125rem;
+  font-family: var(--font-nunito);
+}
+
+.overlay-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 90%;
+  letter-spacing: 0.125rem;
+  font-family: var(--font-nunito);
+  color: #f5f5f5;
+}
+
+.overlay-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.nav-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dot.active {
+  background: #fff;
 }
 
 /* Responsive Styles */
@@ -539,6 +701,9 @@ export default {
   .frame-parent {
     gap: 20px;
     padding: 16px;
+    margin-left: 40px;
+    overflow-x: hidden;
+    box-sizing: border-box;
   }
 
   .frame-group {
@@ -597,20 +762,21 @@ export default {
   .frame-parent {
     flex-direction: column;
     position: relative;
-    top: 20px;
+    /* top: 20px; */
+    margin-left: 20px;
     padding: 12px;
     gap: 24px;
     width: calc(100% - 24px);
   }
 
   .frame-group {
-    flex-direction: column;
-    gap: 16px;
+    /* flex-direction: row-reverse; */
+    gap: 40px;
     width: 100%;
   }
 
   .chandigarh-chair-product-shoot-parent {
-    flex-direction: row;
+    flex-direction: column;
     height: auto;
     gap: 12px;
     justify-content: center;
@@ -632,7 +798,7 @@ export default {
 
   .image-5-icon {
     width: 100%;
-    max-width: 500px;
+    max-width: 597px;
     height: auto;
   }
 
@@ -643,12 +809,12 @@ export default {
   .frame-container {
     position: absolute;
     top: 16px;
-    right: 160px;
+    right: 170px;
     left: auto;
   }
 
   .image-buttons {
-    flex-direction: column;
+    /* flex-direction: column; */
     width: 90%;
     gap: 8px;
     align-items: center;
