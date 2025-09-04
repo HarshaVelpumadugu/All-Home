@@ -1,7 +1,12 @@
 <template>
   <div class="image-1-parent">
     <!-- Logo -->
-    <img class="image-1-icon" alt="Logo" src="../assets/image1.png" />
+    <img
+      class="image-1-icon"
+      alt="Logo"
+      src="../assets/image1.png"
+      @click="$emit('go-home')"
+    />
 
     <!-- Tablet: Search + Menu icons -->
     <div class="search-normal-parent">
@@ -63,7 +68,7 @@ import { useSliderStore } from "../stores/userSliderStore.js";
 const sliderStore = useSliderStore();
 const { goToSlide } = sliderStore;
 
-const emit = defineEmits(["toggle-search", "open-dropdown"]);
+const emit = defineEmits(["toggle-search", "open-dropdown", "go-home"]);
 
 function handleNavHover(index, section) {
   goToSlide(index); // still move slider

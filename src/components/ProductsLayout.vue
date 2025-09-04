@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="header">
       <div class="products-header">
-        {{ section.charAt(0).toUpperCase() + section.slice(1).toLowerCase() }}
+        {{ formattedSection }}
       </div>
       <div class="products-header">Products</div>
       <div class="frame-child"></div>
@@ -12,7 +12,7 @@
     <!-- Grid -->
     <div class="products-grid">
       <div
-        v-for="(product, index) in products"
+        v-for="(product, index) in activeProducts"
         :key="index"
         class="product-card"
         @click="$router.push(`/products/${index}`)"
@@ -21,7 +21,7 @@
           <img :src="product.img" :alt="product.name" />
         </div>
 
-        <!-- Overlay that shows on hover -->
+        <!-- Overlay -->
         <div class="product-overlay">
           <p class="product-name">{{ product.name }}</p>
           <button class="view-btn">&gt;</button>
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: "ProductsGrid",
+  name: "ProductsLayout",
   props: {
     section: {
       type: String,
@@ -42,41 +42,79 @@ export default {
   },
   data() {
     return {
-      products: [
-        {
-          name: "Modern Mirror",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
-        },
-        {
-          name: "Luxury Basin",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
-        },
-        {
-          name: "Wall Klozet",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
-        },
-        {
-          name: "Asma Klozet",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-        },
-        {
-          name: "Wash Basin",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-        },
-        {
-          name: "Round Mirror",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
-        },
-        {
-          name: "Classic Basin",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
-        },
-        {
-          name: "Smart Sink",
-          img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
-        },
-      ],
+      allProducts: {
+        "THE HOUSE OF W": [
+          {
+            name: "Modern Mirror",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
+          },
+          {
+            name: "Luxury Basin",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
+          },
+          {
+            name: "Wall Klozet",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
+          },
+          {
+            name: "Asma Klozet",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
+          },
+          {
+            name: "Wash Basin",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
+          },
+          {
+            name: "Round Mirror",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
+          },
+          {
+            name: "Classic Basin",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
+          },
+          {
+            name: "Smart Sink",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
+          },
+        ],
+        METALIA: [
+          {
+            name: "Aluminum Profile",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Aluminium%20Profile/ALPEXT%20img%201.png",
+          },
+          {
+            name: "Coin Matrix",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Coin%20Matrix/COINEXT%20img%201.png",
+          },
+        ],
+        "COLOUR COATS": [
+          {
+            name: "Desert Dune Grain",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
+          },
+          {
+            name: "Urban Slate Grains",
+            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
+          },
+        ],
+      },
     };
+  },
+  computed: {
+    activeProducts() {
+      console.log(this.section);
+      return this.allProducts[this.section] || this.allProducts["COLOUR COATS"];
+    },
+    formattedSection() {
+      if (!this.section) return "";
+
+      return this.section
+        .split(" ")
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(" ");
+    },
   },
 };
 </script>

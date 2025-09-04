@@ -6,6 +6,7 @@
       key="app-header"
       @toggle-search="showSearch = !showSearch"
       @open-dropdown="openDropdown"
+      @go-home="goHome"
     />
     <!-- <ProductsHeader
       v-else
@@ -39,7 +40,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import AppHeader from "./components/AppHeader.vue";
 // import ProductsHeader from "./components/ProductsHeader.vue";
@@ -50,6 +51,7 @@ import ProductContent from "./components/ProductContent.vue";
 import DropDown from "./components/DropDown.vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const showSearch = ref(false);
 // const selectedCategory = ref(null);
@@ -60,6 +62,12 @@ const activeSection = ref(null);
 function openDropdown(section) {
   activeSection.value = section;
   showDropdown.value = true;
+}
+
+function goHome() {
+  // Reset product state if needed
+  showProducts.value = false;
+  router.push("/");
 }
 
 const activeView = computed(() => {
