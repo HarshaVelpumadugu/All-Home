@@ -1,5 +1,5 @@
 <template>
-  <section class="products-container">
+  <div class="products-container">
     <!-- Header -->
     <div class="header">
       <div class="products-header">
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
