@@ -22,34 +22,29 @@
       </div>
     </div>
 
-    <!-- Desktop: Navigation links -->
+    <!-- Desktop: Navigation links (hover triggers dropdown) -->
     <div
       class="colour-coats"
       :class="{ active: sliderStore.currentSlide === 0 }"
-      @click="goToSlide(0)"
+      @mouseenter="handleNavHover(0, 'COLOUR COATS')"
     >
       COLOUR COATS
     </div>
     <div
       class="colour-coats"
       :class="{ active: sliderStore.currentSlide === 1 }"
-      @click="goToSlide(1)"
+      @mouseenter="handleNavHover(1, 'THE HOUSE OF W')"
     >
       THE HOUSE OF W
     </div>
     <div
       class="colour-coats"
       :class="{ active: sliderStore.currentSlide === 2 }"
-      @click="goToSlide(2)"
+      @mouseenter="handleNavHover(2, 'METALIA')"
     >
       METALIA
     </div>
-    <div
-      class="colour-coats"
-      :class="{ active: sliderStore.currentSlide === 3 }"
-    >
-      FIAMARC
-    </div>
+    <div class="colour-coats">FIAMARC</div>
 
     <!-- Desktop Search icon -->
     <img
@@ -62,9 +57,18 @@
 </template>
 
 <script setup>
+import { defineEmits } from "vue";
 import { useSliderStore } from "../stores/userSliderStore.js";
+
 const sliderStore = useSliderStore();
 const { goToSlide } = sliderStore;
+
+const emit = defineEmits(["toggle-search", "open-dropdown"]);
+
+function handleNavHover(index, section) {
+  goToSlide(index); // still move slider
+  emit("open-dropdown", section); // show dropdown
+}
 </script>
 
 <style lang="scss" scoped>

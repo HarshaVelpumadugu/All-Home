@@ -10,7 +10,7 @@
       <div class="frame-child"></div>
     </div>
 
-    <div class="explore-proudtcs-wrapper" @click="$router.push('/products')">
+    <div class="explore-proudtcs-wrapper" @click="$emit('explore')">
       <div class="explore-proudtcs">Explore Products</div>
     </div>
   </div>
@@ -74,6 +74,7 @@
     box-sizing: border-box;
     text-align: center;
     font-size: 16px;
+    cursor: pointer;
     color: var(--color-white);
     font-family: var(--font-nunito);
 

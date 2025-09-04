@@ -1,45 +1,86 @@
 <template>
-  <!-- Header stays -->
+  <!-- Headers -->
+  <!-- v-if="$route.name === 'home' && !showProducts" -->
   <transition name="fade" mode="out-in">
     <AppHeader
-      v-if="$route.name !== 'products' && $route.name !== 'product-details'"
       key="app-header"
       @toggle-search="showSearch = !showSearch"
+      @open-dropdown="openDropdown"
     />
-    <ProductsHeader
+    <!-- <ProductsHeader
       v-else
       key="products-header"
       :active-category="selectedCategory"
       @change-category="selectedCategory = $event"
+    /> -->
+  </transition>
+  <transition name="dropdown-fade">
+    <DropDown
+      v-if="showDropdown"
+      :section="activeSection"
+      @close="showDropdown = false"
     />
   </transition>
 
   <!-- Search -->
   <SearchPanel v-if="showSearch" @close="showSearch = false" />
 
-  <!-- Route-based views -->
+  <!-- Main views -->
   <transition name="slide-up" mode="out-in">
-    <router-view />
+    <component
+      :is="activeView"
+      :key="activeKey"
+      @explore="showProducts = true"
+      @back="showProducts = false"
+    />
   </transition>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
+
 import AppHeader from "./components/AppHeader.vue";
-import ProductsHeader from "./components/ProductsHeader.vue";
+// import ProductsHeader from "./components/ProductsHeader.vue";
 import SearchPanel from "./components/SearchPanel.vue";
+import SliderComponent from "./components/SliderComponent.vue";
+import ProductsLayout from "./components/ProductsLayout.vue";
+import ProductContent from "./components/ProductContent.vue";
+import DropDown from "./components/DropDown.vue";
+
+const route = useRoute();
 
 const showSearch = ref(false);
-const selectedCategory = ref(null);
-// const showProducts = ref(false);
-// const selectedProduct = ref(null);
+// const selectedCategory = ref(null);
+const showProducts = ref(false);
+const showDropdown = ref(false);
+const activeSection = ref(null);
 
-// function handleExplore() {
-//   showProducts.value = true;
-// }
-// function openProduct(product) {
-//   selectedProduct.value = product;
-// }
+function openDropdown(section) {
+  activeSection.value = section;
+  showDropdown.value = true;
+}
+
+const activeView = computed(() => {
+  if (route.name === "home") {
+    return showProducts.value ? ProductsLayout : SliderComponent;
+  }
+  if (route.name === "product-details") {
+    return ProductContent;
+  }
+  return null;
+});
+
+// 🔑 Give each state a unique key for transitions
+const activeKey = computed(() => {
+  if (route.name === "home") {
+    return showProducts.value ? "products-layout" : "slider";
+  }
+  if (route.name === "product-details") {
+    return `product-${route.params.id}`;
+  }
+  return "unknown";
+});
 </script>
 
 <style scoped>
@@ -55,7 +96,7 @@ const selectedCategory = ref(null);
   z-index: 22093;
 }
 
-/* Animations */
+/* Slide up animation */
 .slide-up-enter-from,
 .slide-up-leave-to {
   transform: translateY(100%);
@@ -71,6 +112,7 @@ const selectedCategory = ref(null);
   transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
+/* Fade for headers */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease;
@@ -78,5 +120,26 @@ const selectedCategory = ref(null);
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+/* Dropdown Animation */
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.dropdown-fade-enter-from {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+.dropdown-fade-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dropdown-fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dropdown-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-15px);
 }
 </style>

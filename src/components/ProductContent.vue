@@ -24,7 +24,6 @@
             </div>
           </div>
         </div>
-
         <!-- Main Image -->
         <div class="image-wrapper">
           <img class="image-5-icon" :src="mainImage" alt="Main product image" />
@@ -43,7 +42,6 @@
             </div>
           </div>
         </div>
-
         <!-- Top-right floating button -->
         <div class="frame-container">
           <img
@@ -54,16 +52,13 @@
           <div class="d">3D</div>
         </div>
       </div>
-
       <!-- Right Side Info -->
       <div class="frame-div">
         <div class="sku-code-u2123-parent">
           <div class="sku-code">SKU Code : U2123</div>
           <div class="projects-empty-frame-parent">
             <div class="frame-wrapper">
-              <div class="fusion-wrapper">
-                <div class="fusion">Fusion</div>
-              </div>
+              <div class="fusion-wrapper"><div class="fusion">Fusion</div></div>
             </div>
             <div class="by-colour-codes">by Colour Codes</div>
           </div>
@@ -76,7 +71,6 @@
           />
           <div class="d">Download File</div>
         </div>
-
         <!-- Product Info -->
         <div class="frame-parent2">
           <div class="frame-parent3">
@@ -100,7 +94,6 @@
             <div class="x232x15ft">250X232X15ft</div>
           </div>
         </div>
-
         <!-- Similar Products -->
         <div class="similar-products-parent">
           <div class="sku-code">Similar Products</div>
@@ -133,22 +126,44 @@
         playsinline
       ></video>
       <!-- Overlay Section -->
-      <div class="overlay-content">
-        <!-- Left Overlay -->
+      <div v-if="showOverlay" class="overlay-content">
+        <!-- Sliding Container for Left Overlay -->
         <div class="overlay-left">
-          <h2 class="overlay-title">{{ slides[currentSlide].title }}</h2>
-          <p class="overlay-description">
-            {{ slides[currentSlide].description }}
-          </p>
+          <div class="slides-container">
+            <div
+              v-for="(slide, index) in slides"
+              :key="index"
+              class="slide-item"
+              :class="{ active: currentSlide === index }"
+              :style="{
+                transform: `translateX(${(index - currentSlide) * 100}%)`,
+              }"
+            >
+              <h2 class="overlay-title">{{ slide.title }}</h2>
+              <p class="overlay-description">{{ slide.description }}</p>
+            </div>
+          </div>
         </div>
 
-        <!-- Right Overlay -->
+        <!-- Sliding Container for Right Overlay -->
         <div class="overlay-right">
-          <img
-            class="overlay-image"
-            :src="slides[currentSlide].image"
-            :alt="slides[currentSlide].title"
-          />
+          <div class="image-slides-container">
+            <div
+              v-for="(slide, index) in slides"
+              :key="index"
+              class="image-slide-item"
+              :class="{ active: currentSlide === index }"
+              :style="{
+                transform: `translateX(${(index - currentSlide) * 100}%)`,
+              }"
+            >
+              <img
+                class="overlay-image"
+                :src="slide.image"
+                :alt="slide.title"
+              />
+            </div>
+          </div>
 
           <!-- Navigation Dots -->
           <div class="nav-dots">
@@ -165,13 +180,9 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
-/* ------------------------------
-   Thumbnails & Main Image
------------------------------- */
 const mainImage = ref(
   "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png"
 );
@@ -195,28 +206,23 @@ function setMainImage(img) {
   }
 }
 
-/* ------------------------------
-   Video Scale on Scroll
------------------------------- */
 const videoScale = ref(0.2);
+const showOverlay = ref(false);
 let rafId = null;
 
 function updateVideoScale() {
   const section = document.querySelector(".video-section");
   if (!section) return;
-
   const rect = section.getBoundingClientRect();
   const windowHeight = window.innerHeight;
-
   let visible = 0;
   if (rect.top < windowHeight && rect.bottom > 0) {
     const visibleHeight =
       Math.min(windowHeight, rect.bottom) - Math.max(0, rect.top);
-    visible = visibleHeight / rect.height; // 0 → 1
+    visible = visibleHeight / rect.height;
   }
-
-  // Interpolate between 0.5 (50%) and 1.0 (100%)
   videoScale.value = 0.5 + visible * 0.5;
+  showOverlay.value = visible >= 0.99;
 }
 
 function onScroll() {
@@ -237,14 +243,11 @@ onBeforeUnmount(() => {
   if (rafId) cancelAnimationFrame(rafId);
 });
 
-/* ------------------------------
-   Overlay Slides
------------------------------- */
 const slides = ref([
   {
     title: "Harmony",
     description:
-      "Your bathroom is your personal space. At Waterways we define this space, a space which is connected to one’s own senses and needs a place for inner contemplation, regeneration, and revitalization.",
+      "Your bathroom is your personal space. At Waterways we define this space, a space which is connected to one's own senses and needs a place for inner contemplation, regeneration, and revitalization.",
     image: "https://allhome.foyr.com/assets/how-slider-1-d52f6aea.png",
   },
   {
@@ -262,8 +265,32 @@ const slides = ref([
 ]);
 
 const currentSlide = ref(0);
-</script>
 
+function nextSlide() {
+  currentSlide.value = (currentSlide.value + 1) % slides.value.length;
+}
+
+function prevSlide() {
+  currentSlide.value =
+    (currentSlide.value - 1 + slides.value.length) % slides.value.length;
+}
+
+function handleKeyDown(e) {
+  if (e.key === "ArrowRight") {
+    nextSlide();
+  } else if (e.key === "ArrowLeft") {
+    prevSlide();
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeyDown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleKeyDown);
+});
+</script>
 <style scoped>
 .projects-empty {
   width: 100%;
@@ -277,7 +304,6 @@ const currentSlide = ref(0);
   overflow: hidden;
   overflow-y: auto;
 }
-
 .frame-parent {
   margin-top: 76px;
   display: flex;
@@ -291,7 +317,6 @@ const currentSlide = ref(0);
   color: rgba(255, 255, 255, 0.75);
   width: calc(100% - 40px);
 }
-
 .frame-group {
   display: flex;
   flex-direction: row;
@@ -300,7 +325,6 @@ const currentSlide = ref(0);
   position: relative;
   gap: 24px;
 }
-
 .chandigarh-chair-product-shoot-parent {
   height: 411px;
   display: flex;
@@ -311,7 +335,6 @@ const currentSlide = ref(0);
   gap: 16px;
   z-index: 0;
 }
-
 .chandigarh-chair-product-shoot {
   width: 80px;
   position: relative;
@@ -320,7 +343,6 @@ const currentSlide = ref(0);
   object-fit: cover;
   z-index: 0;
 }
-
 .projects-empty-chandigarh-chair-product-shoot {
   width: 80px;
   position: relative;
@@ -329,12 +351,10 @@ const currentSlide = ref(0);
   object-fit: cover;
   z-index: 1;
 }
-
 .thumbnail-wrapper {
   position: relative;
   display: inline-block;
 }
-
 .tick-circle {
   width: 24px;
   position: absolute;
@@ -345,7 +365,6 @@ const currentSlide = ref(0);
   opacity: 0.75;
   z-index: 2;
 }
-
 .vuesaxboldtick-circle-icon {
   position: absolute;
   height: 100%;
@@ -358,12 +377,10 @@ const currentSlide = ref(0);
   overflow: hidden;
   max-height: 100%;
 }
-
 .image-wrapper {
   position: relative;
   display: inline-block;
 }
-
 .image-5-icon {
   width: 661px;
   position: relative;
@@ -372,7 +389,6 @@ const currentSlide = ref(0);
   object-fit: cover;
   z-index: 1;
 }
-
 .image-buttons {
   position: absolute;
   bottom: 16px;
@@ -384,7 +400,6 @@ const currentSlide = ref(0);
   gap: 16px;
   z-index: 2;
 }
-
 .group-parent {
   width: 300px;
   backdrop-filter: blur(10px);
@@ -399,7 +414,6 @@ const currentSlide = ref(0);
   box-sizing: border-box;
   gap: 8px;
 }
-
 .restyle-in-space-wrapper {
   width: 300px;
   border-radius: 100px;
@@ -413,7 +427,6 @@ const currentSlide = ref(0);
   box-sizing: border-box;
   color: #121212;
 }
-
 .frame-container {
   margin: 0 !important;
   position: absolute;
@@ -430,18 +443,15 @@ const currentSlide = ref(0);
   gap: 6px;
   z-index: 2;
 }
-
 .frame-icon {
   width: 16px;
   position: relative;
   max-height: 100%;
 }
-
 .d {
   position: relative;
   font-weight: 600;
 }
-
 .frame-div {
   width: 406px;
   display: flex;
@@ -451,7 +461,6 @@ const currentSlide = ref(0);
   gap: 24px;
   color: #888;
 }
-
 .sku-code-u2123-parent {
   display: flex;
   flex-direction: column;
@@ -459,12 +468,10 @@ const currentSlide = ref(0);
   justify-content: flex-start;
   gap: 16px;
 }
-
 .sku-code {
   align-self: stretch;
   position: relative;
 }
-
 .projects-empty-frame-parent {
   align-self: stretch;
   display: flex;
@@ -475,7 +482,6 @@ const currentSlide = ref(0);
   font-size: 40px;
   color: #121212;
 }
-
 .frame-wrapper {
   width: 405px;
   display: flex;
@@ -483,7 +489,6 @@ const currentSlide = ref(0);
   align-items: flex-start;
   justify-content: flex-start;
 }
-
 .fusion-wrapper {
   width: 191px;
   display: flex;
@@ -491,7 +496,6 @@ const currentSlide = ref(0);
   align-items: flex-start;
   justify-content: flex-start;
 }
-
 .fusion {
   align-self: stretch;
   position: relative;
@@ -499,7 +503,6 @@ const currentSlide = ref(0);
   font-weight: 300;
   opacity: 0.8;
 }
-
 .by-colour-codes {
   align-self: stretch;
   position: relative;
@@ -508,7 +511,6 @@ const currentSlide = ref(0);
   font-weight: 300;
   opacity: 0.8;
 }
-
 .vuesaxoutlineimport-parent {
   backdrop-filter: blur(10px);
   border-radius: 100px;
@@ -523,13 +525,11 @@ const currentSlide = ref(0);
   gap: 6px;
   color: #404040;
 }
-
 .vuesaxoutlineimport-icon {
   width: 16px;
   position: relative;
   height: 16px;
 }
-
 .frame-parent2 {
   align-self: stretch;
   display: flex;
@@ -538,7 +538,6 @@ const currentSlide = ref(0);
   justify-content: flex-start;
   gap: 16px;
 }
-
 .frame-parent3 {
   align-self: stretch;
   display: flex;
@@ -547,7 +546,6 @@ const currentSlide = ref(0);
   justify-content: flex-start;
   gap: 4px;
 }
-
 .product-description-wrapper {
   align-self: stretch;
   display: flex;
@@ -555,11 +553,9 @@ const currentSlide = ref(0);
   align-items: center;
   justify-content: flex-start;
 }
-
 .product-description {
   position: relative;
 }
-
 .inspired-by-the {
   align-self: stretch;
   position: relative;
@@ -567,14 +563,12 @@ const currentSlide = ref(0);
   letter-spacing: 1px;
   color: #404040;
 }
-
 .x232x15ft {
   position: relative;
   font-size: 14px;
   letter-spacing: 1px;
   color: #404040;
 }
-
 .similar-products-parent {
   width: 406px;
   overflow: hidden;
@@ -584,7 +578,6 @@ const currentSlide = ref(0);
   justify-content: flex-start;
   gap: 16px;
 }
-
 .chandigarh-chair-product-shoot-group {
   display: flex;
   flex-direction: row;
@@ -593,7 +586,6 @@ const currentSlide = ref(0);
   position: relative;
   gap: 12px;
 }
-
 .projects-empty-tick-circle {
   width: 24px;
   position: absolute;
@@ -604,16 +596,14 @@ const currentSlide = ref(0);
   opacity: 0.75;
   z-index: 2;
 }
-
 .video-section {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 95vh;
   padding: 32px;
   box-sizing: border-box;
   overflow: hidden;
 }
-
 .product-video {
   position: absolute;
   bottom: 32px;
@@ -621,7 +611,7 @@ const currentSlide = ref(0);
   width: calc(100% - 64px);
   height: calc(100% - 64px);
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: none;
   transform-origin: bottom right;
   transform: scale(0.5);
   transition: transform 0.05s linear;
@@ -634,15 +624,67 @@ const currentSlide = ref(0);
   inset: 0;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding: 48px;
+  align-items: stretch;
+  padding: 30px;
+  box-sizing: border-box;
   z-index: 2;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  background-clip: content-box;
   color: #fff;
 }
 
 .overlay-left {
   flex: 1;
   max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.overlay-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Sliding containers */
+.slides-container,
+.image-slides-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.slide-item,
+.image-slide-item {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  top: 0;
+  left: 0;
+}
+
+.image-slide-item {
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .overlay-title {
@@ -662,23 +704,20 @@ const currentSlide = ref(0);
   color: #f5f5f5;
 }
 
-.overlay-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .overlay-image {
   width: 100%;
   height: auto;
-  margin-bottom: 20px;
+  max-height: 95%;
+  max-width: 100%;
+  object-fit: contain;
+  margin-bottom: 5px;
 }
 
 .nav-dots {
   display: flex;
   gap: 8px;
+  z-index: 3;
+  margin-bottom: 10px;
 }
 
 .dot {
@@ -695,7 +734,6 @@ const currentSlide = ref(0);
 }
 
 /* Responsive Styles */
-
 /* 1180px Breakpoint */
 @media (max-width: 1180px) {
   .frame-parent {
@@ -705,40 +743,31 @@ const currentSlide = ref(0);
     overflow-x: hidden;
     box-sizing: border-box;
   }
-
   .frame-group {
     gap: 16px;
   }
-
   .image-5-icon {
     width: 500px;
   }
-
   .frame-container {
     left: 529px;
   }
-
   .frame-div {
     width: 350px;
   }
-
   .frame-wrapper {
     width: 350px;
   }
-
   .similar-products-parent {
     width: 350px;
   }
-
   .projects-empty-frame-parent {
     font-size: 36px;
   }
-
   .image-buttons {
     width: 95%;
     gap: 12px;
   }
-
   .group-parent,
   .restyle-in-space-wrapper {
     width: 240px;
@@ -746,6 +775,7 @@ const currentSlide = ref(0);
     font-size: 14px;
   }
 }
+
 @media (max-width: 1024px) {
   .frame-parent {
     margin-left: 5px;
@@ -758,23 +788,18 @@ const currentSlide = ref(0);
     height: auto;
     min-height: 800px;
   }
-
   .frame-parent {
     flex-direction: column;
     position: relative;
-    /* top: 20px; */
     margin-left: 20px;
     padding: 12px;
     gap: 24px;
     width: calc(100% - 24px);
   }
-
   .frame-group {
-    /* flex-direction: row-reverse; */
     gap: 40px;
     width: 100%;
   }
-
   .chandigarh-chair-product-shoot-parent {
     flex-direction: column;
     height: auto;
@@ -782,7 +807,6 @@ const currentSlide = ref(0);
     justify-content: center;
     order: 2;
   }
-
   .image-wrapper {
     order: 1;
     width: 100%;
@@ -790,80 +814,145 @@ const currentSlide = ref(0);
     justify-content: center;
     align-self: center;
   }
-
   .image-wrapper {
     width: fit-content;
     max-width: 100%;
   }
-
   .image-5-icon {
     width: 100%;
     max-width: 597px;
     height: auto;
   }
-
   .image-wrapper {
     position: relative;
   }
-
   .frame-container {
     position: absolute;
     top: 16px;
     right: 170px;
     left: auto;
   }
-
   .image-buttons {
-    /* flex-direction: column; */
     width: 90%;
     gap: 8px;
     align-items: center;
   }
-
   .group-parent,
   .restyle-in-space-wrapper {
     width: 280px;
     height: 40px;
     font-size: 14px;
   }
-
   .frame-div {
     width: 100%;
     order: 3;
   }
-
   .frame-wrapper {
     width: 100%;
   }
-
   .similar-products-parent {
     width: 100%;
   }
-
   .projects-empty-frame-parent {
     font-size: 32px;
   }
-
   .chandigarh-chair-product-shoot-parent .thumbnail-wrapper {
     flex-shrink: 0;
   }
-
   .projects-empty-chandigarh-chair-product-shoot,
   .chandigarh-chair-product-shoot {
     width: 70px;
   }
-
   .tick-circle {
     top: 23px;
     left: 23px;
     width: 20px;
     height: 20px;
   }
-
   .chandigarh-chair-product-shoot-group {
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 8px;
+  }
+  .overlay-content {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 6rem 3rem;
+  }
+  .overlay-right {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 24px;
+  }
+  .overlay-left {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+  }
+  .overlay-title {
+    font-size: 2rem;
+  }
+  .overlay-description {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+  .overlay-image {
+    width: 80%;
+    max-width: 80%;
+    height: auto;
+    max-height: none;
+    margin: 0 auto 12px;
+  }
+  .nav-dots {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .frame-container {
+    right: 150px;
+  }
+  .overlay-content {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+  }
+  .overlay-left {
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+  }
+  .overlay-right {
+    width: 90%;
+    max-width: 90%;
+    flex: none;
+  }
+  .overlay-image {
+    width: 80%;
+    max-width: 80%;
+    height: auto;
+    max-height: 40vh;
+    object-fit: contain;
+  }
+  .overlay-title {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+  .overlay-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  .nav-dots {
+    margin-top: 12px;
+    justify-content: center;
   }
 }
 </style>
