@@ -20,7 +20,11 @@
         <div class="slide-overlay"></div>
         <div class="slide-content">
           <div class="content-wrapper">
-            <DescriptionComponent @explore="$emit('explore')" />
+            <!-- Pass section name to Description -->
+            <DescriptionComponent
+              :section="slide.section"
+              @explore="handleExplore"
+            />
             <ArrowRight class="arrow-btn" @click="nextSlide" />
           </div>
         </div>
@@ -30,16 +34,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import { useSliderStore } from "../stores/userSliderStore.js";
 import DescriptionComponent from "./DescriptionComponent.vue";
 import ArrowRight from "./ArrowRight.vue";
 
 const sliderStore = useSliderStore();
+const emit = defineEmits(["explore"]);
 
 const slides = ref([
   {
     id: 1,
+    section: "COLOUR COATS",
     imageLeft: new URL("../assets/Rectangle 34626212.png", import.meta.url)
       .href,
     imageRight: new URL("../assets/Rectangle 34626213.png", import.meta.url)
@@ -47,6 +53,7 @@ const slides = ref([
   },
   {
     id: 2,
+    section: "THE HOUSE OF W",
     imageLeft: new URL("../assets/Rectangle 34626211.png", import.meta.url)
       .href,
     imageRight: new URL("../assets/Rectangle 34626214.png", import.meta.url)
@@ -54,6 +61,7 @@ const slides = ref([
   },
   {
     id: 3,
+    section: "METALIA",
     imageLeft: new URL("../assets/Rectangle 34626215.png", import.meta.url)
       .href,
     imageRight: new URL("../assets/Rectangle 34626210.png", import.meta.url)
@@ -64,6 +72,13 @@ const slides = ref([
 const nextSlide = () => {
   sliderStore.currentSlide =
     (sliderStore.currentSlide + 1) % slides.value.length;
+};
+
+// Relay section to parent
+const handleExplore = (section) => {
+  // Emit section name to App.vue
+  // Example: "COLOUR COATS", "THE HOUSE OF W", "METALIA"
+  emit("explore", section);
 };
 </script>
 

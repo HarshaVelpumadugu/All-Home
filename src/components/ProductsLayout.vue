@@ -2,7 +2,9 @@
   <section class="products-container">
     <!-- Header -->
     <div class="header">
-      <div class="products-header">The House Of W</div>
+      <div class="products-header">
+        {{ section.charAt(0).toUpperCase() + section.slice(1).toLowerCase() }}
+      </div>
       <div class="products-header">Products</div>
       <div class="frame-child"></div>
     </div>
@@ -32,6 +34,12 @@
 <script>
 export default {
   name: "ProductsGrid",
+  props: {
+    section: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       products: [
@@ -95,7 +103,7 @@ export default {
 .frame-child {
   height: 2px;
   background-color: #000;
-  width: 120px;
+  width: 100px;
   opacity: 0.8;
 }
 .products-grid {

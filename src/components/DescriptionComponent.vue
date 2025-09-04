@@ -10,11 +10,22 @@
       <div class="frame-child"></div>
     </div>
 
-    <div class="explore-proudtcs-wrapper" @click="$emit('explore')">
+    <!-- Pass section back when clicked -->
+    <div class="explore-proudtcs-wrapper" @click="$emit('explore', section)">
       <div class="explore-proudtcs">Explore Products</div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { defineProps } from "vue";
+defineProps({
+  section: {
+    type: String,
+    required: true,
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 .frame-parent {

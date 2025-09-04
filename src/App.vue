@@ -32,6 +32,7 @@
       :key="activeKey"
       @explore="showProducts = true"
       @back="showProducts = false"
+      :section="activeSection"
     />
   </transition>
 </template>
