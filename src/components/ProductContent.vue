@@ -219,7 +219,27 @@ let rafId = null;
 
 // Touchpad detection variables
 let lastWheelTime = 0;
+// let wheelDeltaY = 0;
 let isTrackpadScrolling = false;
+
+function checkIfAtBottom() {
+  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+
+  const wasAtBottom = isAtBottom.value;
+  isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 5;
+
+  if (wasAtBottom !== isAtBottom.value) {
+    console.log("🔄 Bottom status changed:", isAtBottom.value);
+    console.log("📏 Scroll info:", {
+      scrollHeight,
+      scrollTop,
+      clientHeight,
+      diff: scrollHeight - (scrollTop + clientHeight),
+    });
+  }
+}
 
 function updateVideoScale() {
   const section = document.querySelector(".video-section");
@@ -232,61 +252,22 @@ function updateVideoScale() {
       Math.min(windowHeight, rect.bottom) - Math.max(0, rect.top);
     visible = visibleHeight / rect.height;
   }
+
+  const wasOverlayShown = showOverlay.value;
   videoScale.value = 0.5 + visible * 0.5;
   showOverlay.value = visible >= 0.99;
 
+  if (wasOverlayShown !== showOverlay.value) {
+    console.log(
+      "🎥 Video overlay status changed:",
+      showOverlay.value,
+      "visible:",
+      visible
+    );
+  }
+
   // Check if at bottom of page
   checkIfAtBottom();
-}
-
-function checkIfAtBottom() {
-  const scrollHeight = document.documentElement.scrollHeight;
-  const scrollTop = document.documentElement.scrollTop;
-  const clientHeight = document.documentElement.clientHeight;
-
-  isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 5;
-  console.log(isAtBottom);
-}
-
-function handleWheel(e) {
-  const currentTime = Date.now();
-
-  // Detect if it's trackpad based on wheel characteristics
-  if (Math.abs(e.deltaY) < 50 && e.deltaY % 1 !== 0) {
-    isTrackpadScrolling = true;
-  }
-
-  // Hide overlay if scrolling up (away from bottom) regardless of position
-  if (e.deltaY < 0 && overlayVisible.value) {
-    overlayVisible.value = false;
-    return;
-  }
-
-  // Only show overlay if at bottom and using trackpad and swiping down
-  if (isAtBottom.value && isTrackpadScrolling && showOverlay.value) {
-    // Detect downward swipe (deltaY positive when swiping down)
-    if (e.deltaY > 0) {
-      if (!overlayVisible.value) {
-        overlayVisible.value = true;
-      }
-    }
-  }
-
-  // Reset trackpad detection after some time
-  lastWheelTime = currentTime;
-  setTimeout(() => {
-    if (Date.now() - lastWheelTime >= 150) {
-      isTrackpadScrolling = false;
-    }
-  }, 150);
-}
-
-function handlePointer(e) {
-  // Additional detection for pointer events (touchpad fingers)
-  if (e.pointerType === "touch" && isAtBottom.value && showOverlay.value) {
-    // This can provide additional confirmation of finger input
-    isTrackpadScrolling = true;
-  }
 }
 
 function onScroll() {
@@ -297,17 +278,155 @@ function onScroll() {
   });
 }
 
+function handleWheel(e) {
+  console.log("🖱️ Wheel event:", {
+    deltaY: e.deltaY,
+    deltaX: e.deltaX,
+    ctrlKey: e.ctrlKey,
+    type: e.type,
+    target: e.target?.tagName,
+  });
+
+  const currentTime = Date.now();
+
+  // More robust trackpad detection
+  const isLikelyTrackpad =
+    (Math.abs(e.deltaY) < 100 && // Smooth scrolling
+      e.deltaY % 1 !== 0) || // Has decimal values
+    Math.abs(e.deltaX) > 0; // Has horizontal component
+
+  if (isLikelyTrackpad) {
+    isTrackpadScrolling = true;
+    console.log("✋ Trackpad detected");
+  } else {
+    console.log("🖱️ Mouse wheel detected");
+  }
+
+  // Check current scroll position (but don't interfere with normal scrolling)
+  setTimeout(() => checkIfAtBottom(), 0);
+
+  console.log("📊 Current state:", {
+    isAtBottom: isAtBottom.value,
+    isTrackpadScrolling: isTrackpadScrolling,
+    showOverlay: showOverlay.value,
+    overlayVisible: overlayVisible.value,
+    deltaY: e.deltaY,
+  });
+
+  // Hide overlay if scrolling up (away from bottom) regardless of position
+  if (e.deltaY < 0 && overlayVisible.value) {
+    console.log("⬆️ Scrolling up - hiding overlay");
+    overlayVisible.value = false;
+    return;
+  }
+
+  // Show overlay if at bottom, using trackpad, and trying to scroll down more
+  if (
+    isAtBottom.value &&
+    isTrackpadScrolling &&
+    showOverlay.value &&
+    e.deltaY > 0
+  ) {
+    console.log("⬇️ At bottom + trackpad + scrolling down - showing overlay");
+    // Only prevent default when we're actually showing the overlay
+    e.preventDefault();
+    if (!overlayVisible.value) {
+      overlayVisible.value = true;
+      console.log("✅ Overlay now visible");
+
+      // Debug overlay element
+      setTimeout(() => {
+        const overlayElement = document.querySelector(".overlay-content");
+        if (overlayElement) {
+          console.log("🎭 Overlay element found:", {
+            display: window.getComputedStyle(overlayElement).display,
+            opacity: window.getComputedStyle(overlayElement).opacity,
+            transform: window.getComputedStyle(overlayElement).transform,
+            zIndex: window.getComputedStyle(overlayElement).zIndex,
+            visibility: window.getComputedStyle(overlayElement).visibility,
+            hasVisibleClass:
+              overlayElement.classList.contains("overlay-visible"),
+          });
+        } else {
+          console.log("❌ Overlay element not found in DOM");
+        }
+      }, 100);
+    }
+  } else if (e.deltaY > 0) {
+    console.log("❌ Conditions not met for showing overlay:", {
+      isAtBottom: isAtBottom.value,
+      isTrackpadScrolling: isTrackpadScrolling,
+      showOverlay: showOverlay.value,
+    });
+  }
+
+  // Reset trackpad detection after some time
+  lastWheelTime = currentTime;
+  setTimeout(() => {
+    if (Date.now() - lastWheelTime >= 200) {
+      if (isTrackpadScrolling) {
+        console.log("⏰ Resetting trackpad detection");
+      }
+      isTrackpadScrolling = false;
+    }
+  }, 200);
+}
+
+function handleTouch(e) {
+  console.log("👆 Touch event:", {
+    type: e.type,
+    touches: e.touches?.length || 0,
+    target: e.target?.tagName,
+  });
+
+  // Handle direct touch events for better touchpad detection
+  if (isAtBottom.value && showOverlay.value) {
+    isTrackpadScrolling = true;
+    console.log("👆 Touch trackpad detection activated");
+  }
+}
+
+function handlePointer(e) {
+  console.log("🖱️ Pointer event:", {
+    type: e.type,
+    pointerType: e.pointerType,
+    target: e.target?.tagName,
+  });
+
+  // Additional detection for pointer events (touchpad fingers)
+  if (e.pointerType === "touch" && isAtBottom.value && showOverlay.value) {
+    // This can provide additional confirmation of finger input
+    isTrackpadScrolling = true;
+    console.log("🖱️ Pointer trackpad detection activated");
+  }
+}
+
 onMounted(() => {
+  console.log("🚀 Component mounted - setting up event listeners");
   window.addEventListener("scroll", onScroll);
   window.addEventListener("wheel", handleWheel, { passive: false });
   window.addEventListener("pointerdown", handlePointer);
+  window.addEventListener("touchstart", handleTouch, { passive: false });
+  window.addEventListener("touchmove", handleTouch, { passive: false });
   updateVideoScale();
+
+  // Initial state logging
+  setTimeout(() => {
+    console.log("🔍 Initial state check:", {
+      isAtBottom: isAtBottom.value,
+      showOverlay: showOverlay.value,
+      overlayVisible: overlayVisible.value,
+      videoScale: videoScale.value,
+    });
+  }, 1000);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("wheel", handleWheel);
   window.removeEventListener("pointerdown", handlePointer);
+  window.removeEventListener("touchstart", handleTouch);
+  window.removeEventListener("touchmove", handleTouch);
   if (rafId) cancelAnimationFrame(rafId);
 });
 
