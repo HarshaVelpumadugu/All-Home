@@ -599,7 +599,7 @@ onBeforeUnmount(() => {
 .video-section {
   position: relative;
   width: 100%;
-  height: 95vh;
+  height: 98vh;
   padding: 32px;
   box-sizing: border-box;
   overflow: hidden;

@@ -23,7 +23,7 @@
             <!-- Pass section name to Description -->
             <DescriptionComponent
               :section="slide.section"
-              @explore="handleExplore"
+              @explore="handleExplore(slide.id)"
             />
             <ArrowRight class="arrow-btn" @click="nextSlide" />
           </div>
@@ -75,10 +75,13 @@ const nextSlide = () => {
 };
 
 // Relay section to parent
-const handleExplore = (section) => {
+const handleExplore = (slideId) => {
   // Emit section name to App.vue
   // Example: "COLOUR COATS", "THE HOUSE OF W", "METALIA"
-  emit("explore", section);
+  const slide = slides.value.find((s) => s.id === slideId);
+  if (slide) {
+    emit("explore", { section: slide.section, slideId: slide.id });
+  }
 };
 </script>
 

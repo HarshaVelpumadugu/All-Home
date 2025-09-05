@@ -39,6 +39,10 @@ export default {
       type: String,
       required: true,
     },
+    activeSlideId: {
+      type: Number,
+      default: null,
+    },
   },
   data() {
     return {
@@ -103,7 +107,12 @@ export default {
   computed: {
     activeProducts() {
       console.log(this.section);
-      return this.allProducts[this.section] || this.allProducts["COLOUR COATS"];
+      if (this.activeSlideId == 1) {
+        return this.allProducts["COLOUR COATS"];
+      } else if (this.activeSlideId == 2) {
+        return this.allProducts["THE HOUSE OF W"];
+      }
+      return this.allProducts["METALIA"];
     },
     formattedSection() {
       if (!this.section) return "";
@@ -239,4 +248,9 @@ export default {
   background: #fff;
   color: #000;
 } */
+@media (max-width: 820px) {
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 </style>

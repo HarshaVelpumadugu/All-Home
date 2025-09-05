@@ -31,9 +31,10 @@
     <component
       :is="activeView"
       :key="activeKey"
-      @explore="showProducts = true"
+      @explore="handleExplore"
       @back="showProducts = false"
       :section="activeSection"
+      :active-slide-id="activeSlideId"
     />
   </transition>
 </template>
@@ -55,9 +56,16 @@ const router = useRouter();
 
 const showSearch = ref(false);
 // const selectedCategory = ref(null);
+const activeSlideId = ref(null);
 const showProducts = ref(false);
 const showDropdown = ref(false);
 const activeSection = ref(null);
+
+const handleExplore = ({ section, slideId }) => {
+  activeSection.value = section;
+  activeSlideId.value = slideId; // save slide id
+  showProducts.value = true;
+};
 
 function openDropdown(section) {
   activeSection.value = section;
