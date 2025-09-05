@@ -126,7 +126,11 @@
         playsinline
       ></video>
       <!-- Overlay Section -->
-      <div v-if="showOverlay" class="overlay-content">
+      <div
+        v-if="showOverlay"
+        class="overlay-content"
+        :class="{ 'overlay-visible': overlayVisible }"
+      >
         <!-- Sliding Container for Left Overlay -->
         <div class="overlay-left">
           <div class="slides-container">
@@ -180,6 +184,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
@@ -208,7 +213,13 @@ function setMainImage(img) {
 
 const videoScale = ref(0.2);
 const showOverlay = ref(false);
+const overlayVisible = ref(false);
+const isAtBottom = ref(false);
 let rafId = null;
+
+// Touchpad detection variables
+let lastWheelTime = 0;
+let isTrackpadScrolling = false;
 
 function updateVideoScale() {
   const section = document.querySelector(".video-section");
@@ -223,6 +234,59 @@ function updateVideoScale() {
   }
   videoScale.value = 0.5 + visible * 0.5;
   showOverlay.value = visible >= 0.99;
+
+  // Check if at bottom of page
+  checkIfAtBottom();
+}
+
+function checkIfAtBottom() {
+  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+
+  isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 5;
+  console.log(isAtBottom);
+}
+
+function handleWheel(e) {
+  const currentTime = Date.now();
+
+  // Detect if it's trackpad based on wheel characteristics
+  if (Math.abs(e.deltaY) < 50 && e.deltaY % 1 !== 0) {
+    isTrackpadScrolling = true;
+  }
+
+  // Hide overlay if scrolling up (away from bottom) regardless of position
+  if (e.deltaY < 0 && overlayVisible.value) {
+    overlayVisible.value = false;
+    return;
+  }
+
+  // Only show overlay if at bottom and using trackpad and swiping down
+  if (isAtBottom.value && isTrackpadScrolling && showOverlay.value) {
+    // Detect downward swipe (deltaY positive when swiping down)
+    if (e.deltaY > 0) {
+      if (!overlayVisible.value) {
+        overlayVisible.value = true;
+      }
+    }
+  }
+
+  // Reset trackpad detection after some time
+  lastWheelTime = currentTime;
+  setTimeout(() => {
+    if (Date.now() - lastWheelTime >= 150) {
+      isTrackpadScrolling = false;
+    }
+  }, 150);
+}
+
+function handlePointer(e) {
+  // Additional detection for pointer events (touchpad fingers)
+  if (e.pointerType === "touch" && isAtBottom.value && showOverlay.value) {
+    // This can provide additional confirmation of finger input
+    isTrackpadScrolling = true;
+  }
 }
 
 function onScroll() {
@@ -235,11 +299,15 @@ function onScroll() {
 
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
+  window.addEventListener("wheel", handleWheel, { passive: false });
+  window.addEventListener("pointerdown", handlePointer);
   updateVideoScale();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", onScroll);
+  window.removeEventListener("wheel", handleWheel);
+  window.removeEventListener("pointerdown", handlePointer);
   if (rafId) cancelAnimationFrame(rafId);
 });
 
@@ -291,6 +359,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("keydown", handleKeyDown);
 });
 </script>
+
 <style scoped>
 .projects-empty {
   width: 100%;
@@ -635,6 +704,15 @@ onBeforeUnmount(() => {
   );
   background-clip: content-box;
   color: #fff;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay-content.overlay-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .overlay-left {
@@ -645,6 +723,12 @@ onBeforeUnmount(() => {
   justify-content: flex-end;
   padding: 15px;
   overflow: hidden;
+  transform: translateX(-30px);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.overlay-visible .overlay-left {
+  transform: translateX(0);
 }
 
 .overlay-right {
@@ -656,6 +740,12 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
   height: 100%;
   overflow: hidden;
+  transform: translateX(30px);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.overlay-visible .overlay-right {
+  transform: translateX(0);
 }
 
 /* Sliding containers */
@@ -693,6 +783,15 @@ onBeforeUnmount(() => {
   margin-bottom: 16px;
   letter-spacing: 0.125rem;
   font-family: var(--font-nunito);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s,
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+.overlay-visible .overlay-title {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .overlay-description {
@@ -702,6 +801,15 @@ onBeforeUnmount(() => {
   letter-spacing: 0.125rem;
   font-family: var(--font-nunito);
   color: #f5f5f5;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s,
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+}
+
+.overlay-visible .overlay-description {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .overlay-image {
@@ -711,6 +819,15 @@ onBeforeUnmount(() => {
   max-width: 100%;
   object-fit: contain;
   margin-bottom: 5px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.overlay-visible .overlay-image {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .nav-dots {
@@ -718,6 +835,15 @@ onBeforeUnmount(() => {
   gap: 8px;
   z-index: 3;
   margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s,
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
+}
+
+.overlay-visible .nav-dots {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dot {
@@ -726,7 +852,11 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.dot:hover {
+  transform: scale(1.1);
 }
 
 .dot.active {
