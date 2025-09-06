@@ -10,9 +10,7 @@
             :src="generatedImage"
           />
 
-          <!-- Upload Flow -->
           <div v-else>
-            <!-- Step 1: Initial Upload -->
             <div
               v-if="!isUploading && !uploadSuccess"
               class="image-upload-container"
@@ -54,7 +52,6 @@
               </div>
             </div>
 
-            <!-- Step 2: Uploading -->
             <div v-if="isUploading" class="upload-field">
               <img
                 class="loading-icon"
@@ -66,7 +63,6 @@
               </div>
             </div>
 
-            <!-- Step 3: Upload Success -->
             <div v-if="uploadSuccess" class="upload-success">
               ✅ Image uploaded successfully!
             </div>
@@ -74,7 +70,6 @@
         </div>
       </div>
 
-      <!-- Close button -->
       <img
         class="close-btn"
         alt=""
@@ -82,7 +77,6 @@
         @click="handleClose"
       />
 
-      <!-- Room Selector -->
       <div class="room-selector-container">
         <div class="content-wrapper">
           <div class="section-header">
@@ -118,7 +112,6 @@
           </div>
         </div>
 
-        <!-- Generate Button -->
         <div
           class="generate-button-container"
           :class="{ disabled: isGenerating }"
@@ -165,20 +158,17 @@ const handleFileChange = (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Step 2: Uploading...
   isUploading.value = true;
   uploadSuccess.value = false;
 
   setTimeout(() => {
-    // Step 3: Success
     isUploading.value = false;
     uploadSuccess.value = true;
 
-    // Reset success after 2s (optional)
     setTimeout(() => {
       uploadSuccess.value = false;
     }, 2000);
-  }, 3000); // Show "Uploading..." for 3s
+  }, 3000);
 };
 
 const generateImage = () => {
@@ -392,11 +382,11 @@ const generateImage = () => {
           }
         }
         .upload-success {
-          position: absolute; /* sit above container */
+          position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%); /* exact center */
-          z-index: 5; /* above background */
+          transform: translate(-50%, -50%);
+          z-index: 5;
           text-align: center;
           font-weight: 600;
           color: rgb(6, 207, 6);
