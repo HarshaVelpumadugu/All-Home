@@ -164,10 +164,6 @@ const handleFileChange = (event) => {
   setTimeout(() => {
     isUploading.value = false;
     uploadSuccess.value = true;
-
-    setTimeout(() => {
-      uploadSuccess.value = false;
-    }, 2000);
   }, 3000);
 };
 
@@ -321,6 +317,7 @@ const generateImage = () => {
               padding: 0.75rem 1rem; // 12px 16px
               box-sizing: border-box;
               gap: 0.25rem; // 4px
+              cursor: pointer;
 
               .button-icon-container {
                 width: 1rem; // 16px
