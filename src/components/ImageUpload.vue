@@ -9,45 +9,80 @@
             alt="Generated room image"
             :src="generatedImage"
           />
-          <div v-if="!generatedImage" class="image-upload-container">
-            <div class="upload-instructions-wrapper">
-              <div class="upload-icon-container">
-                <img
-                  class="upload-icon"
-                  alt=""
-                  src="../assets/vuesax/outline/export.svg"
-                />
+
+          <!-- Upload Flow -->
+          <div v-else>
+            <!-- Step 1: Initial Upload -->
+            <div
+              v-if="!isUploading && !uploadSuccess"
+              class="image-upload-container"
+            >
+              <div class="upload-instructions-wrapper">
+                <div class="upload-icon-container">
+                  <img
+                    class="upload-icon"
+                    alt=""
+                    src="../assets/vuesax/outline/export.svg"
+                  />
+                </div>
+                <div class="upload-text-content">
+                  <p class="upload-instruction-text">
+                    <span class="upload-link-text">
+                      <span class="upload-link-bold">Upload Image </span>
+                    </span>
+                    <span>or drag and drop</span>
+                  </p>
+                  <p class="upload-instruction-text">Maximum size 1GB</p>
+                </div>
               </div>
-              <div class="upload-text-content">
-                <p class="upload-instruction-text">
-                  <span class="upload-link-text">
-                    <span class="upload-link-bold">Upload Image </span>
-                    <span class="upload-text-spacer"> </span>
-                  </span>
-                  <span>or drag and drop</span>
-                </p>
-                <p class="upload-instruction-text">Maximum size 1GB</p>
+              <div class="upload-button-container">
+                <div class="upload-button" @click="triggerFileInput">
+                  <img
+                    class="upload-icon"
+                    alt=""
+                    src="../assets/vuesax/outline/gallery.svg"
+                  />
+                  <div class="button-text">Upload Image</div>
+                </div>
+                <!-- Hidden file input -->
+                <input
+                  type="file"
+                  ref="fileInput"
+                  class="hidden-input"
+                  @change="handleFileChange"
+                />
               </div>
             </div>
-            <div class="upload-button-container">
-              <div class="upload-button">
-                <img
-                  class="upload-icon"
-                  alt=""
-                  src="../assets/vuesax/outline/gallery.svg"
-                />
-                <div class="button-text">Upload Image</div>
+
+            <!-- Step 2: Uploading -->
+            <div v-if="isUploading" class="upload-field">
+              <img
+                class="loading-icon"
+                alt=""
+                src="../assets/Dot Loading.gif"
+              />
+              <div class="message-container">
+                <div class="upload-message">Uploading...</div>
               </div>
+            </div>
+
+            <!-- Step 3: Upload Success -->
+            <div v-if="uploadSuccess" class="upload-success">
+              ✅ Image uploaded successfully!
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Close button -->
       <img
         class="close-btn"
         alt=""
         src="../assets/X.svg"
         @click="handleClose"
       />
+
+      <!-- Room Selector -->
       <div class="room-selector-container">
         <div class="content-wrapper">
           <div class="section-header">
@@ -82,6 +117,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Generate Button -->
         <div
           class="generate-button-container"
           :class="{ disabled: isGenerating }"
@@ -100,8 +137,13 @@
 import { defineEmits, ref } from "vue";
 
 const emit = defineEmits(["close"]);
+
 const isGenerating = ref(false);
 const generatedImage = ref(null);
+
+const isUploading = ref(false);
+const uploadSuccess = ref(false);
+const fileInput = ref(null);
 
 const randomImages = [
   "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
@@ -113,6 +155,30 @@ const randomImages = [
 
 const handleClose = () => {
   emit("close");
+};
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Step 2: Uploading...
+  isUploading.value = true;
+  uploadSuccess.value = false;
+
+  setTimeout(() => {
+    // Step 3: Success
+    isUploading.value = false;
+    uploadSuccess.value = true;
+
+    // Reset success after 2s (optional)
+    setTimeout(() => {
+      uploadSuccess.value = false;
+    }, 2000);
+  }, 3000); // Show "Uploading..." for 3s
 };
 
 const generateImage = () => {
@@ -139,33 +205,38 @@ const generateImage = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(0.3125rem); // 5px
   background-color: rgba(0, 0, 0, 0.3);
 
   .image-upload-overlay {
     display: flex;
     flex-direction: row;
-    width: 1158px;
-    height: 542px;
-    margin: 57px auto;
-    padding: 16px;
+    width: 72.375rem; // 1158px
+    height: 33.875rem; // 542px
+    margin: 3.5625rem auto; // 57px
+    padding: 1rem; // 16px
     box-sizing: border-box;
     position: relative;
 
     .image-section {
-      width: 726px;
-      height: 510px;
+      width: 45.375rem; // 726px
+      height: 31.875rem; // 510px
 
       .image-container {
         background-color: #f9f9f9;
         width: 100%;
         height: 100%;
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         .generated-image {
           position: absolute;
-          width: calc(100% - 32px);
-          height: calc(100% - 32px);
-          margin: 16px;
+          width: calc(100% - 2rem); // 32px
+          height: calc(100% - 2rem); // 32px
+          margin: 1rem; // 16px
           object-fit: cover;
           border-radius: 0;
           opacity: 0.8;
@@ -173,21 +244,21 @@ const generateImage = () => {
         }
 
         .image-upload-container {
-          width: 515px;
+          width: 32.1875rem; // 515px
           position: absolute;
-          bottom: 165px;
-          left: 105px;
+          bottom: 10.3125rem; // 165px
+          left: 6.5625rem; // 105px
           border-radius: none;
           overflow: hidden;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 32px 13px;
+          padding: 2rem 0.8125rem; // 32px 13px
           box-sizing: border-box;
-          gap: 16px;
+          gap: 1rem; // 16px
           text-align: center;
-          font-size: 12px;
+          font-size: 0.75rem; // 12px
           color: #6b7280;
           font-family: Nunito;
           z-index: 3;
@@ -197,11 +268,11 @@ const generateImage = () => {
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            gap: 4px;
+            gap: 0.25rem; // 4px
 
             .upload-icon-container {
-              width: 24px;
-              height: 24px;
+              width: 1.5rem; // 24px
+              height: 1.5rem; // 24px
               position: relative;
 
               .upload-icon {
@@ -220,7 +291,7 @@ const generateImage = () => {
 
             .upload-text-content {
               position: relative;
-              line-height: 20px;
+              line-height: 1.25rem; // 20px
 
               .upload-instruction-text {
                 margin: 0;
@@ -246,24 +317,24 @@ const generateImage = () => {
             flex-direction: row;
             align-items: flex-start;
             justify-content: flex-start;
-            font-size: 14px;
+            font-size: 0.875rem; // 14px
             color: #fff;
 
             .upload-button {
-              border-radius: 100px;
+              border-radius: 6.25rem; // 100px
               background-color: #516ce0;
-              height: 32px;
+              height: 2rem; // 32px
               display: flex;
               flex-direction: row;
               align-items: center;
               justify-content: center;
-              padding: 12px 16px;
+              padding: 0.75rem 1rem; // 12px 16px
               box-sizing: border-box;
-              gap: 4px;
+              gap: 0.25rem; // 4px
 
               .button-icon-container {
-                width: 16px;
-                height: 16px;
+                width: 1rem; // 16px
+                height: 1rem; // 16px
                 position: relative;
 
                 .upload-icon {
@@ -275,11 +346,60 @@ const generateImage = () => {
 
               .button-text {
                 letter-spacing: -0.02em;
-                line-height: 16px;
+                line-height: 1rem; // 16px
                 font-weight: 500;
               }
             }
+            .hidden-input {
+              display: none;
+            }
           }
+        }
+        .upload-field {
+          width: 100%;
+          position: relative;
+          border-radius: 0.375rem; // 6px
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem 0.8125rem; // 32px 13px
+          box-sizing: border-box;
+          gap: 0.5rem; // 8px
+          text-align: center;
+          font-size: 0.75rem; // 12px
+          color: #516ce0;
+          font-family: Inter;
+
+          .loading-icon {
+            width: 3rem; // 48px
+            position: relative;
+            max-height: 100%;
+            object-fit: cover;
+          }
+
+          .message-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: flex-start;
+
+            .upload-message {
+              position: relative;
+              line-height: 1.25rem; // 20px
+            }
+          }
+        }
+        .upload-success {
+          position: absolute; /* sit above container */
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%); /* exact center */
+          z-index: 5; /* above background */
+          text-align: center;
+          font-weight: 600;
+          color: rgb(6, 207, 6);
         }
       }
     }
@@ -287,9 +407,9 @@ const generateImage = () => {
     .close-btn {
       position: absolute;
       margin: 0 !important;
-      top: 20px;
-      left: 1120px;
-      height: 16px;
+      top: 1.25rem; // 20px
+      left: 70rem; // 1120px
+      height: 1rem; // 16px
       z-index: 2000;
       cursor: pointer;
     }
@@ -297,18 +417,18 @@ const generateImage = () => {
     .room-selector-container {
       flex: 1;
       position: relative;
-      backdrop-filter: blur(100px);
+      backdrop-filter: blur(6.25rem); // 100px
       background-color: #fff;
-      height: 510px;
+      height: 31.875rem; // 510px
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 16px;
+      padding: 1rem; // 16px
       box-sizing: border-box;
-      gap: 0px;
+      gap: 0rem; // 0px
       text-align: left;
-      font-size: 16px;
+      font-size: 1rem; // 16px
       color: #888;
       font-family: Nunito;
 
@@ -318,7 +438,7 @@ const generateImage = () => {
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-        gap: 16px;
+        gap: 1rem; // 16px
 
         .section-header {
           align-self: stretch;
@@ -327,15 +447,15 @@ const generateImage = () => {
 
         .items-list {
           align-self: stretch;
-          height: 408px;
+          height: 25.5rem; // 408px
           overflow: hidden;
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           justify-content: flex-start;
-          gap: 24px;
-          font-size: 12px;
+          gap: 1.5rem; // 24px
+          font-size: 0.75rem; // 12px
 
           .item-card {
             align-self: stretch;
@@ -343,18 +463,18 @@ const generateImage = () => {
             flex-direction: row;
             align-items: flex-start;
             justify-content: flex-start;
-            gap: 19px;
+            gap: 1.1875rem; // 19px
 
             .item-image {
-              width: 150px;
-              border-radius: 4px;
+              width: 9.375rem; // 150px
+              border-radius: 0.25rem; // 4px
               max-height: 100%;
               object-fit: cover;
             }
 
             .item-details {
               flex: 1;
-              height: 150px;
+              height: 9.375rem; // 150px
               display: flex;
               flex-direction: column;
               align-items: flex-start;
@@ -364,11 +484,11 @@ const generateImage = () => {
               .sku-info {
                 display: flex;
                 flex-direction: column;
-                gap: 4px;
+                gap: 0.25rem; // 4px
 
                 .item-name {
-                  font-size: 28px;
-                  letter-spacing: 2px;
+                  font-size: 1.75rem; // 28px
+                  letter-spacing: 0.125rem; // 2px
                   font-weight: 300;
                   color: #121212;
                   opacity: 0.8;
@@ -378,12 +498,12 @@ const generateImage = () => {
               .brand-info {
                 display: flex;
                 flex-direction: column;
-                gap: 4px;
-                font-size: 14px;
+                gap: 0.25rem; // 4px
+                font-size: 0.875rem; // 14px
 
                 .brand-name {
-                  font-size: 12px;
-                  letter-spacing: 2px;
+                  font-size: 0.75rem; // 12px
+                  letter-spacing: 0.125rem; // 2px
                   font-weight: 300;
                   color: #121212;
                   opacity: 0.8;
@@ -396,13 +516,13 @@ const generateImage = () => {
 
       .generate-button-container {
         align-self: stretch;
-        border-radius: 100px;
+        border-radius: 6.25rem; // 100px
         background-color: #2b2b2b;
-        height: 48px;
+        height: 3rem; // 48px
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 10px 16px;
+        padding: 0.625rem 1rem; // 10px 16px
         box-sizing: border-box;
         color: #fff;
         cursor: pointer;

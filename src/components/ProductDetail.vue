@@ -94,9 +94,9 @@ const closeModal = () => {
 .container {
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  padding: 20px;
-  max-width: 1366px;
+  gap: 1.25rem; // 20px
+  padding: 1.25rem; // 20px
+  max-width: 85.375rem; // 1366px
 
   .left-section {
     display: flex;
@@ -109,23 +109,23 @@ const closeModal = () => {
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      padding: 8px 24px;
+      padding: 0.5rem 1.5rem; // 8px 24px
       padding-left: 0;
       box-sizing: border-box;
       text-align: left;
-      font-size: 14px;
+      font-size: 0.875rem; // 14px
       color: #4b5563;
       font-family: Nunito;
 
       .back-button-wrapper {
-        width: 140px;
-        border-radius: 8px;
-        height: 32px;
+        width: 8.75rem; // 140px
+        border-radius: 0.5rem; // 8px
+        height: 2rem; // 32px
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        padding: 12px 16px;
+        padding: 0.75rem 1rem; // 12px 16px
         box-sizing: border-box;
 
         .back-button-container {
@@ -133,11 +133,11 @@ const closeModal = () => {
           flex-direction: row;
           align-items: center;
           justify-content: flex-start;
-          gap: 4px;
+          gap: 0.25rem; // 4px
 
           .back-arrow-icon {
-            width: 16px;
-            height: 16px;
+            width: 1rem; // 16px
+            height: 1rem; // 16px
             position: relative;
 
             .arrow-left-icon {
@@ -157,7 +157,7 @@ const closeModal = () => {
           .page-title {
             position: relative;
             letter-spacing: -0.02em;
-            line-height: 16px;
+            line-height: 1rem; // 16px
             font-weight: 500;
           }
         }
@@ -172,28 +172,28 @@ const closeModal = () => {
 
       .view-room-button {
         position: absolute;
-        bottom: 32px;
-        left: 320px;
-        border-radius: 100px;
+        bottom: 2rem; // 32px
+        left: 20rem; // 320px
+        border-radius: 6.25rem; // 100px
         cursor: pointer;
         background-color: #fff;
         border: 1px solid #516ce0;
         box-sizing: border-box;
-        width: 225px;
-        height: 48px;
+        width: 14.0625rem; // 225px
+        height: 3rem; // 48px
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        padding: 10px 32px;
-        gap: 8px;
+        padding: 0.625rem 2rem; // 10px 32px
+        gap: 0.5rem; // 8px
         text-align: left;
-        font-size: 16px;
+        font-size: 1rem; // 16px
         font-family: Nunito;
 
         .ar-icon {
-          width: 14px;
-          height: 14px;
+          width: 0.875rem; // 14px
+          height: 0.875rem; // 14px
           position: relative;
         }
 
@@ -211,29 +211,29 @@ const closeModal = () => {
   .right-section {
     display: flex;
     flex-direction: column;
-    padding: 16px;
-    gap: 24px;
+    padding: 1rem; // 16px
+    gap: 1.5rem; // 24px
 
     .tab-navigation {
       display: flex;
       flex-direction: row;
-      gap: 25px;
+      gap: 1.5625rem; // 25px
 
       .active-tab {
-        width: 210px;
-        height: 32px;
-        padding: 8px 32px;
+        width: 13.125rem; // 210px
+        height: 2rem; // 32px
+        padding: 0.5rem 2rem; // 8px 32px
         background-color: #2b2b2b;
-        font-size: 14px;
+        font-size: 0.875rem; // 14px
         color: #fff;
         font-family: var(--font-nunito);
         box-sizing: border-box;
-        border-radius: 100px;
+        border-radius: 6.25rem; // 100px
         text-align: center;
       }
 
       .inactive-tab {
-        font-size: 14px;
+        font-size: 0.875rem; // 14px
         font-weight: 600;
         font-family: Nunito;
         color: #7c7c7c;
@@ -243,12 +243,12 @@ const closeModal = () => {
     .product-cards {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 1.5rem; // 24px
 
       .product-card {
         display: flex;
         flex-direction: row;
-        gap: 19px;
+        gap: 1.1875rem; // 19px
 
         .product-thumbnail {
         }
@@ -263,7 +263,7 @@ const closeModal = () => {
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
-            gap: 4px;
+            gap: 0.25rem; // 4px
             font-family: var(--font-nunito);
 
             .label {
@@ -274,8 +274,8 @@ const closeModal = () => {
             .product-name {
               align-self: stretch;
               position: relative;
-              font-size: 28px;
-              letter-spacing: 2px;
+              font-size: 1.75rem; // 28px
+              letter-spacing: 0.125rem; // 2px
               font-weight: 300;
               color: #121212;
               opacity: 0.8;
@@ -287,8 +287,8 @@ const closeModal = () => {
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
-            gap: 4px;
-            font-size: 14px;
+            gap: 0.25rem; // 4px
+            font-size: 0.875rem; // 14px
 
             .label {
               align-self: stretch;
@@ -298,8 +298,8 @@ const closeModal = () => {
             .brand-name {
               align-self: stretch;
               position: relative;
-              font-size: 12px;
-              letter-spacing: 2px;
+              font-size: 0.75rem; // 12px
+              letter-spacing: 0.125rem; // 2px
               font-weight: 300;
               color: #121212;
               font-family: var(--font-nunito);
