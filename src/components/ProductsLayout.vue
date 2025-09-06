@@ -31,101 +31,114 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ProductsLayout",
-  props: {
-    section: {
-      type: String,
-      required: true,
-    },
-    activeSlideId: {
-      type: Number,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      allProducts: {
-        "THE HOUSE OF W": [
-          {
-            name: "Modern Mirror",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
-          },
-          {
-            name: "Luxury Basin",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
-          },
-          {
-            name: "Wall Klozet",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
-          },
-          {
-            name: "Asma Klozet",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-          },
-          {
-            name: "Wash Basin",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-          },
-          {
-            name: "Round Mirror",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
-          },
-          {
-            name: "Classic Basin",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
-          },
-          {
-            name: "Smart Sink",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
-          },
-        ],
-        METALIA: [
-          {
-            name: "Aluminum Profile",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Aluminium%20Profile/ALPEXT%20img%201.png",
-          },
-          {
-            name: "Coin Matrix",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Coin%20Matrix/COINEXT%20img%201.png",
-          },
-        ],
-        "COLOUR COATS": [
-          {
-            name: "Desert Dune Grain",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
-          },
-          {
-            name: "Urban Slate Grains",
-            img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
-          },
-        ],
-      },
-    };
-  },
-  computed: {
-    activeProducts() {
-      console.log(this.section);
-      if (this.activeSlideId == 1) {
-        return this.allProducts["COLOUR COATS"];
-      } else if (this.activeSlideId == 2) {
-        return this.allProducts["THE HOUSE OF W"];
-      }
-      return this.allProducts["METALIA"];
-    },
-    formattedSection() {
-      if (!this.section) return "";
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount, defineProps } from "vue";
 
-      return this.section
-        .split(" ")
-        .map(
-          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        )
-        .join(" ");
-    },
+const props = defineProps({
+  section: {
+    type: String,
+    required: true,
   },
-};
+  activeSlideId: {
+    type: Number,
+    default: null,
+  },
+});
+
+const screenWidth = ref(window.innerWidth);
+
+const allProducts = ref({
+  "THE HOUSE OF W": [
+    {
+      name: "Modern Mirror",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
+    },
+    {
+      name: "Luxury Basin",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
+    },
+    {
+      name: "Wall Klozet",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
+    },
+    {
+      name: "Asma Klozet",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
+    },
+    {
+      name: "Wash Basin",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
+    },
+    {
+      name: "Round Mirror",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
+    },
+    {
+      name: "Classic Basin",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
+    },
+    {
+      name: "Smart Sink",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
+    },
+  ],
+  METALIA: [
+    {
+      name: "Aluminum Profile",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Aluminium%20Profile/ALPEXT%20img%201.png",
+    },
+    {
+      name: "Coin Matrix",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Coin%20Matrix/COINEXT%20img%201.png",
+    },
+  ],
+  "COLOUR COATS": [
+    {
+      name: "Desert Dune Grain",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
+    },
+    {
+      name: "Urban Slate Grains",
+      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
+    },
+  ],
+});
+
+const activeProducts = computed(() => {
+  console.log(screenWidth.value);
+
+  if (screenWidth.value <= 820) {
+    if (props.activeSlideId === 1) {
+      return allProducts.value["COLOUR COATS"];
+    } else if (props.activeSlideId === 2) {
+      return allProducts.value["THE HOUSE OF W"];
+    }
+    return allProducts.value["METALIA"];
+  } else if (screenWidth.value >= 1024) {
+    return allProducts.value[props.section] || [];
+  }
+  return [];
+});
+
+const formattedSection = computed(() => {
+  if (!props.section) return "";
+  return props.section
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+});
+
+function handleResize() {
+  screenWidth.value = window.innerWidth;
+}
+
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
 </script>
 
 <style scoped>

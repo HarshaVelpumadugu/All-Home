@@ -537,6 +537,7 @@ onBeforeUnmount(() => {
   border-radius: 4px;
   max-height: 100%;
   object-fit: cover;
+  aspect-ratio: 1/1;
   z-index: 1;
 }
 .thumbnail-wrapper {
@@ -823,15 +824,17 @@ onBeforeUnmount(() => {
   );
   background-clip: content-box;
   color: #fff;
+
+  /* Start from invisible + scaled down */
   opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.2);
+  transform-origin: center;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .overlay-content.overlay-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: scale(1);
 }
 
 .overlay-left {

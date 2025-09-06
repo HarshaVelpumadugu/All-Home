@@ -25,9 +25,10 @@
 
   <!-- Search -->
   <SearchPanel v-if="showSearch" @close="showSearch = false" />
+  <ProductDetail />
 
   <!-- Main views -->
-  <transition name="slide-up" mode="out-in">
+  <!-- <transition name="slide-up" mode="out-in">
     <component
       :is="activeView"
       :key="activeKey"
@@ -36,36 +37,40 @@
       :section="activeSection"
       :active-slide-id="activeSlideId"
     />
-  </transition>
+  </transition> -->
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+// computed
+import { ref } from "vue";
+//useRoute
+import { useRouter } from "vue-router";
 
 import AppHeader from "./components/AppHeader.vue";
 // import ProductsHeader from "./components/ProductsHeader.vue";
+import ProductDetail from "./components/ProductDetail.vue";
 import SearchPanel from "./components/SearchPanel.vue";
-import SliderComponent from "./components/SliderComponent.vue";
-import ProductsLayout from "./components/ProductsLayout.vue";
-import ProductContent from "./components/ProductContent.vue";
+// import ImageUpload from "./components/ImageUpload.vue";
+// import SliderComponent from "./components/SliderComponent.vue";
+// import ProductsLayout from "./components/ProductsLayout.vue";
+// import ProductContent from "./components/ProductContent.vue";
 import DropDown from "./components/DropDown.vue";
 
-const route = useRoute();
+// const route = useRoute();
 const router = useRouter();
 
 const showSearch = ref(false);
 // const selectedCategory = ref(null);
-const activeSlideId = ref(null);
+// const activeSlideId = ref(null);
 const showProducts = ref(false);
 const showDropdown = ref(false);
 const activeSection = ref(null);
 
-const handleExplore = ({ section, slideId }) => {
-  activeSection.value = section;
-  activeSlideId.value = slideId; // save slide id
-  showProducts.value = true;
-};
+// const handleExplore = ({ section, slideId }) => {
+//   activeSection.value = section;
+//   activeSlideId.value = slideId; // save slide id
+//   showProducts.value = true;
+// };
 
 function openDropdown(section) {
   activeSection.value = section;
@@ -78,26 +83,26 @@ function goHome() {
   router.push("/");
 }
 
-const activeView = computed(() => {
-  if (route.name === "home") {
-    return showProducts.value ? ProductsLayout : SliderComponent;
-  }
-  if (route.name === "product-details") {
-    return ProductContent;
-  }
-  return null;
-});
+// const activeView = computed(() => {
+//   if (route.name === "home") {
+//     return showProducts.value ? ProductsLayout : SliderComponent;
+//   }
+//   if (route.name === "product-details") {
+//     return ProductContent;
+//   }
+//   return null;
+// });
 
 // 🔑 Give each state a unique key for transitions
-const activeKey = computed(() => {
-  if (route.name === "home") {
-    return showProducts.value ? "products-layout" : "slider";
-  }
-  if (route.name === "product-details") {
-    return `product-${route.params.id}`;
-  }
-  return "unknown";
-});
+// const activeKey = computed(() => {
+//   if (route.name === "home") {
+//     return showProducts.value ? "products-layout" : "slider";
+//   }
+//   if (route.name === "product-details") {
+//     return `product-${route.params.id}`;
+//   }
+//   return "unknown";
+// });
 </script>
 
 <style scoped>
