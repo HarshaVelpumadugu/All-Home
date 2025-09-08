@@ -492,10 +492,10 @@ onBeforeUnmount(() => {
 .product-gallery {
   width: 100%;
   position: relative;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   height: 100%;
   text-align: left;
-  font-size: 16px;
+  font-size: 1rem;
   color: #9ca3af;
   font-family: $font-nunito;
   overflow: hidden;
@@ -504,17 +504,17 @@ onBeforeUnmount(() => {
 
 // Main Content Layout
 .main-content {
-  margin-top: 76px;
+  margin-top: 4.75rem;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 20px;
-  padding-left: 123px;
-  gap: 32px;
+  padding: 1.25rem;
+  padding-left: 7.6875rem;
+  gap: 2rem;
   box-sizing: border-box;
   color: rgba(255, 255, 255, 0.75);
-  width: calc(100% - 40px);
+  width: calc(100% - 2.5rem);
 }
 
 // Gallery Section
@@ -524,18 +524,18 @@ onBeforeUnmount(() => {
   align-items: flex-start;
   justify-content: flex-start;
   position: relative;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 // Thumbnails
 .thumbnail-list {
-  height: 411px;
+  height: 25.6875rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   position: relative;
-  gap: 16px;
+  gap: 1rem;
   z-index: 0;
 }
 
@@ -546,9 +546,9 @@ onBeforeUnmount(() => {
 }
 
 .thumbnail-image {
-  width: 80px;
+  width: 5rem;
   position: relative;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   max-height: 100%;
   object-fit: cover;
   z-index: 1;
@@ -556,11 +556,11 @@ onBeforeUnmount(() => {
 }
 
 .selection-indicator {
-  width: 24px;
+  width: 1.5rem;
   position: absolute;
   margin: 0 !important;
-  top: 28px;
-  left: 28px;
+  top: 1.75rem;
+  left: 1.75rem;
   height: 24px;
   opacity: 0.75;
   z-index: 2;
@@ -585,9 +585,9 @@ onBeforeUnmount(() => {
   display: inline-block;
 
   .main-image {
-    width: 661px;
+    width: 41.3125rem;
     position: relative;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     max-height: 100%;
     object-fit: cover;
     z-index: 1;
@@ -596,42 +596,42 @@ onBeforeUnmount(() => {
 
 .image-overlay-buttons {
   position: absolute;
-  bottom: 16px;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: 1rem;
   z-index: 2;
 }
 
 .view-3d-button {
-  width: 300px;
-  backdrop-filter: blur(10px);
-  border-radius: 100px;
+  width: 18.75rem;
+  backdrop-filter: blur(0.625rem);
+  border-radius: 6.25rem;
   background-color: rgba(0, 0, 0, 0.5);
-  height: 48px;
+  height: 3rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
+  padding: 0.625rem 1rem;
   box-sizing: border-box;
-  gap: 8px;
+  gap: 0.5rem;
   cursor: pointer;
 }
 
 .restyle-button {
-  width: 300px;
-  border-radius: 100px;
+  width: 18.75rem;
+  border-radius: 6.25rem;
   background-color: #fff;
-  height: 48px;
+  height: 3rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
+  padding: 0.625rem 1rem;
   box-sizing: border-box;
   color: #121212;
   cursor: pointer;
@@ -640,22 +640,22 @@ onBeforeUnmount(() => {
 .floating-3d-button {
   margin: 0 !important;
   position: absolute;
-  top: 16px;
-  left: 689px;
-  backdrop-filter: blur(10px);
-  border-radius: 100px;
+  top: 1rem;
+  left: 43.0625rem;
+  backdrop-filter: blur(0.625rem);
+  border-radius: 6.25rem;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 4px 8px;
-  gap: 6px;
+  padding: 0.25rem 0.5rem;
+  gap: 0.375rem;
   z-index: 2;
   cursor: pointer;
 
   .button-icon {
-    width: 16px;
+    width: 1rem;
     position: relative;
     max-height: 100%;
   }
@@ -673,12 +673,12 @@ onBeforeUnmount(() => {
 
 // Product Information Panel
 .product-info-panel {
-  width: 406px;
+  width: 25.375rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 24px;
+  gap: 1.5rem;
   color: #888;
 }
 
@@ -687,7 +687,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 1rem;
 
   .sku-code {
     align-self: stretch;
@@ -701,19 +701,19 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 4px;
-  font-size: 40px;
+  gap: 0.25rem;
+  font-size: 2.5rem;
   color: #121212;
 
   .title-wrapper {
-    width: 405px;
+    width: 25.3125rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
 
     .brand-tag {
-      width: 191px;
+      width: 11.9375rem;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -722,7 +722,7 @@ onBeforeUnmount(() => {
       .brand-name {
         align-self: stretch;
         position: relative;
-        letter-spacing: 2px;
+        letter-spacing: 0.125rem;
         font-weight: 300;
         opacity: 0.8;
       }
@@ -732,32 +732,32 @@ onBeforeUnmount(() => {
   .brand-subtitle {
     align-self: stretch;
     position: relative;
-    font-size: 14px;
-    letter-spacing: 2px;
+    font-size: 0.875rem;
+    letter-spacing: 0.125rem;
     font-weight: 300;
     opacity: 0.8;
   }
 }
 
 .download-section {
-  backdrop-filter: blur(10px);
-  border-radius: 100px;
+  backdrop-filter: blur(0.625rem);
+  border-radius: 6.25rem;
   background-color: #f0f0f0;
-  height: 32px;
+  height: 2rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 4px 16px;
+  padding: 0.25rem 1rem;
   box-sizing: border-box;
-  gap: 6px;
+  gap: 0.375rem;
   color: #404040;
   cursor: pointer;
 
   .download-icon {
-    width: 16px;
+    width: 1rem;
     position: relative;
-    height: 16px;
+    height: 1rem;
   }
 
   .download-text {
@@ -773,7 +773,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .detail-section {
@@ -782,7 +782,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 0.25rem;
 
   .section-header {
     align-self: stretch;
@@ -799,28 +799,28 @@ onBeforeUnmount(() => {
   .section-content {
     align-self: stretch;
     position: relative;
-    font-size: 14px;
-    letter-spacing: 1px;
+    font-size: 0.875rem;
+    letter-spacing: 0.0625rem;
     color: #404040;
   }
 
   .dimensions-text {
     position: relative;
-    font-size: 14px;
-    letter-spacing: 1px;
+    font-size: 0.875rem;
+    letter-spacing: 0.0625rem;
     color: $light-text;
   }
 }
 
 // Similar Products
 .similar-products-section {
-  width: 406px;
+  width: 25.375rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 1rem;
 
   .similar-products-title {
     align-self: stretch;
@@ -833,7 +833,7 @@ onBeforeUnmount(() => {
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    gap: 12px;
+    gap: 0.75rem;
   }
 
   .similar-product-item {
@@ -842,9 +842,9 @@ onBeforeUnmount(() => {
     cursor: pointer;
 
     .similar-product-image {
-      width: 80px;
+      width: 5rem;
       position: relative;
-      border-radius: 4px;
+      border-radius: 0.25rem;
       max-height: 100%;
       object-fit: cover;
       z-index: 0;
@@ -857,16 +857,16 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: 98vh;
-  padding: 32px;
+  padding: 2rem;
   box-sizing: border-box;
   overflow: hidden;
 
   .background-video {
     position: absolute;
-    bottom: 32px;
-    right: 32px;
-    width: calc(100% - 64px);
-    height: calc(100% - 64px);
+    bottom: 2rem;
+    right: 2rem;
+    width: calc(100% - 4rem);
+    height: calc(100% - 4rem);
     object-fit: cover;
     border-radius: none;
     transform-origin: bottom right;
@@ -883,7 +883,7 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  padding: 30px;
+  padding: 1.875rem;
   box-sizing: border-box;
   z-index: 2;
   background: linear-gradient(
@@ -894,7 +894,7 @@ onBeforeUnmount(() => {
   background-clip: content-box;
   color: #fff;
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(3.125rem);
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -938,9 +938,9 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 15px;
+  padding: 0.9375rem;
   overflow: hidden;
-  transform: translateX(-30px);
+  transform: translateX(-1.875rem);
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
@@ -953,7 +953,7 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
   height: 100%;
   overflow: hidden;
-  transform: translateX(30px);
+  transform: translateX(1.875rem);
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
@@ -989,7 +989,7 @@ onBeforeUnmount(() => {
 .slide-title {
   font-size: 2.5rem;
   font-weight: 300;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   letter-spacing: 0.125rem;
   font-family: $font-nunito;
   opacity: 0;
@@ -1017,7 +1017,7 @@ onBeforeUnmount(() => {
   max-height: 95%;
   max-width: 100%;
   object-fit: contain;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
   opacity: 0;
   transform: scale(0.9);
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
@@ -1026,17 +1026,17 @@ onBeforeUnmount(() => {
 
 .navigation-dots {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
   z-index: 3;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(0.625rem);
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s,
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
 
   .nav-dot {
-    width: 12px;
-    height: 12px;
+    width: 0.75rem;
+    height: 0.75rem;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
@@ -1055,84 +1055,84 @@ onBeforeUnmount(() => {
 // Responsive Styles
 @media (max-width: 1180px) {
   .main-content {
-    gap: 20px;
-    padding: 16px;
-    margin-left: 40px;
+    gap: 1.25rem;
+    padding: 1rem;
+    margin-left: 2.5rem;
     overflow-x: hidden;
     box-sizing: border-box;
   }
 
   .gallery-section {
-    gap: 16px;
+    gap: 1rem;
   }
 
   .main-image {
-    width: 500px;
+    width: 31.25rem;
   }
 
   .floating-3d-button {
-    left: 529px;
+    left: 33.0625rem;
   }
 
   .product-info-panel {
-    width: 350px;
+    width: 21.875rem;
   }
 
   .title-wrapper {
-    width: 350px;
+    width: 21.875rem;
   }
 
   .similar-products-section {
-    width: 350px;
+    width: 21.875rem;
   }
 
   .product-title-section {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
 
   .image-overlay-buttons {
     width: 95%;
-    gap: 12px;
+    gap: 0.75rem;
 
     .view-3d-button,
     .restyle-button {
-      width: 240px;
-      height: 44px;
-      font-size: 14px;
+      width: 15rem;
+      height: 2.75rem;
+      font-size: 0.875rem;
     }
   }
 }
 
 @media (max-width: 1024px) {
   .main-content {
-    margin-left: 5px;
+    margin-left: 0.3125rem;
   }
 }
 
 @media (max-width: 820px) {
   .product-gallery {
     height: auto;
-    min-height: 800px;
+    min-height: 50rem;
   }
 
   .main-content {
     flex-direction: column;
     position: relative;
-    margin-left: 20px;
-    padding: 12px;
-    gap: 24px;
-    width: calc(100% - 24px);
+    margin-left: 1.25rem;
+    padding: 0.75rem;
+    gap: 1.5rem;
+    width: calc(100% - 1.5rem);
   }
 
   .gallery-section {
-    gap: 40px;
+    gap: 2.5rem;
     width: 100%;
   }
 
   .thumbnail-list {
     flex-direction: column;
     height: auto;
-    gap: 12px;
+    gap: 0.75rem;
     justify-content: center;
     order: 2;
   }
@@ -1146,28 +1146,28 @@ onBeforeUnmount(() => {
 
     .main-image {
       width: 100%;
-      max-width: 597px;
+      max-width: 37.3125rem;
       height: auto;
     }
   }
 
   .floating-3d-button {
     position: absolute;
-    top: 16px;
-    right: 170px;
+    top: 1rem;
+    right: 10.625rem;
     left: auto;
   }
 
   .image-overlay-buttons {
     width: 90%;
-    gap: 8px;
+    gap: 0.5rem;
     align-items: center;
 
     .view-3d-button,
     .restyle-button {
-      width: 280px;
-      height: 40px;
-      font-size: 14px;
+      width: 17.5rem;
+      height: 2.5rem;
+      font-size: 0.875rem;
     }
   }
 
@@ -1185,27 +1185,27 @@ onBeforeUnmount(() => {
       .similar-products-grid {
         justify-content: flex-start;
         overflow-x: auto;
-        padding-bottom: 8px;
+        padding-bottom: 0.5rem;
       }
     }
   }
 
   .product-title-section {
-    font-size: 32px;
+    font-size: 2rem;
   }
 
   .thumbnail-item {
     flex-shrink: 0;
 
     .thumbnail-image {
-      width: 70px;
+      width: 4.375rem;
     }
 
     .selection-indicator {
-      top: 23px;
-      left: 23px;
-      width: 20px;
-      height: 20px;
+      top: 1.4375rem;
+      left: 1.4375rem;
+      width: 1.25rem;
+      height: 1.25rem;
     }
   }
 
@@ -1221,7 +1221,7 @@ onBeforeUnmount(() => {
       width: 100%;
       max-width: 100%;
       height: auto;
-      margin-bottom: 24px;
+      margin-bottom: 1.5rem;
     }
 
     .overlay-left-panel {
@@ -1244,7 +1244,7 @@ onBeforeUnmount(() => {
       max-width: 80%;
       height: auto;
       max-height: none;
-      margin: 0 auto 12px;
+      margin: 0 auto 0.75rem;
     }
 
     .navigation-dots {
@@ -1255,7 +1255,7 @@ onBeforeUnmount(() => {
 
 @media (max-width: 768px) {
   .floating-3d-button {
-    right: 150px;
+    right: 9.375rem;
   }
 
   .video-overlay {
@@ -1263,7 +1263,7 @@ onBeforeUnmount(() => {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 16px;
+    padding: 1rem;
 
     .overlay-left-panel {
       width: 100%;
@@ -1287,7 +1287,7 @@ onBeforeUnmount(() => {
 
     .slide-title {
       font-size: 1.8rem;
-      margin-bottom: 12px;
+      margin-bottom: 0.75rem;
     }
 
     .slide-description {
@@ -1298,7 +1298,7 @@ onBeforeUnmount(() => {
     }
 
     .navigation-dots {
-      margin-top: 12px;
+      margin-top: 0.75rem;
       justify-content: center;
     }
   }

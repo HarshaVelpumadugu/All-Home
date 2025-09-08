@@ -76,7 +76,7 @@ const nextSlide = () => {
 .slider-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 2.75rem);
   overflow: hidden;
 
   .slider-wrapper {
@@ -132,7 +132,7 @@ const nextSlide = () => {
         z-index: 10;
         display: flex;
         align-items: flex-end;
-        padding: 60px;
+        padding: 3.75rem;
         color: white;
 
         .content-wrapper {
@@ -149,14 +149,14 @@ const nextSlide = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 3rem;
+            height: 3rem;
             border-radius: 50%;
             cursor: pointer;
 
             svg {
-              width: 24px;
-              height: 24px;
+              width: 1.5rem;
+              height: 1.5rem;
               color: #333;
             }
           }
@@ -170,7 +170,7 @@ const nextSlide = () => {
     .slider-wrapper {
       .slide {
         .slide-content {
-          padding: 40px;
+          padding: 2.5rem;
 
           .arrow-btn {
             position: absolute;
@@ -179,14 +179,14 @@ const nextSlide = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 3rem;
+            height: 3rem;
             border-radius: 50%;
             cursor: pointer;
 
             svg {
-              width: 24px;
-              height: 24px;
+              width: 1.5rem;
+              height: 1.5rem;
               color: #333;
             }
           }

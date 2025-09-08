@@ -50,10 +50,10 @@ const productList = computed(() => {
 <style scoped lang="scss">
 .dropdown-overlay {
   position: fixed;
-  top: 44px;
+  top: 2.75rem;
   left: 0;
   width: 100%;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 2.75rem);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -66,10 +66,10 @@ const productList = computed(() => {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 24px 300px 48px;
+    padding: 1.5rem 18.75rem 3rem;
     box-sizing: border-box;
     text-align: left;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #121212;
     font-family: $font-nunito;
 
@@ -79,7 +79,7 @@ const productList = computed(() => {
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
-      gap: 16px;
+      gap: 1rem;
 
       .explore-products {
         align-self: stretch;
@@ -101,7 +101,7 @@ const productList = computed(() => {
           flex-direction: column;
           align-items: flex-start;
           justify-content: flex-start;
-          gap: 12px;
+          gap: 0.75rem;
         }
       }
     }
@@ -122,7 +122,7 @@ const productList = computed(() => {
 
   .rectangle-div {
     flex: 1;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(1.25rem);
     background-color: rgba(255, 255, 255, 0.2);
   }
 }

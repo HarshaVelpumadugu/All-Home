@@ -60,17 +60,17 @@ const images = computed(() => imageSets[props.category] || []);
 // Your existing desktop styles (keep as-is)
 .frame-parent {
   position: relative;
-  top: 76px;
-  left: 0px;
-  width: 1120px;
-  height: 700px;
+  top: 4.75rem;
+  left: 0rem;
+  width: 70rem;
+  height: 43.75rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: var(--gap-40);
+  gap: $gap-40;
   text-align: left;
-  font-size: 40px;
+  font-size: 2.5rem;
   margin: 0 auto;
   color: $color-gray;
   font-family: $font-nunito;
@@ -80,12 +80,12 @@ const images = computed(() => imageSets[props.category] || []);
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 0.5rem;
 
     .fiamarc-exterior-handles {
       position: relative;
-      font-size: 40px;
-      letter-spacing: 2px;
+      font-size: 2.5rem;
+      letter-spacing: 0.125rem;
       font-weight: 300;
       font-family: $font-nunito;
       color: $color-gray;
@@ -97,7 +97,7 @@ const images = computed(() => imageSets[props.category] || []);
     }
 
     .frame-child {
-      height: 2px;
+      height: 0.125rem;
       width: 30%;
       position: relative;
       background-color: $color-gray;
@@ -113,8 +113,8 @@ const images = computed(() => imageSets[props.category] || []);
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    gap: var$gap-40;
-    font-size: 16px;
+    gap: $gap-40;
+    font-size: 1rem;
     color: $color-white;
     font-family: $font-inter;
 
@@ -123,22 +123,22 @@ const images = computed(() => imageSets[props.category] || []);
       display: inline-block;
 
       .image-4-icon {
-        width: 250px;
-        border-radius: 4px;
+        width: 15.625rem;
+        border-radius: 0.25rem;
         object-fit: cover;
         display: block;
       }
 
       .frame-group {
-        width: 226px;
+        width: 14.125rem;
         position: absolute;
-        top: 198px;
-        left: 12px;
+        top: 12.375rem;
+        left: 0.75rem;
         display: flex;
         flex-direction: row;
         align-items: flex-end;
         justify-content: space-between;
-        gap: 0px;
+        gap: 0rem;
         z-index: 4;
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -154,7 +154,7 @@ const images = computed(() => imageSets[props.category] || []);
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      gap: 4px;
+      gap: 0.25rem;
 
       .fusion {
         font-weight: 500;
@@ -164,14 +164,14 @@ const images = computed(() => imageSets[props.category] || []);
       }
 
       .inr-24999 {
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 500;
       }
     }
 
     .arrow-right {
-      width: 24px;
-      height: 24px;
+      width: 1.5rem;
+      height: 1.5rem;
       position: relative;
 
       .vuesaxoutlinearrow-right-icon {
@@ -190,22 +190,22 @@ const images = computed(() => imageSets[props.category] || []);
 @media (max-width: 1024px) {
   .frame-parent {
     position: relative;
-    top: 38px;
+    top: 2.375rem;
     left: 0px;
     width: 100%;
     box-sizing: border-box;
     height: auto;
-    padding: 20px;
-    gap: 40px;
-    font-size: 40px;
+    padding: 1.25rem;
+    gap: 2.5rem;
+    font-size: 2.5rem;
     color: #121212;
     font-family: $font-nunito;
 
     .fiamarc-exterior-handles-parent {
-      padding-left: 25px;
+      padding-left: 1.5625rem;
       .fiamarc-exterior-handles {
-        font-size: 32px;
-        letter-spacing: 2px;
+        font-size: 2rem;
+        letter-spacing: 0.125rem;
         font-weight: 300;
         opacity: 0.8;
 
@@ -215,7 +215,7 @@ const images = computed(() => imageSets[props.category] || []);
       }
 
       .frame-child {
-        height: 2px;
+        height: 0.125rem;
         width: 30%;
         background-color: $color-gray;
         opacity: 0.8;
@@ -227,24 +227,24 @@ const images = computed(() => imageSets[props.category] || []);
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      gap: 18px;
-      padding-left: 25px;
-      font-size: 16px;
+      gap: 1.125rem;
+      padding-left: 1.5625rem;
+      font-size: 1rem;
       color: #fff;
       font-family: $font-inter;
 
       .image-wrapper {
         .image-4-icon {
-          width: 220px;
-          border-radius: 4px;
+          width: 13.75rem;
+          border-radius: 0.25rem;
           object-fit: cover;
         }
 
         .frame-group {
-          width: 196px;
+          width: 12.25rem;
           position: absolute;
-          top: 189px;
-          left: 12px;
+          top: 11.8125rem;
+          left: 0.75rem;
           display: flex;
           flex-direction: row;
           align-items: flex-end;
@@ -294,8 +294,8 @@ const images = computed(() => imageSets[props.category] || []);
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      gap: 30px;
-      font-size: 16px;
+      gap: 1.875rem;
+      font-size: 1rem;
       color: #fff;
       font-family: $font-inter;
     }
@@ -304,10 +304,10 @@ const images = computed(() => imageSets[props.category] || []);
 @media (max-width: 768px) {
   .frame-parent {
     .fiamarc-exterior-handles-parent {
-      padding-left: 0px;
+      padding-left: 0rem;
     }
     .image-4-parent {
-      padding-left: 0px;
+      padding-left: 0rem;
     }
   }
 }

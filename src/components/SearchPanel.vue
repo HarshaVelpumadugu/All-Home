@@ -78,10 +78,10 @@ const clearSearch = () => {
 <style scoped lang="scss">
 .search-overlay {
   position: fixed;
-  top: 44px;
+  top: 2.75rem;
   left: 0;
   width: 100%;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 2.75rem);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -94,11 +94,11 @@ const clearSearch = () => {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 24px 300px 48px;
+    padding: 1.5rem 18.75rem 3rem;
     box-sizing: border-box;
-    gap: 48px;
+    gap: 3rem;
     text-align: left;
-    font-size: 20px;
+    font-size: 1.25rem;
     color: #121212;
     font-family: $font-nunito;
 
@@ -113,11 +113,11 @@ const clearSearch = () => {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 12px;
+        gap: 0.75rem;
 
         .search-normal {
-          width: 20px;
-          height: 20px;
+          width: 1.25rem;
+          height: 1.25rem;
           position: relative;
 
           .vuesaxoutlinesearch-normal-icon {
@@ -139,12 +139,12 @@ const clearSearch = () => {
           outline: none;
           background: transparent;
           color: #121212;
-          font-size: 16px;
+          font-size: 1rem;
         }
       }
 
       .notificationsdismiss-button {
-        border-radius: 6px;
+        border-radius: 0.375rem;
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -152,8 +152,8 @@ const clearSearch = () => {
         cursor: pointer;
 
         .search-normal {
-          width: 20px;
-          height: 20px;
+          width: 1.25rem;
+          height: 1.25rem;
         }
       }
     }
@@ -163,8 +163,8 @@ const clearSearch = () => {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 16px;
-      font-size: 14px;
+      gap: 1rem;
+      font-size: 0.875rem;
 
       .quick-searches {
         align-self: stretch;
@@ -176,7 +176,7 @@ const clearSearch = () => {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
+        gap: 1rem;
         color: #9ca3af;
 
         .quick-searches {
@@ -188,8 +188,8 @@ const clearSearch = () => {
     .suggested-searches-parent {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      font-size: 14px;
+      gap: 1rem;
+      font-size: 0.875rem;
 
       .suggested-searches {
         font-weight: 500;
@@ -198,33 +198,33 @@ const clearSearch = () => {
       .frame-container {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 1rem;
         color: #363636;
 
         .rectangle-parent {
           display: flex;
           flex-direction: row;
           align-items: center;
-          gap: 12px;
+          gap: 0.75rem;
 
           .frame-child {
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.25rem;
             object-fit: cover;
           }
 
           .texture-name-parent {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 0.125rem;
 
             .texture-name {
               font-weight: 500;
             }
 
             .by-colour-codes {
-              font-size: 10px;
+              font-size: 0.625rem;
               color: #9ca3af;
             }
           }
@@ -235,31 +235,31 @@ const clearSearch = () => {
 
   .rectangle-div {
     flex: 1;
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(1.5625rem);
     background-color: rgba(255, 255, 255, 0.3);
   }
 }
 
 @media (max-width: 768px) {
   .search-overlay {
-    margin-top: 11px;
-    height: calc(100vh - 55.16px);
+    margin-top: 0.6875rem;
+    height: calc(100vh - 3.4475rem);
     .frame-parent {
-      padding: 24px 200px 48px;
-      gap: 48px;
-      font-size: 20px;
+      padding: 1.5rem 12.5rem 3rem;
+      gap: 3rem;
+      font-size: 1.25rem;
     }
 
     .quick-searches-parent {
-      gap: 24px;
-      font-size: 16px;
+      gap: 1.5rem;
+      font-size: 1rem;
     }
     .suggested-searches-parent {
-      gap: 24px;
-      font-size: 16px;
+      gap: 1.5rem;
+      font-size: 1rem;
 
       .frame-container {
-        gap: 20px;
+        gap: 1.25rem;
 
         .rectangle-parent {
           align-items: flex-start;

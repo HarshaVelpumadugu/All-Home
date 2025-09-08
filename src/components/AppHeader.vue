@@ -65,7 +65,7 @@
 import { useSliderStore } from "../stores/userSliderStore.js";
 import { useUiStore } from "../stores/useUiStore.js";
 import { useExploreStore } from "../stores/useExploreStore.js";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const sliderStore = useSliderStore();
 const { goToSlide } = sliderStore;
@@ -73,6 +73,7 @@ const { goToSlide } = sliderStore;
 const uiStore = useUiStore();
 const exploreStore = useExploreStore();
 const router = useRouter();
+const route = useRoute();
 
 function goHome() {
   uiStore.closeDropdown();
@@ -84,6 +85,9 @@ function goHome() {
 function handleNavHover(index, section) {
   goToSlide(index);
   uiStore.openDropdown(section);
+  if (route.name === "home" && exploreStore.showProducts) {
+    exploreStore.explore(section, index);
+  }
 }
 </script>
 
@@ -91,19 +95,19 @@ function handleNavHover(index, section) {
 .image-1-parent {
   background-color: $color-white;
   width: 100%;
-  max-width: 1366px;
+  max-width: 85.375rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 81px;
+  gap: 5.0625rem;
   text-align: center;
   font-size: $font-size-14;
   color: $color-darkgray;
   font-family: $font-nunito;
 
   .image-1-icon {
-    width: 67px;
+    width: 4.1875rem;
     max-height: 100%;
     object-fit: cover;
   }
@@ -115,7 +119,7 @@ function handleNavHover(index, section) {
   .colour-coats {
     display: block;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-family: $font-nunito;
     cursor: pointer;
     transition: color 0.3s ease;
@@ -131,8 +135,8 @@ function handleNavHover(index, section) {
 
   .item-button-search-applec {
     display: block;
-    width: 15px;
-    height: 44px;
+    width: 0.9375rem;
+    height: 2.75rem;
   }
 }
 
@@ -141,13 +145,13 @@ function handleNavHover(index, section) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
     width: 100%;
     box-sizing: border-box;
     background-color: #fff;
 
     .image-1-icon {
-      width: 91px;
+      width: 5.6875rem;
       max-height: 100%;
       object-fit: contain;
     }
@@ -158,11 +162,11 @@ function handleNavHover(index, section) {
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      gap: 24px;
+      gap: 1.5rem;
 
       .search-normal {
-        width: 24px;
-        height: 24px;
+        width: 1.5rem;
+        height: 1.5rem;
         position: relative;
 
         .vuesaxoutlinesearch-normal-icon {
@@ -173,8 +177,8 @@ function handleNavHover(index, section) {
         }
       }
       .menu {
-        width: 32px;
-        height: 32px;
+        width: 2rem;
+        height: 2rem;
         position: relative;
 
         .vuesaxoutlinesearch-normal-icon {

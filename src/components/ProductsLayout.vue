@@ -1,5 +1,5 @@
 <template>
-  <div class="products-container">
+  <div class="products-container" v-if="exploreStore.showProducts">
     <!-- Header -->
     <div class="header">
       <div class="products-header">
@@ -32,19 +32,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, defineProps } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useExploreStore } from "../stores/useExploreStore.js";
 
-const props = defineProps({
-  section: {
-    type: String,
-    required: true,
-  },
-  activeSlideId: {
-    type: Number,
-    default: null,
-  },
-});
-
+const exploreStore = useExploreStore();
 const screenWidth = ref(window.innerWidth);
 
 const allProducts = ref({
@@ -64,22 +55,6 @@ const allProducts = ref({
     {
       name: "Asma Klozet",
       img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-    },
-    {
-      name: "Wash Basin",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-    },
-    {
-      name: "Round Mirror",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
-    },
-    {
-      name: "Classic Basin",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
-    },
-    {
-      name: "Smart Sink",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
     },
   ],
   METALIA: [
@@ -105,24 +80,22 @@ const allProducts = ref({
 });
 
 const activeProducts = computed(() => {
-  console.log(screenWidth.value);
-
   if (screenWidth.value <= 820) {
-    if (props.activeSlideId === 1) {
+    if (exploreStore.activeSlideId === 1) {
       return allProducts.value["COLOUR COATS"];
-    } else if (props.activeSlideId === 2) {
+    } else if (exploreStore.activeSlideId === 2) {
       return allProducts.value["THE HOUSE OF W"];
     }
     return allProducts.value["METALIA"];
   } else if (screenWidth.value >= 1024) {
-    return allProducts.value[props.section] || [];
+    return allProducts.value[exploreStore.activeSection] || [];
   }
   return [];
 });
 
 const formattedSection = computed(() => {
-  if (!props.section) return "";
-  return props.section
+  if (!exploreStore.activeSection) return "";
+  return exploreStore.activeSection
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
@@ -143,14 +116,14 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .products-container {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 2.5rem 1.25rem;
 
   .header {
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 
     .products-header {
       font-size: 2.5rem;
@@ -162,9 +135,9 @@ onBeforeUnmount(() => {
     }
 
     .frame-child {
-      height: 2px;
+      height: 0.125rem;
       background-color: #000;
-      width: 100px;
+      width: 6.25rem;
       opacity: 0.8;
     }
   }

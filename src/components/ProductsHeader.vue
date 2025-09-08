@@ -79,19 +79,19 @@ defineProps({
   left: 0;
   background-color: $color-white;
   z-index: 1000;
-  width: 1366px;
+  width: 85.375rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 81px;
+  gap: 5.0625rem;
   text-align: center;
   font-size: $font-size-14;
   color: $color-darkgray;
   font-family: $font-nunito;
 
   .image-1-icon {
-    width: 67px;
+    width: 4.1875rem;
     position: relative;
     max-height: 100%;
     object-fit: cover;
@@ -117,9 +117,9 @@ defineProps({
   }
 
   .item-button-search-applec {
-    width: 31px;
+    width: 1.9375rem;
     position: relative;
-    height: 44px;
+    height: 2.75rem;
   }
 }
 @media (max-width: 1024px) {
@@ -127,13 +127,13 @@ defineProps({
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
     width: 100%;
     box-sizing: border-box;
     background-color: #fff;
 
     .image-1-icon {
-      width: 91px;
+      width: 5.6875rem;
       max-height: 100%;
       object-fit: contain;
     }
@@ -144,11 +144,11 @@ defineProps({
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      gap: 24px;
+      gap: 1.5rem;
 
       .search-normal {
-        width: 24px;
-        height: 24px;
+        width: 1.5rem;
+        height: 1.5rem;
         position: relative;
 
         .vuesaxoutlinesearch-normal-icon {
@@ -159,8 +159,8 @@ defineProps({
         }
       }
       .menu {
-        width: 32px;
-        height: 32px;
+        width: 2rem;
+        height: 2rem;
         position: relative;
 
         .vuesaxoutlinesearch-normal-icon {

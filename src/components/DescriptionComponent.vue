@@ -11,7 +11,7 @@
     </div>
 
     <!-- Pass section back when clicked -->
-    <div class="explore-proudtcs-wrapper" @click="$emit('explore', section)">
+    <div class="explore-proudtcs-wrapper" @click="explore">
       <div class="explore-proudtcs">Explore Products</div>
     </div>
   </div>
@@ -19,12 +19,22 @@
 
 <script setup>
 import { defineProps } from "vue";
-defineProps({
+import { useExploreStore } from "../stores/useExploreStore";
+
+const exploreStore = useExploreStore();
+const props = defineProps({
   section: {
     type: String,
     required: true,
   },
+  slideId: {
+    type: Number,
+    required: true,
+  },
 });
+function explore() {
+  exploreStore.explore(props.section, props.slideId);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -35,18 +45,18 @@ defineProps({
   align-items: flex-end;
   justify-content: space-between;
   color: $color-white;
-  font-size: 40px;
+  font-size: 2.5rem;
   font-family: $font-nunito;
 
   .hous-1-parent {
-    width: 321px;
+    width: 20.0625rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 0.625rem;
 
     .hous-1-icon {
-      width: 62px;
+      width: 3.875rem;
       position: relative;
       max-height: 100%;
       object-fit: cover;
@@ -63,28 +73,28 @@ defineProps({
       }
     }
     .frame-child {
-      height: 2px;
+      height: 0.125rem;
       width: 40%;
       background-color: $color-white;
-      margin-top: 6px;
+      margin-top: 0.375rem;
     }
   }
 
   .explore-proudtcs-wrapper {
     position: relative;
-    backdrop-filter: blur(10px);
-    border-radius: 100px;
+    backdrop-filter: blur(0.625rem);
+    border-radius: 6.25rem;
     background-color: $color-gray;
-    width: 172px;
-    height: 42px;
+    width: 10.75rem;
+    height: 2.625rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 8px 24px;
+    padding: 0.5rem 1.5rem;
     box-sizing: border-box;
     text-align: center;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     color: $color-white;
     font-family: $font-nunito;
@@ -104,23 +114,23 @@ defineProps({
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 0px 40px 0px 0px;
+    padding: 0rem 2.5rem 0rem 0rem;
     box-sizing: border-box;
-    gap: 32px;
+    gap: 2rem;
     text-align: left;
-    font-size: 40px;
+    font-size: 2.5rem;
     color: #fff;
     font-family: $font-nunito;
 
     .hous-1-parent {
-      width: 321px;
+      width: 20.0625rem;
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
-      gap: 12px;
+      gap: 0.75rem;
 
       .hous-1-icon {
-        width: 92px;
+        width: 5.75rem;
         position: relative;
         max-height: 100%;
         object-fit: cover;
@@ -130,7 +140,7 @@ defineProps({
         display: flex; // ✅ keep flex
         flex-direction: column; // ✅ force vertical stack
         align-items: flex-start;
-        letter-spacing: 2px;
+        letter-spacing: 0.125rem;
         font-weight: 300;
         opacity: 0.8;
         font-family: $font-nunito;
@@ -138,12 +148,12 @@ defineProps({
         .premium {
           margin: 0;
           display: block;
-          font-size: 32px;
+          font-size: 2rem;
         }
       }
 
       .frame-child {
-        height: 2px;
+        height: 0.125rem;
         position: relative;
         background-color: #fff;
         width: 30%;
@@ -152,19 +162,19 @@ defineProps({
     }
 
     .explore-proudtcs-wrapper {
-      backdrop-filter: blur(10px);
-      border-radius: 100px;
+      backdrop-filter: blur(0.625rem);
+      border-radius: 6.25rem;
       background-color: rgba(0, 0, 0, 0.6);
-      height: 48px;
-      width: 219px;
+      height: 3rem;
+      width: 13.6875rem;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      padding: 14px 32px;
+      padding: 0.875rem 2rem;
       box-sizing: border-box;
       text-align: center;
-      font-size: 20px;
+      font-size: 1.25rem;
 
       .explore-proudtcs {
         position: relative;
