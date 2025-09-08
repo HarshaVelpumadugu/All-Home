@@ -1,25 +1,16 @@
 <template>
   <!-- Header -->
   <transition name="fade" mode="out-in">
-    <AppHeader
-      key="app-header"
-      @toggle-search="showSearch = !showSearch"
-      @open-dropdown="openDropdown"
-      @go-home="goHome"
-    />
+    <AppHeader key="app-header" />
   </transition>
 
   <!-- Dropdown -->
   <transition name="dropdown-fade">
-    <DropDown
-      v-if="showDropdown"
-      :section="exploreStore.activeSection"
-      @close="showDropdown = false"
-    />
+    <DropDown v-if="uiStore.showDropdown" :section="uiStore.activeSection" />
   </transition>
 
   <!-- Search -->
-  <SearchPanel v-if="showSearch" @close="showSearch = false" />
+  <SearchPanel v-if="uiStore.showSearch" />
 
   <!-- Main Views -->
   <transition name="slide-up" mode="out-in">
@@ -33,9 +24,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { computed } from "vue";
+//useRouter
+import { useRoute } from "vue-router";
 import { useExploreStore } from "./stores/useExploreStore.js";
+import { useUiStore } from "./stores/useUiStore.js";
 
 import AppHeader from "./components/AppHeader.vue";
 import SearchPanel from "./components/SearchPanel.vue";
@@ -45,22 +38,15 @@ import ProductContent from "./components/ProductContent.vue";
 import DropDown from "./components/DropDown.vue";
 
 const route = useRoute();
-const router = useRouter();
-
-const showSearch = ref(false);
-const showDropdown = ref(false);
+// const router = useRouter();
 
 const exploreStore = useExploreStore();
+const uiStore = useUiStore();
 
-function openDropdown(section) {
-  exploreStore.activeSection = section;
-  showDropdown.value = true;
-}
-
-function goHome() {
-  exploreStore.goBack();
-  router.push("/");
-}
+// function goHome() {
+//   exploreStore.goBack();
+//   router.push("/");
+// }
 
 const activeView = computed(() => {
   if (route.name === "home") {

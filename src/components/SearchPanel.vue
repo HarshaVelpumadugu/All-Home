@@ -6,7 +6,7 @@
           <div class="search-normal">
             <img
               class="vuesaxoutlinesearch-normal-icon"
-              alt=""
+              alt="Search"
               src="../assets/vuesax/outline/search-normal.svg"
             />
           </div>
@@ -30,7 +30,6 @@
         </div>
       </div>
 
-      <!-- QUICK SEARCHES (when no input) -->
       <div v-if="!searchQuery" class="quick-searches-parent">
         <div class="quick-searches">Quick Searches</div>
         <div class="sliding-system-parent">
@@ -42,7 +41,6 @@
         </div>
       </div>
 
-      <!-- SUGGESTED SEARCHES (when typing) -->
       <div v-else class="suggested-searches-parent">
         <div class="suggested-searches">Suggested Searches</div>
         <div class="frame-container">
@@ -61,14 +59,15 @@
       </div>
     </div>
 
-    <!-- blurred background -->
-    <div class="rectangle-div" @click="$emit('close')" />
+    <div class="rectangle-div" @click="uiStore.closeSearch" />
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { useUiStore } from "../stores/useUiStore.js";
 
+const uiStore = useUiStore();
 const searchQuery = ref("");
 
 const clearSearch = () => {

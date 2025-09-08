@@ -16,12 +16,13 @@
         </div>
       </div>
     </div>
-    <div class="rectangle-div" @click="$emit('close')" />
+    <div class="rectangle-div" @click="uiStore.closeDropdown" />
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmits } from "vue";
+import { computed, defineProps } from "vue";
+import { useUiStore } from "../stores/useUiStore.js";
 
 const props = defineProps({
   section: {
@@ -30,7 +31,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(["close"]);
+const uiStore = useUiStore();
 
 const productList = computed(() => {
   switch (props.section) {

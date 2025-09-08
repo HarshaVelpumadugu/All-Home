@@ -5,17 +5,17 @@
       class="image-1-icon"
       alt="Logo"
       src="../assets/image1.png"
-      @click="$emit('go-home')"
+      @click="goHome"
     />
 
-    <!-- Tablet: Search + Menu icons -->
+    <!-- Tablet: Search + Menu -->
     <div class="search-normal-parent">
       <div class="search-normal">
         <img
           class="vuesaxoutlinesearch-normal-icon"
           alt="Search"
           src="../assets/vuesax/outline/search-normal.svg"
-          @click="$emit('toggle-search')"
+          @click="uiStore.toggleSearch"
         />
       </div>
       <div class="menu">
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <!-- Desktop: Navigation links (hover triggers dropdown) -->
+    <!-- Desktop nav -->
     <div
       class="colour-coats"
       :class="{ active: sliderStore.currentSlide === 0 }"
@@ -51,28 +51,39 @@
     </div>
     <div class="colour-coats">FIAMARC</div>
 
-    <!-- Desktop Search icon -->
+    <!-- Desktop search -->
     <img
       class="item-button-search-applec"
       alt="Search"
       src="../assets/searchIcon.svg"
-      @click="$emit('toggle-search')"
+      @click="uiStore.toggleSearch"
     />
   </div>
 </template>
 
 <script setup>
-import { defineEmits } from "vue";
 import { useSliderStore } from "../stores/userSliderStore.js";
+import { useUiStore } from "../stores/useUiStore.js";
+import { useExploreStore } from "../stores/useExploreStore.js";
+import { useRouter } from "vue-router";
 
 const sliderStore = useSliderStore();
 const { goToSlide } = sliderStore;
 
-const emit = defineEmits(["toggle-search", "open-dropdown", "go-home"]);
+const uiStore = useUiStore();
+const exploreStore = useExploreStore();
+const router = useRouter();
+
+function goHome() {
+  uiStore.closeDropdown();
+  uiStore.closeSearch();
+  exploreStore.goBack();
+  router.push("/");
+}
 
 function handleNavHover(index, section) {
   goToSlide(index); // still move slider
-  emit("open-dropdown", section); // show dropdown
+  uiStore.openDropdown(section); // show dropdown
 }
 </script>
 
