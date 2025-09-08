@@ -115,7 +115,7 @@ const closeModal = () => {
       text-align: left;
       font-size: 0.875rem; // 14px
       color: #4b5563;
-      font-family: Nunito;
+      font-family: var(--font-nunito);
 
       .back-button-wrapper {
         width: 8.75rem; // 140px
@@ -125,7 +125,7 @@ const closeModal = () => {
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        padding: 0.75rem 1rem; // 12px 16px
+        padding: 0.75rem 1rem 0.75rem 0;
         box-sizing: border-box;
 
         .back-button-container {
