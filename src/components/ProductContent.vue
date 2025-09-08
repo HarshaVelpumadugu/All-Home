@@ -1,83 +1,90 @@
 <template>
-  <div class="projects-empty">
-    <div class="frame-parent">
-      <div class="frame-group">
+  <div class="product-gallery">
+    <div class="main-content">
+      <div class="gallery-section">
         <!-- Thumbnails -->
-        <div class="chandigarh-chair-product-shoot-parent">
+        <div class="thumbnail-list">
           <div
             v-for="(thumb, index) in thumbnails"
             :key="'thumb-' + index"
-            class="thumbnail-wrapper"
+            class="thumbnail-item"
             @click="setMainImage(thumb)"
           >
-            <img
-              class="projects-empty-chandigarh-chair-product-shoot"
-              :src="thumb"
-              alt="Thumbnail"
-            />
-            <div v-show="selectedThumbnail === thumb" class="tick-circle">
+            <img class="thumbnail-image" :src="thumb" alt="Thumbnail" />
+            <div
+              v-show="selectedThumbnail === thumb"
+              class="selection-indicator"
+            >
               <img
-                class="vuesaxboldtick-circle-icon"
+                class="check-icon"
                 alt="selected"
                 src="https://allhome.foyr.com/assets/tick-e2d504db.svg"
               />
             </div>
           </div>
         </div>
+
         <!-- Main Image -->
-        <div class="image-wrapper">
-          <img class="image-5-icon" :src="mainImage" alt="Main product image" />
-          <!-- Buttons inside image -->
-          <div class="image-buttons">
-            <div class="group-parent">
+        <div class="main-image-container">
+          <img class="main-image" :src="mainImage" alt="Main product image" />
+
+          <!-- Action Buttons inside image -->
+          <div class="image-overlay-buttons">
+            <div class="view-3d-button">
               <img
-                class="vuesaxoutlineimport-icon"
+                class="button-icon"
                 alt=""
                 src="../assets/vuesax/outline/Group 1000016524.svg"
               />
-              <div class="d">View in 3D</div>
+              <div class="button-text">View in 3D</div>
             </div>
-            <div class="restyle-in-space-wrapper">
-              <div class="d">Restyle in Space</div>
+            <div class="restyle-button">
+              <div class="button-text">Restyle in Space</div>
             </div>
           </div>
         </div>
+
         <!-- Top-right floating button -->
-        <div class="frame-container">
+        <div class="floating-3d-button">
           <img
-            class="frame-icon"
+            class="button-icon"
             alt=""
             src="../assets/vuesax/outline/Frame.svg"
           />
-          <div class="d">3D</div>
+          <div class="button-text">3D</div>
         </div>
       </div>
-      <!-- Right Side Info -->
-      <div class="frame-div">
-        <div class="sku-code-u2123-parent">
+
+      <!-- Product Information Panel -->
+      <div class="product-info-panel">
+        <div class="product-header">
           <div class="sku-code">SKU Code : U2123</div>
-          <div class="projects-empty-frame-parent">
-            <div class="frame-wrapper">
-              <div class="fusion-wrapper"><div class="fusion">Fusion</div></div>
+          <div class="product-title-section">
+            <div class="title-wrapper">
+              <div class="brand-tag">
+                <div class="brand-name">Fusion</div>
+              </div>
             </div>
-            <div class="by-colour-codes">by Colour Codes</div>
+            <div class="brand-subtitle">by Colour Codes</div>
           </div>
         </div>
-        <div class="vuesaxoutlineimport-parent">
+
+        <div class="download-section">
           <img
-            class="vuesaxoutlineimport-icon"
+            class="download-icon"
             alt=""
             src="../assets/vuesax/outline/import.svg"
           />
-          <div class="d">Download File</div>
+          <div class="download-text">Download File</div>
         </div>
-        <!-- Product Info -->
-        <div class="frame-parent2">
-          <div class="frame-parent3">
-            <div class="product-description-wrapper">
-              <div class="product-description">Product Description</div>
+
+        <!-- Product Details -->
+        <div class="product-details">
+          <div class="detail-section">
+            <div class="section-header">
+              <div class="section-title">Product Description</div>
             </div>
-            <div class="inspired-by-the">
+            <div class="section-content">
               Inspired by the muted elegance of desert horizons, Desert Mist
               Luxe Finish is crafted from hand-harvested mineral pigments
               sourced from Italy and Morocco. Each batch is precision-blended in
@@ -87,37 +94,40 @@
               its velvety texture and timeless tone for decades.
             </div>
           </div>
-          <div class="frame-parent3">
-            <div class="product-description-wrapper">
-              <div class="product-description">Dimensions</div>
+
+          <div class="detail-section">
+            <div class="section-header">
+              <div class="section-title">Dimensions</div>
             </div>
-            <div class="x232x15ft">250X232X15ft</div>
+            <div class="dimensions-text">250X232X15ft</div>
           </div>
         </div>
+
         <!-- Similar Products -->
-        <div class="similar-products-parent">
-          <div class="sku-code">Similar Products</div>
-          <div class="chandigarh-chair-product-shoot-group">
+        <div class="similar-products-section">
+          <div class="similar-products-title">Similar Products</div>
+          <div class="similar-products-grid">
             <div
               v-for="(similar, index) in similarProducts"
               :key="'similar-' + index"
-              class="thumbnail-wrapper"
+              class="similar-product-item"
               @click="setMainImage(similar)"
             >
               <img
-                class="chandigarh-chair-product-shoot"
+                class="similar-product-image"
                 :src="similar"
                 alt="Similar product"
               />
-              <!-- No tick circle for similar products -->
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Video Section with Overlay -->
     <div class="video-section">
       <video
-        class="product-video"
+        class="background-video"
         :style="{ transform: `scale(${videoScale})` }"
         src="https://allhome.foyr.com/assets/house-of-w-slider-bg-video-21d207c3.mp4"
         autoplay
@@ -125,56 +135,53 @@
         muted
         playsinline
       ></video>
-      <!-- Overlay Section -->
+
+      <!-- Overlay Content -->
       <div
         v-if="showOverlay"
-        class="overlay-content"
+        class="video-overlay"
         :class="{ 'overlay-visible': overlayVisible }"
       >
-        <!-- Sliding Container for Left Overlay -->
-        <div class="overlay-left">
-          <div class="slides-container">
+        <!-- Left Content Slider -->
+        <div class="overlay-left-panel">
+          <div class="content-slider">
             <div
               v-for="(slide, index) in slides"
               :key="index"
-              class="slide-item"
+              class="content-slide"
               :class="{ active: currentSlide === index }"
               :style="{
                 transform: `translateX(${(index - currentSlide) * 100}%)`,
               }"
             >
-              <h2 class="overlay-title">{{ slide.title }}</h2>
-              <p class="overlay-description">{{ slide.description }}</p>
+              <h2 class="slide-title">{{ slide.title }}</h2>
+              <p class="slide-description">{{ slide.description }}</p>
             </div>
           </div>
         </div>
 
-        <!-- Sliding Container for Right Overlay -->
-        <div class="overlay-right">
-          <div class="image-slides-container">
+        <!-- Right Image Slider -->
+        <div class="overlay-right-panel">
+          <div class="image-slider">
             <div
               v-for="(slide, index) in slides"
               :key="index"
-              class="image-slide-item"
+              class="image-slide"
               :class="{ active: currentSlide === index }"
               :style="{
                 transform: `translateX(${(index - currentSlide) * 100}%)`,
               }"
             >
-              <img
-                class="overlay-image"
-                :src="slide.image"
-                :alt="slide.title"
-              />
+              <img class="slide-image" :src="slide.image" :alt="slide.title" />
             </div>
           </div>
 
           <!-- Navigation Dots -->
-          <div class="nav-dots">
+          <div class="navigation-dots">
             <span
               v-for="(slide, index) in slides"
               :key="index"
-              class="dot"
+              class="nav-dot"
               :class="{ active: currentSlide === index }"
               @click="currentSlide = index"
             ></span>
@@ -219,7 +226,6 @@ let rafId = null;
 
 // Touchpad detection variables
 let lastWheelTime = 0;
-// let wheelDeltaY = 0;
 let isTrackpadScrolling = false;
 
 function checkIfAtBottom() {
@@ -336,7 +342,7 @@ function handleWheel(e) {
 
       // Debug overlay element
       setTimeout(() => {
-        const overlayElement = document.querySelector(".overlay-content");
+        const overlayElement = document.querySelector(".video-overlay");
         if (overlayElement) {
           console.log("🎭 Overlay element found:", {
             display: window.getComputedStyle(overlayElement).display,
@@ -479,8 +485,11 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
-.projects-empty {
+<style lang="scss" scoped>
+// Variables
+
+// Base Component
+.product-gallery {
   width: 100%;
   position: relative;
   border-radius: 8px;
@@ -488,11 +497,13 @@ onBeforeUnmount(() => {
   text-align: left;
   font-size: 16px;
   color: #9ca3af;
-  font-family: Nunito;
+  font-family: $font-nunito;
   overflow: hidden;
   overflow-y: auto;
 }
-.frame-parent {
+
+// Main Content Layout
+.main-content {
   margin-top: 76px;
   display: flex;
   flex-direction: row;
@@ -505,7 +516,9 @@ onBeforeUnmount(() => {
   color: rgba(255, 255, 255, 0.75);
   width: calc(100% - 40px);
 }
-.frame-group {
+
+// Gallery Section
+.gallery-section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -513,7 +526,9 @@ onBeforeUnmount(() => {
   position: relative;
   gap: 24px;
 }
-.chandigarh-chair-product-shoot-parent {
+
+// Thumbnails
+.thumbnail-list {
   height: 411px;
   display: flex;
   flex-direction: column;
@@ -523,27 +538,24 @@ onBeforeUnmount(() => {
   gap: 16px;
   z-index: 0;
 }
-.chandigarh-chair-product-shoot {
-  width: 80px;
+
+.thumbnail-item {
   position: relative;
-  border-radius: 4px;
-  max-height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  display: inline-block;
+  cursor: pointer;
 }
-.projects-empty-chandigarh-chair-product-shoot {
+
+.thumbnail-image {
   width: 80px;
   position: relative;
   border-radius: 4px;
   max-height: 100%;
   object-fit: cover;
   z-index: 1;
+  aspect-ratio: 1/1;
 }
-.thumbnail-wrapper {
-  position: relative;
-  display: inline-block;
-}
-.tick-circle {
+
+.selection-indicator {
   width: 24px;
   position: absolute;
   margin: 0 !important;
@@ -552,32 +564,37 @@ onBeforeUnmount(() => {
   height: 24px;
   opacity: 0.75;
   z-index: 2;
+
+  .check-icon {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0%;
+    right: 0%;
+    bottom: 0%;
+    left: 0%;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+  }
 }
-.vuesaxboldtick-circle-icon {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  left: 0%;
-  max-width: 100%;
-  overflow: hidden;
-  max-height: 100%;
-}
-.image-wrapper {
+
+// Main Image
+.main-image-container {
   position: relative;
   display: inline-block;
+
+  .main-image {
+    width: 661px;
+    position: relative;
+    border-radius: 4px;
+    max-height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
 }
-.image-5-icon {
-  width: 661px;
-  position: relative;
-  border-radius: 4px;
-  max-height: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
-.image-buttons {
+
+.image-overlay-buttons {
   position: absolute;
   bottom: 16px;
   left: 50%;
@@ -588,7 +605,8 @@ onBeforeUnmount(() => {
   gap: 16px;
   z-index: 2;
 }
-.group-parent {
+
+.view-3d-button {
   width: 300px;
   backdrop-filter: blur(10px);
   border-radius: 100px;
@@ -601,8 +619,10 @@ onBeforeUnmount(() => {
   padding: 10px 16px;
   box-sizing: border-box;
   gap: 8px;
+  cursor: pointer;
 }
-.restyle-in-space-wrapper {
+
+.restyle-button {
   width: 300px;
   border-radius: 100px;
   background-color: #fff;
@@ -614,8 +634,10 @@ onBeforeUnmount(() => {
   padding: 10px 16px;
   box-sizing: border-box;
   color: #121212;
+  cursor: pointer;
 }
-.frame-container {
+
+.floating-3d-button {
   margin: 0 !important;
   position: absolute;
   top: 16px;
@@ -630,17 +652,27 @@ onBeforeUnmount(() => {
   padding: 4px 8px;
   gap: 6px;
   z-index: 2;
+  cursor: pointer;
+
+  .button-icon {
+    width: 16px;
+    position: relative;
+    max-height: 100%;
+  }
+
+  .button-text {
+    position: relative;
+    font-weight: 600;
+  }
 }
-.frame-icon {
-  width: 16px;
-  position: relative;
-  max-height: 100%;
-}
-.d {
+
+.button-text {
   position: relative;
   font-weight: 600;
 }
-.frame-div {
+
+// Product Information Panel
+.product-info-panel {
   width: 406px;
   display: flex;
   flex-direction: column;
@@ -649,18 +681,21 @@ onBeforeUnmount(() => {
   gap: 24px;
   color: #888;
 }
-.sku-code-u2123-parent {
+
+.product-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 16px;
+
+  .sku-code {
+    align-self: stretch;
+    position: relative;
+  }
 }
-.sku-code {
-  align-self: stretch;
-  position: relative;
-}
-.projects-empty-frame-parent {
+
+.product-title-section {
   align-self: stretch;
   display: flex;
   flex-direction: column;
@@ -669,37 +704,42 @@ onBeforeUnmount(() => {
   gap: 4px;
   font-size: 40px;
   color: #121212;
+
+  .title-wrapper {
+    width: 405px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .brand-tag {
+      width: 191px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      .brand-name {
+        align-self: stretch;
+        position: relative;
+        letter-spacing: 2px;
+        font-weight: 300;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .brand-subtitle {
+    align-self: stretch;
+    position: relative;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 300;
+    opacity: 0.8;
+  }
 }
-.frame-wrapper {
-  width: 405px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.fusion-wrapper {
-  width: 191px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.fusion {
-  align-self: stretch;
-  position: relative;
-  letter-spacing: 2px;
-  font-weight: 300;
-  opacity: 0.8;
-}
-.by-colour-codes {
-  align-self: stretch;
-  position: relative;
-  font-size: 14px;
-  letter-spacing: 2px;
-  font-weight: 300;
-  opacity: 0.8;
-}
-.vuesaxoutlineimport-parent {
+
+.download-section {
   backdrop-filter: blur(10px);
   border-radius: 100px;
   background-color: #f0f0f0;
@@ -712,13 +752,22 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   gap: 6px;
   color: #404040;
+  cursor: pointer;
+
+  .download-icon {
+    width: 16px;
+    position: relative;
+    height: 16px;
+  }
+
+  .download-text {
+    position: relative;
+    font-weight: 600;
+  }
 }
-.vuesaxoutlineimport-icon {
-  width: 16px;
-  position: relative;
-  height: 16px;
-}
-.frame-parent2 {
+
+// Product Details
+.product-details {
   align-self: stretch;
   display: flex;
   flex-direction: column;
@@ -726,38 +775,45 @@ onBeforeUnmount(() => {
   justify-content: flex-start;
   gap: 16px;
 }
-.frame-parent3 {
+
+.detail-section {
   align-self: stretch;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 4px;
+
+  .section-header {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    .section-title {
+      position: relative;
+    }
+  }
+
+  .section-content {
+    align-self: stretch;
+    position: relative;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #404040;
+  }
+
+  .dimensions-text {
+    position: relative;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: $light-text;
+  }
 }
-.product-description-wrapper {
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-}
-.product-description {
-  position: relative;
-}
-.inspired-by-the {
-  align-self: stretch;
-  position: relative;
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: #404040;
-}
-.x232x15ft {
-  position: relative;
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: #404040;
-}
-.similar-products-parent {
+
+// Similar Products
+.similar-products-section {
   width: 406px;
   overflow: hidden;
   display: flex;
@@ -765,25 +821,38 @@ onBeforeUnmount(() => {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 16px;
+
+  .similar-products-title {
+    align-self: stretch;
+    position: relative;
+  }
+
+  .similar-products-grid {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    gap: 12px;
+  }
+
+  .similar-product-item {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+
+    .similar-product-image {
+      width: 80px;
+      position: relative;
+      border-radius: 4px;
+      max-height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+  }
 }
-.chandigarh-chair-product-shoot-group {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  gap: 12px;
-}
-.projects-empty-tick-circle {
-  width: 24px;
-  position: absolute;
-  margin: 0 !important;
-  top: 28px;
-  left: 28px;
-  height: 24px;
-  opacity: 0.75;
-  z-index: 2;
-}
+
+// Video Section
 .video-section {
   position: relative;
   width: 100%;
@@ -791,23 +860,24 @@ onBeforeUnmount(() => {
   padding: 32px;
   box-sizing: border-box;
   overflow: hidden;
-}
-.product-video {
-  position: absolute;
-  bottom: 32px;
-  right: 32px;
-  width: calc(100% - 64px);
-  height: calc(100% - 64px);
-  object-fit: cover;
-  border-radius: none;
-  transform-origin: bottom right;
-  transform: scale(0.5);
-  transition: transform 0.05s linear;
-  z-index: 1;
+
+  .background-video {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    width: calc(100% - 64px);
+    height: calc(100% - 64px);
+    object-fit: cover;
+    border-radius: none;
+    transform-origin: bottom right;
+    transform: scale(0.5);
+    transition: transform 0.05s linear;
+    z-index: 1;
+  }
 }
 
-/* Overlay */
-.overlay-content {
+// Video Overlay
+.video-overlay {
   position: absolute;
   inset: 0;
   display: flex;
@@ -827,14 +897,42 @@ onBeforeUnmount(() => {
   transform: translateY(50px);
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.overlay-visible {
+    opacity: 1;
+    transform: translateY(0);
+
+    .overlay-left-panel {
+      transform: translateX(0);
+    }
+
+    .overlay-right-panel {
+      transform: translateX(0);
+    }
+
+    .slide-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-description {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-image {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .navigation-dots {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
-.overlay-content.overlay-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.overlay-left {
+.overlay-left-panel {
   flex: 1;
   max-width: 50%;
   display: flex;
@@ -846,11 +944,7 @@ onBeforeUnmount(() => {
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-.overlay-visible .overlay-left {
-  transform: translateX(0);
-}
-
-.overlay-right {
+.overlay-right-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -863,13 +957,9 @@ onBeforeUnmount(() => {
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-.overlay-visible .overlay-right {
-  transform: translateX(0);
-}
-
-/* Sliding containers */
-.slides-container,
-.image-slides-container {
+// Sliding containers
+.content-slider,
+.image-slider {
   position: relative;
   width: 100%;
   height: 100%;
@@ -878,8 +968,8 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-.slide-item,
-.image-slide-item {
+.content-slide,
+.image-slide {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -891,34 +981,29 @@ onBeforeUnmount(() => {
   left: 0;
 }
 
-.image-slide-item {
+.image-slide {
   align-items: center;
   justify-content: flex-end;
 }
 
-.overlay-title {
+.slide-title {
   font-size: 2.5rem;
   font-weight: 300;
   margin-bottom: 16px;
   letter-spacing: 0.125rem;
-  font-family: var(--font-nunito);
+  font-family: $font-nunito;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s,
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
 }
 
-.overlay-visible .overlay-title {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.overlay-description {
+.slide-description {
   font-size: 1rem;
   line-height: 1.6;
   max-width: 90%;
   letter-spacing: 0.125rem;
-  font-family: var(--font-nunito);
+  font-family: $font-nunito;
   color: #f5f5f5;
   opacity: 0;
   transform: translateY(20px);
@@ -926,12 +1011,7 @@ onBeforeUnmount(() => {
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
 }
 
-.overlay-visible .overlay-description {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.overlay-image {
+.slide-image {
   width: 100%;
   height: auto;
   max-height: 95%;
@@ -944,12 +1024,7 @@ onBeforeUnmount(() => {
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
 }
 
-.overlay-visible .overlay-image {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.nav-dots {
+.navigation-dots {
   display: flex;
   gap: 8px;
   z-index: 3;
@@ -958,86 +1033,89 @@ onBeforeUnmount(() => {
   transform: translateY(10px);
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s,
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
+
+  .nav-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background: #fff;
+    }
+  }
 }
 
-.overlay-visible .nav-dots {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.dot:hover {
-  transform: scale(1.1);
-}
-
-.dot.active {
-  background: #fff;
-}
-
-/* Responsive Styles */
-/* 1180px Breakpoint */
+// Responsive Styles
 @media (max-width: 1180px) {
-  .frame-parent {
+  .main-content {
     gap: 20px;
     padding: 16px;
     margin-left: 40px;
     overflow-x: hidden;
     box-sizing: border-box;
   }
-  .frame-group {
+
+  .gallery-section {
     gap: 16px;
   }
-  .image-5-icon {
+
+  .main-image {
     width: 500px;
   }
-  .frame-container {
+
+  .floating-3d-button {
     left: 529px;
   }
-  .frame-div {
+
+  .product-info-panel {
     width: 350px;
   }
-  .frame-wrapper {
+
+  .title-wrapper {
     width: 350px;
   }
-  .similar-products-parent {
+
+  .similar-products-section {
     width: 350px;
   }
-  .projects-empty-frame-parent {
+
+  .product-title-section {
     font-size: 36px;
   }
-  .image-buttons {
+
+  .image-overlay-buttons {
     width: 95%;
     gap: 12px;
-  }
-  .group-parent,
-  .restyle-in-space-wrapper {
-    width: 240px;
-    height: 44px;
-    font-size: 14px;
+
+    .view-3d-button,
+    .restyle-button {
+      width: 240px;
+      height: 44px;
+      font-size: 14px;
+    }
   }
 }
 
 @media (max-width: 1024px) {
-  .frame-parent {
+  .main-content {
     margin-left: 5px;
   }
 }
 
-/* 820px Breakpoint */
 @media (max-width: 820px) {
-  .projects-empty {
+  .product-gallery {
     height: auto;
     min-height: 800px;
   }
-  .frame-parent {
+
+  .main-content {
     flex-direction: column;
     position: relative;
     margin-left: 20px;
@@ -1045,163 +1123,184 @@ onBeforeUnmount(() => {
     gap: 24px;
     width: calc(100% - 24px);
   }
-  .frame-group {
+
+  .gallery-section {
     gap: 40px;
     width: 100%;
   }
-  .chandigarh-chair-product-shoot-parent {
+
+  .thumbnail-list {
     flex-direction: column;
     height: auto;
     gap: 12px;
     justify-content: center;
     order: 2;
   }
-  .image-wrapper {
+
+  .main-image-container {
     order: 1;
     width: 100%;
     display: flex;
     justify-content: center;
     align-self: center;
+
+    .main-image {
+      width: 100%;
+      max-width: 597px;
+      height: auto;
+    }
   }
-  .image-wrapper {
-    width: fit-content;
-    max-width: 100%;
-  }
-  .image-5-icon {
-    width: 100%;
-    max-width: 597px;
-    height: auto;
-  }
-  .image-wrapper {
-    position: relative;
-  }
-  .frame-container {
+
+  .floating-3d-button {
     position: absolute;
     top: 16px;
     right: 170px;
     left: auto;
   }
-  .image-buttons {
+
+  .image-overlay-buttons {
     width: 90%;
     gap: 8px;
     align-items: center;
+
+    .view-3d-button,
+    .restyle-button {
+      width: 280px;
+      height: 40px;
+      font-size: 14px;
+    }
   }
-  .group-parent,
-  .restyle-in-space-wrapper {
-    width: 280px;
-    height: 40px;
-    font-size: 14px;
-  }
-  .frame-div {
+
+  .product-info-panel {
     width: 100%;
     order: 3;
+
+    .title-wrapper {
+      width: 100%;
+    }
+
+    .similar-products-section {
+      width: 100%;
+
+      .similar-products-grid {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 8px;
+      }
+    }
   }
-  .frame-wrapper {
-    width: 100%;
-  }
-  .similar-products-parent {
-    width: 100%;
-  }
-  .projects-empty-frame-parent {
+
+  .product-title-section {
     font-size: 32px;
   }
-  .chandigarh-chair-product-shoot-parent .thumbnail-wrapper {
+
+  .thumbnail-item {
     flex-shrink: 0;
+
+    .thumbnail-image {
+      width: 70px;
+    }
+
+    .selection-indicator {
+      top: 23px;
+      left: 23px;
+      width: 20px;
+      height: 20px;
+    }
   }
-  .projects-empty-chandigarh-chair-product-shoot,
-  .chandigarh-chair-product-shoot {
-    width: 70px;
-  }
-  .tick-circle {
-    top: 23px;
-    left: 23px;
-    width: 20px;
-    height: 20px;
-  }
-  .chandigarh-chair-product-shoot-group {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-  .overlay-content {
+
+  .video-overlay {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     text-align: center;
     padding: 6rem 3rem;
-  }
-  .overlay-right {
-    order: 1;
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 24px;
-  }
-  .overlay-left {
-    order: 2;
-    width: 100%;
-    max-width: 100%;
-  }
-  .overlay-title {
-    font-size: 2rem;
-  }
-  .overlay-description {
-    font-size: 0.95rem;
-    max-width: 100%;
-  }
-  .overlay-image {
-    width: 80%;
-    max-width: 80%;
-    height: auto;
-    max-height: none;
-    margin: 0 auto 12px;
-  }
-  .nav-dots {
-    justify-content: center;
+
+    .overlay-right-panel {
+      order: 1;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 24px;
+    }
+
+    .overlay-left-panel {
+      order: 2;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .slide-title {
+      font-size: 2rem;
+    }
+
+    .slide-description {
+      font-size: 0.95rem;
+      max-width: 100%;
+    }
+
+    .slide-image {
+      width: 80%;
+      max-width: 80%;
+      height: auto;
+      max-height: none;
+      margin: 0 auto 12px;
+    }
+
+    .navigation-dots {
+      justify-content: center;
+    }
   }
 }
 
 @media (max-width: 768px) {
-  .frame-container {
+  .floating-3d-button {
     right: 150px;
   }
-  .overlay-content {
+
+  .video-overlay {
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 16px;
-  }
-  .overlay-left {
-    width: 100%;
-    max-width: 100%;
-    flex: none;
-  }
-  .overlay-right {
-    width: 90%;
-    max-width: 90%;
-    flex: none;
-  }
-  .overlay-image {
-    width: 80%;
-    max-width: 80%;
-    height: auto;
-    max-height: 40vh;
-    object-fit: contain;
-  }
-  .overlay-title {
-    font-size: 1.8rem;
-    margin-bottom: 12px;
-  }
-  .overlay-description {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    max-width: 90%;
-    margin: 0 auto;
-  }
-  .nav-dots {
-    margin-top: 12px;
-    justify-content: center;
+
+    .overlay-left-panel {
+      width: 100%;
+      max-width: 100%;
+      flex: none;
+    }
+
+    .overlay-right-panel {
+      width: 90%;
+      max-width: 90%;
+      flex: none;
+    }
+
+    .slide-image {
+      width: 80%;
+      max-width: 80%;
+      height: auto;
+      max-height: 40vh;
+      object-fit: contain;
+    }
+
+    .slide-title {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .slide-description {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+
+    .navigation-dots {
+      margin-top: 12px;
+      justify-content: center;
+    }
   }
 }
 </style>

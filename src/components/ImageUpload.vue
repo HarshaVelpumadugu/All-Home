@@ -246,7 +246,7 @@ const generateImage = () => {
           text-align: center;
           font-size: 0.75rem; // 12px
           color: #6b7280;
-          font-family: Nunito;
+          font-family: $font-nunito;
           z-index: 3;
 
           .upload-instructions-wrapper {
@@ -287,11 +287,11 @@ const generateImage = () => {
 
                   .upload-link-bold {
                     font-weight: 600;
-                    font-family: Nunito;
+                    font-family: $font-nunito;
                   }
 
                   .upload-text-spacer {
-                    font-family: Inter;
+                    font-family: $font-inter;
                   }
                 }
               }
@@ -357,7 +357,7 @@ const generateImage = () => {
           text-align: center;
           font-size: 0.75rem; // 12px
           color: #516ce0;
-          font-family: Inter;
+          font-family: $font-inter;
 
           .loading-icon {
             width: 3rem; // 48px

@@ -77,7 +77,7 @@ defineProps({
   position: sticky;
   top: 0;
   left: 0;
-  background-color: var(--color-white);
+  background-color: $color-white;
   z-index: 1000;
   width: 1366px;
   display: flex;
@@ -86,9 +86,9 @@ defineProps({
   justify-content: center;
   gap: 81px;
   text-align: center;
-  font-size: var(--font-size-14);
-  color: var(--color-darkgray);
-  font-family: var(--font-nunito);
+  font-size: $font-size-14;
+  color: $color-darkgray;
+  font-family: $font-nunito;
 
   .image-1-icon {
     width: 67px;
@@ -108,11 +108,11 @@ defineProps({
     transition: color 0.2s ease;
 
     &:hover {
-      color: var(--color-gray);
+      color: $color-gray;
     }
 
     &.active {
-      color: var(--color-gray);
+      color: $color-gray;
     }
   }
 

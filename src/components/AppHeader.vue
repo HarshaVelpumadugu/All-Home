@@ -82,14 +82,14 @@ function goHome() {
 }
 
 function handleNavHover(index, section) {
-  goToSlide(index); // still move slider
-  uiStore.openDropdown(section); // show dropdown
+  goToSlide(index);
+  uiStore.openDropdown(section);
 }
 </script>
 
 <style lang="scss" scoped>
 .image-1-parent {
-  background-color: var(--color-white);
+  background-color: $color-white;
   width: 100%;
   max-width: 1366px;
   display: flex;
@@ -98,9 +98,9 @@ function handleNavHover(index, section) {
   justify-content: center;
   gap: 81px;
   text-align: center;
-  font-size: var(--font-size-14);
-  color: var(--color-darkgray);
-  font-family: var(--font-nunito);
+  font-size: $font-size-14;
+  color: $color-darkgray;
+  font-family: $font-nunito;
 
   .image-1-icon {
     width: 67px;
@@ -116,16 +116,16 @@ function handleNavHover(index, section) {
     display: block;
     font-weight: 500;
     font-size: 14px;
-    font-family: var(--font-nunito);
+    font-family: $font-nunito;
     cursor: pointer;
     transition: color 0.3s ease;
 
     &.active {
-      color: var(--color-gray);
+      color: $color-gray;
     }
 
     &:hover {
-      color: var(--color-gray);
+      color: $color-gray;
     }
   }
 

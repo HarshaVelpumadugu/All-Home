@@ -47,7 +47,7 @@ const productList = computed(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dropdown-overlay {
   position: fixed;
   top: 44px;
@@ -57,65 +57,73 @@ const productList = computed(() => {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-}
-.frame-parent {
-  width: 100%;
-  position: relative;
-  background-color: #fafafc;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 24px 300px 48px;
-  box-sizing: border-box;
-  text-align: left;
-  font-size: 14px;
-  color: #121212;
-  font-family: Nunito;
-}
-.explore-products-parent {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 16px;
-}
-.explore-products {
-  align-self: stretch;
-  position: relative;
-  font-weight: 500;
-}
-.frame-wrapper {
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  color: #9ca3af;
-}
-.faucets-parent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 12px;
-}
-.wellness-wrapper {
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-}
-.wellness {
-  position: relative;
-  font-weight: 500;
-}
-.rectangle-div {
-  flex: 1;
-  backdrop-filter: blur(20px);
-  background-color: rgba(255, 255, 255, 0.2);
+
+  .frame-parent {
+    width: 100%;
+    position: relative;
+    background-color: #fafafc;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 24px 300px 48px;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 14px;
+    color: #121212;
+    font-family: $font-nunito;
+
+    .explore-products-parent {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 16px;
+
+      .explore-products {
+        align-self: stretch;
+        position: relative;
+        font-weight: 500;
+      }
+
+      .frame-wrapper {
+        align-self: stretch;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        color: #9ca3af;
+
+        .faucets-parent {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          gap: 12px;
+        }
+      }
+    }
+  }
+
+  .wellness-wrapper {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    .wellness {
+      position: relative;
+      font-weight: 500;
+    }
+  }
+
+  .rectangle-div {
+    flex: 1;
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.2);
+  }
 }
 </style>

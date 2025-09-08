@@ -10,7 +10,8 @@
       <div class="frame-child"></div>
     </div>
 
-    <div class="explore-proudtcs-wrapper" @click="explore">
+    <!-- Pass section back when clicked -->
+    <div class="explore-proudtcs-wrapper" @click="$emit('explore', section)">
       <div class="explore-proudtcs">Explore Products</div>
     </div>
   </div>
@@ -18,24 +19,12 @@
 
 <script setup>
 import { defineProps } from "vue";
-import { useExploreStore } from "../stores/useExploreStore.js";
-
-const props = defineProps({
+defineProps({
   section: {
     type: String,
     required: true,
   },
-  slideId: {
-    type: Number,
-    required: true,
-  },
 });
-
-const exploreStore = useExploreStore();
-
-function explore() {
-  exploreStore.explore(props.section, props.slideId);
-}
 </script>
 
 <style lang="scss" scoped>
@@ -45,9 +34,9 @@ function explore() {
   flex-direction: row;
   align-items: flex-end;
   justify-content: space-between;
-  color: var(--color-white);
+  color: $color-white;
   font-size: 40px;
-  font-family: var(--font-nunito);
+  font-family: $font-nunito;
 
   .hous-1-parent {
     width: 321px;
@@ -76,7 +65,7 @@ function explore() {
     .frame-child {
       height: 2px;
       width: 40%;
-      background-color: var(--color-white);
+      background-color: $color-white;
       margin-top: 6px;
     }
   }
@@ -85,7 +74,7 @@ function explore() {
     position: relative;
     backdrop-filter: blur(10px);
     border-radius: 100px;
-    background-color: var(--color-gray);
+    background-color: $color-gray;
     width: 172px;
     height: 42px;
     display: flex;
@@ -97,8 +86,8 @@ function explore() {
     text-align: center;
     font-size: 16px;
     cursor: pointer;
-    color: var(--color-white);
-    font-family: var(--font-nunito);
+    color: $color-white;
+    font-family: $font-nunito;
 
     .explore-proudtcs {
       position: relative;
@@ -121,7 +110,7 @@ function explore() {
     text-align: left;
     font-size: 40px;
     color: #fff;
-    font-family: var(--font-nunito);
+    font-family: $font-nunito;
 
     .hous-1-parent {
       width: 321px;
@@ -144,7 +133,7 @@ function explore() {
         letter-spacing: 2px;
         font-weight: 300;
         opacity: 0.8;
-        font-family: var(--font-nunito);
+        font-family: $font-nunito;
 
         .premium {
           margin: 0;

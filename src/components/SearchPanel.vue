@@ -100,7 +100,7 @@ const clearSearch = () => {
     text-align: left;
     font-size: 20px;
     color: #121212;
-    font-family: Nunito;
+    font-family: $font-nunito;
 
     .frame-group {
       align-self: stretch;

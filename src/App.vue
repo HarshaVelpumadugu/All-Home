@@ -3,9 +3,9 @@
   <transition name="fade" mode="out-in">
     <AppHeader key="app-header" />
   </transition>
-  <ProductDetail />
+  <!-- <ProductDetail /> -->
 
-  <!-- <transition name="dropdown-fade">
+  <transition name="dropdown-fade">
     <DropDown v-if="uiStore.showDropdown" :section="uiStore.activeSection" />
   </transition>
 
@@ -18,7 +18,7 @@
       :section="exploreStore.activeSection"
       :active-slide-id="exploreStore.activeSlideId"
     />
-  </transition> -->
+  </transition>
 </template>
 
 <script setup>

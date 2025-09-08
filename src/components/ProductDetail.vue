@@ -114,7 +114,7 @@ const modalStore = useModalStore();
       text-align: left;
       font-size: 0.875rem; // 14px
       color: #4b5563;
-      font-family: var(--font-nunito);
+      font-family: $font-nunito;
 
       .back-button-wrapper {
         width: 8.75rem; // 140px
@@ -188,7 +188,7 @@ const modalStore = useModalStore();
         gap: 0.5rem; // 8px
         text-align: left;
         font-size: 1rem; // 16px
-        font-family: Nunito;
+        font-family: $font-nunito;
 
         .ar-icon {
           width: 0.875rem; // 14px
@@ -225,7 +225,7 @@ const modalStore = useModalStore();
         background-color: #2b2b2b;
         font-size: 0.875rem; // 14px
         color: #fff;
-        font-family: var(--font-nunito);
+        font-family: $font-nunito;
         box-sizing: border-box;
         border-radius: 6.25rem; // 100px
         text-align: center;
@@ -234,7 +234,7 @@ const modalStore = useModalStore();
       .inactive-tab {
         font-size: 0.875rem; // 14px
         font-weight: 600;
-        font-family: Nunito;
+        font-family: $font-nunito;
         color: #7c7c7c;
       }
     }
@@ -263,7 +263,7 @@ const modalStore = useModalStore();
             align-items: flex-start;
             justify-content: flex-start;
             gap: 0.25rem; // 4px
-            font-family: var(--font-nunito);
+            font-family: $font-nunito;
 
             .label {
               align-self: stretch;
@@ -301,7 +301,7 @@ const modalStore = useModalStore();
               letter-spacing: 0.125rem; // 2px
               font-weight: 300;
               color: #121212;
-              font-family: var(--font-nunito);
+              font-family: $font-nunito;
               opacity: 0.8;
             }
           }

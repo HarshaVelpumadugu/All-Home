@@ -72,8 +72,8 @@ const images = computed(() => imageSets[props.category] || []);
   text-align: left;
   font-size: 40px;
   margin: 0 auto;
-  color: var(--color-gray);
-  font-family: var(--font-nunito);
+  color: $color-gray;
+  font-family: $font-nunito;
 
   .fiamarc-exterior-handles-parent {
     display: flex;
@@ -87,8 +87,8 @@ const images = computed(() => imageSets[props.category] || []);
       font-size: 40px;
       letter-spacing: 2px;
       font-weight: 300;
-      font-family: var(--font-nunito);
-      color: var(--color-gray);
+      font-family: $font-nunito;
+      color: $color-gray;
       text-align: left;
 
       .fiamarc {
@@ -100,7 +100,7 @@ const images = computed(() => imageSets[props.category] || []);
       height: 2px;
       width: 30%;
       position: relative;
-      background-color: var(--color-gray);
+      background-color: $color-gray;
       opacity: 0.8;
     }
   }
@@ -113,10 +113,10 @@ const images = computed(() => imageSets[props.category] || []);
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    gap: var(--gap-40);
+    gap: var$gap-40;
     font-size: 16px;
-    color: var(--color-white);
-    font-family: var(--font-inter);
+    color: $color-white;
+    font-family: $font-inter;
 
     .image-wrapper {
       position: relative;
@@ -124,7 +124,7 @@ const images = computed(() => imageSets[props.category] || []);
 
       .image-4-icon {
         width: 250px;
-        border-radius: var(--br-4);
+        border-radius: 4px;
         object-fit: cover;
         display: block;
       }
@@ -199,7 +199,7 @@ const images = computed(() => imageSets[props.category] || []);
     gap: 40px;
     font-size: 40px;
     color: #121212;
-    font-family: Nunito;
+    font-family: $font-nunito;
 
     .fiamarc-exterior-handles-parent {
       padding-left: 25px;
@@ -217,7 +217,7 @@ const images = computed(() => imageSets[props.category] || []);
       .frame-child {
         height: 2px;
         width: 30%;
-        background-color: var(--color-gray);
+        background-color: $color-gray;
         opacity: 0.8;
       }
     }
@@ -231,7 +231,7 @@ const images = computed(() => imageSets[props.category] || []);
       padding-left: 25px;
       font-size: 16px;
       color: #fff;
-      font-family: Inter;
+      font-family: $font-inter;
 
       .image-wrapper {
         .image-4-icon {
@@ -297,7 +297,7 @@ const images = computed(() => imageSets[props.category] || []);
       gap: 30px;
       font-size: 16px;
       color: #fff;
-      font-family: Inter;
+      font-family: $font-inter;
     }
   }
 }
