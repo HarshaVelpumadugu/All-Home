@@ -10,8 +10,7 @@
       <div class="frame-child"></div>
     </div>
 
-    <!-- Pass section back when clicked -->
-    <div class="explore-proudtcs-wrapper" @click="$emit('explore', section)">
+    <div class="explore-proudtcs-wrapper" @click="explore">
       <div class="explore-proudtcs">Explore Products</div>
     </div>
   </div>
@@ -19,12 +18,24 @@
 
 <script setup>
 import { defineProps } from "vue";
-defineProps({
+import { useExploreStore } from "../stores/useExploreStore.js";
+
+const props = defineProps({
   section: {
     type: String,
     required: true,
   },
+  slideId: {
+    type: Number,
+    required: true,
+  },
 });
+
+const exploreStore = useExploreStore();
+
+function explore() {
+  exploreStore.explore(props.section, props.slideId);
+}
 </script>
 
 <style lang="scss" scoped>

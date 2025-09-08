@@ -1,6 +1,5 @@
 <template>
-  <!-- Headers -->
-  <!-- v-if="$route.name === 'home' && !showProducts" -->
+  <!-- Header -->
   <transition name="fade" mode="out-in">
     <AppHeader
       key="app-header"
@@ -8,17 +7,13 @@
       @open-dropdown="openDropdown"
       @go-home="goHome"
     />
-    <!-- <ProductsHeader
-      v-else
-      key="products-header"
-      :active-category="selectedCategory"
-      @change-category="selectedCategory = $event"
-    /> -->
   </transition>
+
+  <!-- Dropdown -->
   <transition name="dropdown-fade">
     <DropDown
       v-if="showDropdown"
-      :section="activeSection"
+      :section="exploreStore.activeSection"
       @close="showDropdown = false"
     />
   </transition>
@@ -26,15 +21,13 @@
   <!-- Search -->
   <SearchPanel v-if="showSearch" @close="showSearch = false" />
 
-  <!-- Main views -->
+  <!-- Main Views -->
   <transition name="slide-up" mode="out-in">
     <component
       :is="activeView"
       :key="activeKey"
-      @explore="handleExplore"
-      @back="showProducts = false"
-      :section="activeSection"
-      :active-slide-id="activeSlideId"
+      :section="exploreStore.activeSection"
+      :active-slide-id="exploreStore.activeSlideId"
     />
   </transition>
 </template>
@@ -42,9 +35,9 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useExploreStore } from "./stores/useExploreStore.js";
 
 import AppHeader from "./components/AppHeader.vue";
-// import ProductsHeader from "./components/ProductsHeader.vue";
 import SearchPanel from "./components/SearchPanel.vue";
 import SliderComponent from "./components/SliderComponent.vue";
 import ProductsLayout from "./components/ProductsLayout.vue";
@@ -55,32 +48,23 @@ const route = useRoute();
 const router = useRouter();
 
 const showSearch = ref(false);
-// const selectedCategory = ref(null);
-const activeSlideId = ref(null);
-const showProducts = ref(false);
 const showDropdown = ref(false);
-const activeSection = ref(null);
 
-const handleExplore = ({ section, slideId }) => {
-  activeSection.value = section;
-  activeSlideId.value = slideId; // save slide id
-  showProducts.value = true;
-};
+const exploreStore = useExploreStore();
 
 function openDropdown(section) {
-  activeSection.value = section;
+  exploreStore.activeSection = section;
   showDropdown.value = true;
 }
 
 function goHome() {
-  // Reset product state if needed
-  showProducts.value = false;
+  exploreStore.goBack();
   router.push("/");
 }
 
 const activeView = computed(() => {
   if (route.name === "home") {
-    return showProducts.value ? ProductsLayout : SliderComponent;
+    return exploreStore.showProducts ? ProductsLayout : SliderComponent;
   }
   if (route.name === "product-details") {
     return ProductContent;
@@ -88,10 +72,9 @@ const activeView = computed(() => {
   return null;
 });
 
-// 🔑 Give each state a unique key for transitions
 const activeKey = computed(() => {
   if (route.name === "home") {
-    return showProducts.value ? "products-layout" : "slider";
+    return exploreStore.showProducts ? "products-layout" : "slider";
   }
   if (route.name === "product-details") {
     return `product-${route.params.id}`;

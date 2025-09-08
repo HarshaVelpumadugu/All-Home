@@ -6,12 +6,9 @@
     >
       <div v-for="slide in slides" :key="slide.id" class="slide">
         <div class="slide-images">
-          <!-- Left Image -->
           <div class="image-left">
             <img :src="slide.imageLeft" alt="Left" />
           </div>
-
-          <!-- Right Image -->
           <div class="image-right">
             <img :src="slide.imageRight" alt="Right" />
           </div>
@@ -20,10 +17,10 @@
         <div class="slide-overlay"></div>
         <div class="slide-content">
           <div class="content-wrapper">
-            <!-- Pass section name to Description -->
+            <!-- Directly use Pinia -->
             <DescriptionComponent
               :section="slide.section"
-              @explore="handleExplore(slide.id)"
+              :slide-id="slide.id"
             />
             <ArrowRight class="arrow-btn" @click="nextSlide" />
           </div>
@@ -34,13 +31,13 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import { useSliderStore } from "../stores/userSliderStore.js";
+
 import DescriptionComponent from "./DescriptionComponent.vue";
 import ArrowRight from "./ArrowRight.vue";
 
 const sliderStore = useSliderStore();
-const emit = defineEmits(["explore"]);
 
 const slides = ref([
   {
@@ -72,16 +69,6 @@ const slides = ref([
 const nextSlide = () => {
   sliderStore.currentSlide =
     (sliderStore.currentSlide + 1) % slides.value.length;
-};
-
-// Relay section to parent
-const handleExplore = (slideId) => {
-  // Emit section name to App.vue
-  // Example: "COLOUR COATS", "THE HOUSE OF W", "METALIA"
-  const slide = slides.value.find((s) => s.id === slideId);
-  if (slide) {
-    emit("explore", { section: slide.section, slideId: slide.id });
-  }
 };
 </script>
 
