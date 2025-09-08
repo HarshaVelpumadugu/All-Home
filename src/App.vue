@@ -3,16 +3,14 @@
   <transition name="fade" mode="out-in">
     <AppHeader key="app-header" />
   </transition>
+  <ProductDetail />
 
-  <!-- Dropdown -->
-  <transition name="dropdown-fade">
+  <!-- <transition name="dropdown-fade">
     <DropDown v-if="uiStore.showDropdown" :section="uiStore.activeSection" />
   </transition>
 
-  <!-- Search -->
   <SearchPanel v-if="uiStore.showSearch" />
 
-  <!-- Main Views -->
   <transition name="slide-up" mode="out-in">
     <component
       :is="activeView"
@@ -20,7 +18,7 @@
       :section="exploreStore.activeSection"
       :active-slide-id="exploreStore.activeSlideId"
     />
-  </transition>
+  </transition> -->
 </template>
 
 <script setup>
@@ -36,17 +34,12 @@ import SliderComponent from "./components/SliderComponent.vue";
 import ProductsLayout from "./components/ProductsLayout.vue";
 import ProductContent from "./components/ProductContent.vue";
 import DropDown from "./components/DropDown.vue";
+import ProductDetail from "./components/ProductDetail.vue";
 
 const route = useRoute();
-// const router = useRouter();
 
 const exploreStore = useExploreStore();
 const uiStore = useUiStore();
-
-// function goHome() {
-//   exploreStore.goBack();
-//   router.push("/");
-// }
 
 const activeView = computed(() => {
   if (route.name === "home") {

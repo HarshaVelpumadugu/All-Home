@@ -15,23 +15,26 @@
           </div>
         </div>
       </div>
+
       <div class="image-container">
         <img
           class="main-product-image"
           alt=""
           src="../assets/Rectangle 34626207.png"
         />
-        <div class="view-room-button" @click="openModal">
+        <div class="view-room-button" @click="modalStore.openImageUpload">
           <img class="ar-icon" alt="" src="../assets/Group 1000016524.svg" />
           <div class="view-room-text">View in your Room</div>
         </div>
       </div>
     </div>
+
     <div class="right-section">
       <div class="tab-navigation">
         <div class="active-tab">In room Items</div>
         <div class="inactive-tab">Swap Items</div>
       </div>
+
       <div class="product-cards">
         <div class="product-card">
           <img
@@ -50,6 +53,7 @@
             </div>
           </div>
         </div>
+
         <div class="product-card">
           <img
             class="product-thumbnail"
@@ -70,24 +74,19 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <ImageUpload v-if="isModalOpen" @close="closeModal" />
+    <!-- Modal (controlled by Pinia) -->
+    <ImageUpload
+      v-if="modalStore.isImageUploadOpen"
+      @close="modalStore.closeImageUpload"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useModalStore } from "../stores/useModalStore.js";
 import ImageUpload from "./ImageUpload.vue";
 
-const isModalOpen = ref(false);
-
-const openModal = () => {
-  isModalOpen.value = true;
-};
-
-const closeModal = () => {
-  isModalOpen.value = false;
-};
+const modalStore = useModalStore();
 </script>
 
 <style lang="scss" scoped>

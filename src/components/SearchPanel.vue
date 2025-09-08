@@ -65,7 +65,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useUiStore } from "../stores/useUiStore.js";
+import { useUiStore } from "../stores/useUiStore";
 
 const uiStore = useUiStore();
 const searchQuery = ref("");
@@ -76,7 +76,6 @@ const clearSearch = () => {
 </script>
 
 <style scoped lang="scss">
-/* ---------- Desktop (Default) ---------- */
 .search-overlay {
   position: fixed;
   top: 44px;
