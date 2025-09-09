@@ -203,6 +203,8 @@ const generateImage = () => {
     padding: 1rem; // 16px
     box-sizing: border-box;
     position: relative;
+    border-radius: 8px;
+    overflow: hidden;
 
     .image-section {
       width: 45.375rem; // 726px
@@ -213,6 +215,8 @@ const generateImage = () => {
         width: 100%;
         height: 100%;
         position: relative;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
 
         display: flex;
         align-items: center;
@@ -224,7 +228,7 @@ const generateImage = () => {
           height: calc(100% - 2rem); // 32px
           margin: 1rem; // 16px
           object-fit: cover;
-          border-radius: 0;
+          border-radius: 8px;
           opacity: 0.8;
           z-index: 2;
         }
@@ -418,6 +422,8 @@ const generateImage = () => {
       font-size: 1rem; // 16px
       color: #888;
       font-family: Nunito;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
 
       .content-wrapper {
         align-self: stretch;

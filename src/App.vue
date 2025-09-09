@@ -3,7 +3,6 @@
   <transition name="fade" mode="out-in">
     <AppHeader key="app-header" />
   </transition>
-  <!-- <ProductDetail /> -->
 
   <transition name="dropdown-fade">
     <DropDown v-if="uiStore.showDropdown" :section="uiStore.activeSection" />
@@ -11,14 +10,16 @@
 
   <SearchPanel v-if="uiStore.showSearch" />
 
-  <transition name="slide-up" mode="out-in">
+  <ProductDetail />
+
+  <!-- <transition name="slide-up" mode="out-in">
     <component
       :is="activeView"
       :key="activeKey"
       :section="exploreStore.activeSection"
       :active-slide-id="exploreStore.activeSlideId"
     />
-  </transition>
+  </transition> -->
 </template>
 
 <script setup>
