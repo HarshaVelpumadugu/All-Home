@@ -137,11 +137,8 @@ const generatedImage = ref(null);
 const isUploading = ref(false);
 const uploadSuccess = ref(false);
 const fileInput = ref(null);
-
-// Single item selection
 const selectedItem = ref(null);
 
-// Sample items data (replace with your actual data)
 const items = ref([
   {
     image: new URL("../assets/block-img-1.png", import.meta.url).href,
@@ -189,10 +186,8 @@ const handleFileChange = (event) => {
 // Single selection toggle
 const toggleItemSelection = (index) => {
   if (selectedItem.value === index) {
-    // If clicking the same item, deselect it
     selectedItem.value = null;
   } else {
-    // Select the new item (automatically deselects previous)
     selectedItem.value = index;
   }
 };
