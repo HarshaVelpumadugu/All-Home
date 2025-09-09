@@ -83,29 +83,29 @@
             Select the items you'd like to have in your room.
           </div>
           <div class="items-list">
-            <div class="item-card">
-              <img class="item-image" alt="" src="../assets/block-img-1.png" />
-              <div class="item-details">
-                <div class="sku-info">
-                  <div class="section-header">SKU Code : U2123</div>
-                  <div class="item-name">Fusion</div>
-                </div>
-                <div class="brand-info">
-                  <div class="section-header">Brand Name</div>
-                  <div class="brand-name">Firmac</div>
+            <div class="item-card" v-for="(item, index) in items" :key="index">
+              <div class="image-wrapper" @click="toggleItemSelection(index)">
+                <img class="item-image" alt="" :src="item.image" />
+                <!-- Selection tick overlay -->
+                <div
+                  v-if="selectedItem === index"
+                  class="selection-tick-overlay"
+                >
+                  <img
+                    src="https://allhome.foyr.com/assets/tick-e2d504db.svg"
+                    alt="Selected"
+                    class="tick-icon"
+                  />
                 </div>
               </div>
-            </div>
-            <div class="item-card">
-              <img class="item-image" alt="" src="../assets/block-img-2.png" />
               <div class="item-details">
                 <div class="sku-info">
-                  <div class="section-header">SKU Code : U2123</div>
-                  <div class="item-name">Fusion</div>
+                  <div class="section-header">SKU Code : {{ item.sku }}</div>
+                  <div class="item-name">{{ item.name }}</div>
                 </div>
                 <div class="brand-info">
                   <div class="section-header">Brand Name</div>
-                  <div class="brand-name">Firmac</div>
+                  <div class="brand-name">{{ item.brand }}</div>
                 </div>
               </div>
             </div>
@@ -138,6 +138,25 @@ const isUploading = ref(false);
 const uploadSuccess = ref(false);
 const fileInput = ref(null);
 
+// Single item selection
+const selectedItem = ref(null);
+
+// Sample items data (replace with your actual data)
+const items = ref([
+  {
+    image: new URL("../assets/block-img-1.png", import.meta.url).href,
+    sku: "U2123",
+    name: "Fusion",
+    brand: "Firmac",
+  },
+  {
+    image: new URL("../assets/block-img-2.png", import.meta.url).href,
+    sku: "U2123",
+    name: "Fusion",
+    brand: "Firmac",
+  },
+]);
+
 const randomImages = [
   "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
@@ -165,6 +184,17 @@ const handleFileChange = (event) => {
     isUploading.value = false;
     uploadSuccess.value = true;
   }, 3000);
+};
+
+// Single selection toggle
+const toggleItemSelection = (index) => {
+  if (selectedItem.value === index) {
+    // If clicking the same item, deselect it
+    selectedItem.value = null;
+  } else {
+    // Select the new item (automatically deselects previous)
+    selectedItem.value = index;
+  }
 };
 
 const generateImage = () => {
@@ -458,11 +488,38 @@ const generateImage = () => {
             justify-content: flex-start;
             gap: 1.1875rem; // 19px
 
+            .image-wrapper {
+              position: relative;
+              display: inline-block;
+              cursor: pointer;
+
+              .selection-tick-overlay {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 2rem; // 32px
+                height: 2rem; // 32px
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                animation: tickFadeIn 0.3s ease;
+
+                .tick-icon {
+                  width: 2rem; // 20px
+                  height: 2rem; // 20px
+                }
+              }
+            }
+
             .item-image {
               width: 9.375rem; // 150px
               border-radius: 0.25rem; // 4px
               max-height: 100%;
               object-fit: cover;
+              cursor: pointer;
+              transition: opacity 0.3s ease;
             }
 
             .item-details {
@@ -532,6 +589,17 @@ const generateImage = () => {
         }
       }
     }
+  }
+}
+
+@keyframes tickFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 </style>
