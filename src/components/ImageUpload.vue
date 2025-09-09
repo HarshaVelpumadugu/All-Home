@@ -84,7 +84,11 @@
           </div>
           <div class="items-list">
             <div class="item-card" v-for="(item, index) in items" :key="index">
-              <div class="image-wrapper" @click="toggleItemSelection(index)">
+              <div
+                class="image-wrapper"
+                :class="{ disabled: isGenerating }"
+                @click="!isGenerating && toggleItemSelection(index)"
+              >
                 <img class="item-image" alt="" :src="item.image" />
                 <!-- Selection tick overlay -->
                 <div
@@ -488,6 +492,12 @@ const generateImage = () => {
               display: inline-block;
               cursor: pointer;
 
+              &.disabled {
+                cursor: not-allowed;
+                opacity: 0.6;
+                pointer-events: none;
+              }
+
               .selection-tick-overlay {
                 position: absolute;
                 top: 50%;
@@ -502,8 +512,8 @@ const generateImage = () => {
                 animation: tickFadeIn 0.3s ease;
 
                 .tick-icon {
-                  width: 2rem; // 20px
-                  height: 2rem; // 20px
+                  width: 2rem; // 32px
+                  height: 2rem; // 32px
                 }
               }
             }
