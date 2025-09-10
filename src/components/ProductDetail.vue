@@ -20,11 +20,113 @@
         <img
           class="main-product-image"
           alt=""
-          src="../assets/Rectangle 34626207.png"
+          src="../assets/preset-img-day.jpg"
         />
         <div class="view-room-button" @click="viewStore.openImageUpload">
           <img class="ar-icon" alt="" src="../assets/Group 1000016524.svg" />
           <div class="view-room-text">View in your Room</div>
+        </div>
+
+        <!-- Theme Toggle Container -->
+        <div class="theme-toggle-container" @click="toggleTheme">
+          <div class="theme-icon" :class="{ active: isDayTheme }">
+            <!-- Sun Icon SVG -->
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="5"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="12"
+                y1="1"
+                x2="12"
+                y2="3"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="12"
+                y1="21"
+                x2="12"
+                y2="23"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="4.22"
+                y1="4.22"
+                x2="5.64"
+                y2="5.64"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="18.36"
+                y1="18.36"
+                x2="19.78"
+                y2="19.78"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="1"
+                y1="12"
+                x2="3"
+                y2="12"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="21"
+                y1="12"
+                x2="23"
+                y2="12"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="4.22"
+                y1="19.78"
+                x2="5.64"
+                y2="18.36"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="18.36"
+                y1="5.64"
+                x2="19.78"
+                y2="4.22"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
+          <div class="theme-icon" :class="{ active: !isDayTheme }">
+            <!-- Moon Icon SVG -->
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -83,13 +185,20 @@
 </template>
 
 <script setup>
-import { onUnmounted } from "vue";
+import { onUnmounted, ref } from "vue";
 import { useModalStore } from "../stores/useModalStore.js";
 import { useViewStore } from "../stores/useViewStore.js";
 import ImageUpload from "./ImageUpload.vue";
 
 const modalStore = useModalStore();
 const viewStore = useViewStore();
+const isDayTheme = ref(true);
+
+const toggleTheme = () => {
+  isDayTheme.value = !isDayTheme.value;
+  // Add your theme switching logic here
+  console.log("Theme toggled:", isDayTheme.value ? "Day" : "Night");
+};
 
 onUnmounted(() => {
   viewStore.closeDetail();
@@ -98,16 +207,18 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 28.25rem;
   gap: 1.25rem; // 20px
   padding: 1.25rem; // 20px
-  max-width: 85.375rem; // 1366px
+  padding-right: 0rem;
+  height: 88vh;
 
   .left-section {
-    display: flex;
-    flex-direction: column;
-
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    gap: 1rem;
+    overflow: hidden;
     .header-section {
       position: relative;
       width: 100%;
@@ -172,8 +283,18 @@ onUnmounted(() => {
 
     .image-container {
       position: relative;
+      overflow: hidden;
+      border-radius: 0.5rem;
 
       .main-product-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .view-room-button {
@@ -211,6 +332,46 @@ onUnmounted(() => {
           -webkit-text-fill-color: transparent;
         }
       }
+
+      // Theme Toggle Styles
+      .theme-toggle-container {
+        position: absolute;
+        top: 1rem; // 16px
+        right: 1rem; // 16px
+        width: 2.5rem; // 40px
+        height: 1.5rem; // 24px
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 0.75rem; // 12px (half of height for pill shape)
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 0.125rem; // 2px
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+
+        .theme-icon {
+          width: 1.25rem; // 20px
+          height: 1.25rem; // 20px
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          color: #666;
+
+          &.active {
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+
+          svg {
+            transition: all 0.3s ease;
+          }
+        }
+      }
     }
   }
 
@@ -218,7 +379,8 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     padding: 1rem; // 16px
-    gap: 1.5rem; // 24px
+    padding-left: 0rem;
+    gap: 1rem; // 24px
 
     .tab-navigation {
       display: flex;
