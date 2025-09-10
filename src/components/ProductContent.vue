@@ -1,5 +1,5 @@
 <template>
-  <div class="product-gallery">
+  <div v-show="!viewStore.showDetail" class="product-gallery">
     <div class="main-content">
       <div class="gallery-section">
         <!-- Thumbnails -->
@@ -30,7 +30,7 @@
 
           <!-- Action Buttons inside image -->
           <div class="image-overlay-buttons">
-            <div class="view-3d-button">
+            <div class="view-3d-button" @click="viewStore.openImageUpload">
               <img
                 class="button-icon"
                 alt=""
@@ -38,7 +38,7 @@
               />
               <div class="button-text">View in 3D</div>
             </div>
-            <div class="restyle-button">
+            <div class="restyle-button" @click="viewStore.openDetail">
               <div class="button-text">Restyle in Space</div>
             </div>
           </div>
@@ -190,10 +190,15 @@
       </div>
     </div>
   </div>
+  <product-detail v-show="viewStore.showDetail" />
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useViewStore } from "../stores/useViewStore";
+import ProductDetail from "./ProductDetail.vue";
+
+const viewStore = useViewStore();
 
 const mainImage = ref(
   "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity%20img%202.png"
@@ -504,7 +509,7 @@ onBeforeUnmount(() => {
 
 // Main Content Layout
 .main-content {
-  margin-top: 4.75rem;
+  margin-top: 0rem;
   display: flex;
   flex-direction: row;
   align-items: flex-start;

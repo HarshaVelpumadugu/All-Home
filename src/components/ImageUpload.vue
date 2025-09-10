@@ -133,7 +133,10 @@
 <script setup>
 import { ref } from "vue";
 import { useModalStore } from "../stores/useModalStore";
+import { useViewStore } from "../stores/useViewStore";
+
 const modalStore = useModalStore();
+const viewStore = useViewStore();
 
 const isGenerating = ref(false);
 const generatedImage = ref(null);
@@ -167,7 +170,7 @@ const randomImages = [
 ];
 
 const handleClose = () => {
-  modalStore.closeImageUpload();
+  viewStore.closeImageUpload();
 };
 
 const triggerFileInput = () => {

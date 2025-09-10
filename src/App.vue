@@ -10,16 +10,15 @@
 
   <SearchPanel v-if="uiStore.showSearch" />
 
-  <ProductDetail />
-
-  <!-- <transition name="slide-up" mode="out-in">
+  <transition name="slide-up" mode="out-in">
     <component
       :is="activeView"
       :key="activeKey"
       :section="exploreStore.activeSection"
       :active-slide-id="exploreStore.activeSlideId"
     />
-  </transition> -->
+  </transition>
+  <ImageUpload v-show="viewStore.showImageUpload" />
 </template>
 
 <script setup>
@@ -28,6 +27,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useExploreStore } from "./stores/useExploreStore.js";
 import { useUiStore } from "./stores/useUiStore.js";
+import { useViewStore } from "./stores/useViewStore.js";
 
 import AppHeader from "./components/AppHeader.vue";
 import SearchPanel from "./components/SearchPanel.vue";
@@ -36,20 +36,23 @@ import ProductsLayout from "./components/ProductsLayout.vue";
 import ProductContent from "./components/ProductContent.vue";
 import DropDown from "./components/DropDown.vue";
 import ProductDetail from "./components/ProductDetail.vue";
+import ImageUpload from "./components/ImageUpload.vue";
 
 const route = useRoute();
 
 const exploreStore = useExploreStore();
 const uiStore = useUiStore();
+const viewStore = useViewStore();
 
 const activeView = computed(() => {
   if (route.name === "home") {
+    console.log(exploreStore.showProducts);
     return exploreStore.showProducts ? ProductsLayout : SliderComponent;
   }
   if (route.name === "product-details") {
     return ProductContent;
   }
-  return null;
+  return SliderComponent;
 });
 
 const activeKey = computed(() => {

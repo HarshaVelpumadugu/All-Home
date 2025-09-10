@@ -3,7 +3,7 @@
     <div class="left-section">
       <div class="header-section">
         <div class="back-button-wrapper">
-          <div class="back-button-container">
+          <div class="back-button-container" @click="viewStore.closeDetail">
             <div class="back-arrow-icon">
               <img
                 class="arrow-left-icon"
@@ -22,7 +22,7 @@
           alt=""
           src="../assets/Rectangle 34626207.png"
         />
-        <div class="view-room-button" @click="modalStore.openImageUpload">
+        <div class="view-room-button" @click="viewStore.openImageUpload">
           <img class="ar-icon" alt="" src="../assets/Group 1000016524.svg" />
           <div class="view-room-text">View in your Room</div>
         </div>
@@ -83,10 +83,17 @@
 </template>
 
 <script setup>
+import { onUnmounted } from "vue";
 import { useModalStore } from "../stores/useModalStore.js";
+import { useViewStore } from "../stores/useViewStore.js";
 import ImageUpload from "./ImageUpload.vue";
 
 const modalStore = useModalStore();
+const viewStore = useViewStore();
+
+onUnmounted(() => {
+  viewStore.closeDetail();
+});
 </script>
 
 <style lang="scss" scoped>
