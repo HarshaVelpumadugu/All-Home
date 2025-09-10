@@ -17,11 +17,21 @@
       </div>
 
       <div class="image-container">
+        <!-- Day Image -->
         <img
-          class="main-product-image"
-          alt=""
+          class="main-product-image day-image"
+          :class="{ visible: isDayTheme }"
+          alt="Day preset"
           src="../assets/preset-img-day.jpg"
         />
+        <!-- Night Image -->
+        <img
+          class="main-product-image night-image"
+          :class="{ visible: !isDayTheme }"
+          alt="Night preset"
+          src="../assets/preset-img-night.jpg"
+        />
+
         <div class="view-room-button" @click="viewStore.openImageUpload">
           <img class="ar-icon" alt="" src="../assets/Group 1000016524.svg" />
           <div class="view-room-text">View in your Room</div>
@@ -175,8 +185,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal (controlled by Pinia) -->
     <ImageUpload
       v-if="modalStore.isImageUploadOpen"
       @close="modalStore.closeImageUpload"
@@ -196,7 +204,6 @@ const isDayTheme = ref(true);
 
 const toggleTheme = () => {
   isDayTheme.value = !isDayTheme.value;
-  // Add your theme switching logic here
   console.log("Theme toggled:", isDayTheme.value ? "Day" : "Night");
 };
 
@@ -209,8 +216,8 @@ onUnmounted(() => {
 .container {
   display: grid;
   grid-template-columns: 1fr 28.25rem;
-  gap: 1.25rem; // 20px
-  padding: 1.25rem; // 20px
+  gap: 1.25rem;
+  padding: 1.25rem;
   padding-right: 0rem;
   height: 88vh;
 
@@ -226,18 +233,18 @@ onUnmounted(() => {
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      padding: 0.5rem 1.5rem; // 8px 24px
+      padding: 0.5rem 1.5rem;
       padding-left: 0;
       box-sizing: border-box;
       text-align: left;
-      font-size: 0.875rem; // 14px
+      font-size: 0.875rem;
       color: #4b5563;
       font-family: $font-nunito;
 
       .back-button-wrapper {
-        width: 8.75rem; // 140px
-        border-radius: 0.5rem; // 8px
-        height: 2rem; // 32px
+        width: 8.75rem;
+        border-radius: 0.5rem;
+        height: 2rem;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -250,11 +257,11 @@ onUnmounted(() => {
           flex-direction: row;
           align-items: center;
           justify-content: flex-start;
-          gap: 0.25rem; // 4px
+          gap: 0.25rem;
 
           .back-arrow-icon {
-            width: 1rem; // 16px
-            height: 1rem; // 16px
+            width: 1rem;
+            height: 1rem;
             position: relative;
 
             .arrow-left-icon {
@@ -274,7 +281,7 @@ onUnmounted(() => {
           .page-title {
             position: relative;
             letter-spacing: -0.02em;
-            line-height: 1rem; // 16px
+            line-height: 1rem;
             font-weight: 500;
           }
         }
@@ -294,33 +301,47 @@ onUnmounted(() => {
         height: 100%;
         object-fit: cover;
         border-radius: 0.5rem;
-        transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &.day-image {
+          z-index: 1;
+        }
+
+        &.night-image {
+          z-index: 2;
+        }
+
+        &.visible {
+          opacity: 1;
+        }
       }
 
       .view-room-button {
         position: absolute;
-        bottom: 2rem; // 32px
-        left: 20rem; // 320px
-        border-radius: 6.25rem; // 100px
+        bottom: 2rem;
+        left: 20rem;
+        border-radius: 6.25rem;
         cursor: pointer;
         background-color: #fff;
         border: 1px solid #516ce0;
         box-sizing: border-box;
-        width: 14.0625rem; // 225px
-        height: 3rem; // 48px
+        width: 14.0625rem;
+        height: 3rem;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        padding: 0.625rem 2rem; // 10px 32px
-        gap: 0.5rem; // 8px
+        padding: 0.625rem 2rem;
+        gap: 0.5rem;
         text-align: left;
-        font-size: 1rem; // 16px
+        font-size: 1rem;
         font-family: $font-nunito;
+        z-index: 10;
 
         .ar-icon {
-          width: 0.875rem; // 14px
-          height: 0.875rem; // 14px
+          width: 0.875rem;
+          height: 0.875rem;
           position: relative;
         }
 
@@ -336,24 +357,25 @@ onUnmounted(() => {
       // Theme Toggle Styles
       .theme-toggle-container {
         position: absolute;
-        top: 1rem; // 16px
-        right: 1rem; // 16px
-        width: 2.5rem; // 40px
-        height: 1.5rem; // 24px
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 0.75rem; // 12px (half of height for pill shape)
+        top: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 0.75rem;
         display: flex;
         align-items: center;
         cursor: pointer;
-        padding: 0.125rem; // 2px
+        padding: 0.125rem;
         box-sizing: border-box;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         transition: all 0.3s ease;
+        z-index: 10;
 
         .theme-icon {
-          width: 1.25rem; // 20px
-          height: 1.25rem; // 20px
+          width: 1.25rem;
+          height: 1.25rem;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -363,6 +385,8 @@ onUnmounted(() => {
 
           &.active {
             background-color: #fff;
+            width: 1rem;
+            height: 1rem;
             color: #333;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           }
@@ -378,30 +402,30 @@ onUnmounted(() => {
   .right-section {
     display: flex;
     flex-direction: column;
-    padding: 1rem; // 16px
+    padding: 1rem;
     padding-left: 0rem;
-    gap: 1rem; // 24px
+    gap: 1rem;
 
     .tab-navigation {
       display: flex;
       flex-direction: row;
-      gap: 1.5625rem; // 25px
+      gap: 1.5625rem;
 
       .active-tab {
-        width: 13.125rem; // 210px
-        height: 2rem; // 32px
-        padding: 0.5rem 2rem; // 8px 32px
+        width: 13.125rem;
+        height: 2rem;
+        padding: 0.5rem 2rem;
         background-color: #2b2b2b;
-        font-size: 0.875rem; // 14px
+        font-size: 0.875rem;
         color: #fff;
         font-family: $font-nunito;
         box-sizing: border-box;
-        border-radius: 6.25rem; // 100px
+        border-radius: 6.25rem;
         text-align: center;
       }
 
       .inactive-tab {
-        font-size: 0.875rem; // 14px
+        font-size: 0.875rem;
         font-weight: 600;
         font-family: $font-nunito;
         color: #7c7c7c;
@@ -411,12 +435,12 @@ onUnmounted(() => {
     .product-cards {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem; // 24px
+      gap: 1.5rem;
 
       .product-card {
         display: flex;
         flex-direction: row;
-        gap: 1.1875rem; // 19px
+        gap: 1.1875rem;
 
         .product-thumbnail {
         }
@@ -431,7 +455,7 @@ onUnmounted(() => {
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
-            gap: 0.25rem; // 4px
+            gap: 0.25rem;
             font-family: $font-nunito;
 
             .label {
@@ -442,8 +466,8 @@ onUnmounted(() => {
             .product-name {
               align-self: stretch;
               position: relative;
-              font-size: 1.75rem; // 28px
-              letter-spacing: 0.125rem; // 2px
+              font-size: 1.75rem;
+              letter-spacing: 0.125rem;
               font-weight: 300;
               color: #121212;
               opacity: 0.8;
@@ -455,8 +479,8 @@ onUnmounted(() => {
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
-            gap: 0.25rem; // 4px
-            font-size: 0.875rem; // 14px
+            gap: 0.25rem;
+            font-size: 0.875rem;
 
             .label {
               align-self: stretch;
@@ -466,8 +490,8 @@ onUnmounted(() => {
             .brand-name {
               align-self: stretch;
               position: relative;
-              font-size: 0.75rem; // 12px
-              letter-spacing: 0.125rem; // 2px
+              font-size: 0.75rem;
+              letter-spacing: 0.125rem;
               font-weight: 300;
               color: #121212;
               font-family: $font-nunito;
