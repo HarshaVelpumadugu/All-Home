@@ -86,8 +86,11 @@
             <div class="item-card" v-for="(item, index) in items" :key="index">
               <div
                 class="image-wrapper"
-                :class="{ disabled: isGenerating }"
-                @click="!isGenerating && toggleItemSelection(index)"
+                :class="{ disabled: !uploadSuccess || isGenerating }"
+                @click="
+                  !(!uploadSuccess || isGenerating) &&
+                    toggleItemSelection(index)
+                "
               >
                 <img class="item-image" alt="" :src="item.image" />
                 <!-- Selection tick overlay -->
