@@ -362,7 +362,7 @@ onUnmounted(() => {
           background: hsl(0, 100%, 100%);
           border: 5px solid hsl(0, 2%, 75%);
           border-radius: 50%;
-          animation: all 2s ease-in-out infinite;
+          animation: blink 2s ease-in-out infinite;
           backdrop-filter: blur(5px);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
