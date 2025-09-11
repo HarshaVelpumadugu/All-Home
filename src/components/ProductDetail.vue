@@ -17,7 +17,6 @@
       </div>
 
       <div class="image-container">
-        <!-- Transition overlay -->
         <div
           class="transition-overlay"
           :class="{ active: isTransitioning }"
@@ -216,28 +215,11 @@
               <img class="product-thumbnail" alt="" :src="item.image" />
               <!-- Selection Indicator -->
               <div class="selection-indicator" v-if="isSelected(item)">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="11"
-                    fill="white"
-                    stroke-width="2"
-                  />
-                  <path
-                    d="M8 12.5L10.5 15L16 9.5"
-                    stroke="rgba(0,0,0,0.3)"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                <img
+                  src="https://allhome.foyr.com/assets/tick-e2d504db.svg"
+                  alt="Selected"
+                  class="tick-icon"
+                />
               </div>
             </div>
             <div class="product-info">
@@ -397,10 +379,9 @@ const triggerTransition = () => {
   isTransitioning.value = true;
   setTimeout(() => {
     isTransitioning.value = false;
-  }, 600); // Match the animation duration
+  }, 600);
 };
 
-// Watch for changes in selectedItems to trigger transition
 watch(
   selectedItems,
   () => {
@@ -409,7 +390,6 @@ watch(
   { deep: true }
 );
 
-// Watch for theme changes to trigger transition
 watch(isDayTheme, () => {
   triggerTransition();
 });
@@ -467,6 +447,7 @@ onUnmounted(() => {
   gap: 1.25rem;
   padding: 1.25rem;
   padding-right: 0rem;
+  padding-top: 0rem;
   height: 88vh;
 
   .left-section {
@@ -779,11 +760,11 @@ onUnmounted(() => {
           padding: 0.5rem;
           border-radius: 0.5rem;
 
-          &:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          }
+          // &:hover {
+          //   background-color: #f8f9fa;
+          //   transform: translateY(-2px);
+          //   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          // }
         }
 
         &.selectable {
@@ -792,9 +773,9 @@ onUnmounted(() => {
           padding: 0.5rem;
           border-radius: 0.5rem;
 
-          &:hover {
-            background-color: #f8f9fa;
-          }
+          // &:hover {
+          //   background-color: #f8f9fa;
+          // }
 
           .product-card-content {
             position: relative;
@@ -813,33 +794,28 @@ onUnmounted(() => {
               top: 50%;
               left: 50%;
               transform: translate(-50%, -50%);
-              width: 40px;
-              height: 40px;
+              width: 2rem; // 32px
+              height: 2rem; // 32px
               display: flex;
               align-items: center;
               justify-content: center;
-              background: rgba(255, 255, 255, 0.95);
-              border-radius: 50%;
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-              animation: scaleIn 0.3s ease;
+              z-index: 10;
+              animation: tickFadeIn 0.3s ease;
 
-              svg {
+              .tick-icon {
                 width: 100%;
                 height: 100%;
               }
             }
 
-            @keyframes scaleIn {
-              0% {
-                transform: translate(-50%, -50%) scale(0);
+            @keyframes tickFadeIn {
+              from {
                 opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
               }
-              50% {
-                transform: translate(-50%, -50%) scale(1.1);
-              }
-              100% {
-                transform: translate(-50%, -50%) scale(1);
+              to {
                 opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
               }
             }
           }
@@ -887,27 +863,21 @@ onUnmounted(() => {
           .brand-info {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
             gap: 0.25rem;
-            font-size: 0.875rem;
 
             .label {
-              align-self: stretch;
-              position: relative;
-              font-size: 0.75rem;
-              color: #666;
+              color: #888;
+              font-size: 0.875rem;
+              font-family: $font-nunito;
             }
 
             .brand-name {
-              align-self: stretch;
-              position: relative;
-              font-size: 0.875rem;
-              letter-spacing: 0.05rem;
-              font-weight: 300;
               color: #121212;
+              font-size: 0.75rem;
+              font-weight: 300;
               font-family: $font-nunito;
-              opacity: 0.8;
+              letter-spacing: 0.125rem;
+              text-transform: capitalize;
             }
           }
         }
