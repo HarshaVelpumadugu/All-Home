@@ -17,6 +17,12 @@
       </div>
 
       <div class="image-container">
+        <!-- Transition overlay -->
+        <div
+          class="transition-overlay"
+          :class="{ active: isTransitioning }"
+        ></div>
+
         <img
           class="main-product-image day-image"
           :class="{ visible: isDayTheme }"
@@ -256,7 +262,7 @@
 </template>
 
 <script setup>
-import { onUnmounted, ref, computed, reactive } from "vue";
+import { onUnmounted, ref, computed, reactive, watch } from "vue";
 import { useModalStore } from "../stores/useModalStore.js";
 import { useViewStore } from "../stores/useViewStore.js";
 import ImageUpload from "./ImageUpload.vue";
@@ -266,6 +272,7 @@ const viewStore = useViewStore();
 const isDayTheme = ref(true);
 const activeHotspot = ref(null);
 const activeTab = ref("in-room");
+const isTransitioning = ref(false);
 
 const selectedItems = reactive({
   pair1: "GLX-GR01",
@@ -385,6 +392,27 @@ const swapItems = computed(() => {
 const isSelected = (product) => {
   return selectedItems[product.pairId] === product.sku;
 };
+
+const triggerTransition = () => {
+  isTransitioning.value = true;
+  setTimeout(() => {
+    isTransitioning.value = false;
+  }, 600); // Match the animation duration
+};
+
+// Watch for changes in selectedItems to trigger transition
+watch(
+  selectedItems,
+  () => {
+    triggerTransition();
+  },
+  { deep: true }
+);
+
+// Watch for theme changes to trigger transition
+watch(isDayTheme, () => {
+  triggerTransition();
+});
 
 const selectProduct = (product) => {
   selectedItems[product.pairId] = product.sku;
@@ -513,6 +541,45 @@ onUnmounted(() => {
       position: relative;
       overflow: hidden;
       border-radius: 0.5rem;
+
+      // Transition overlay
+      .transition-overlay {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        height: 100%;
+        background: #565555;
+        z-index: 20;
+        pointer-events: none;
+        transition: none;
+
+        &.active {
+          animation: sweepTransition 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+      }
+
+      @keyframes sweepTransition {
+        0% {
+          width: 95%;
+          opacity: 0;
+          filter: blur(24px);
+        }
+        10% {
+          width: 5%;
+          opacity: 0.2;
+          filter: blur(10px);
+        }
+        90% {
+          width: 1%;
+          opacity: 0.1;
+          filter: blur(2px);
+        }
+        100% {
+          left: -100%;
+          opacity: 0;
+        }
+      }
 
       .main-product-image {
         position: absolute;
