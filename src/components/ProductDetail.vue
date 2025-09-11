@@ -166,46 +166,61 @@
 
     <div class="right-section">
       <div class="tab-navigation">
-        <div class="active-tab">In room Items</div>
-        <div class="inactive-tab">Swap Items</div>
+        <div
+          class="tab"
+          :class="{ 'active-tab': activeTab === 'in-room' }"
+          @click="setActiveTab('in-room')"
+        >
+          In room Items
+        </div>
+        <div
+          class="tab"
+          :class="{ 'active-tab': activeTab === 'swap' }"
+          @click="setActiveTab('swap')"
+        >
+          Swap Items
+        </div>
       </div>
 
       <div class="product-cards">
-        <div class="product-card">
-          <img
-            class="product-thumbnail"
-            alt=""
-            src="../assets/block-img-1.png"
-          />
-          <div class="product-info">
-            <div class="sku-info">
-              <div class="label">SKU Code : U2123</div>
-              <div class="product-name">Fusion</div>
-            </div>
-            <div class="brand-info">
-              <div class="label">Brand Name</div>
-              <div class="brand-name">Firmac</div>
+        <!-- In Room Items - Selected items from each pair -->
+        <template v-if="activeTab === 'in-room'">
+          <div
+            v-for="item in inRoomItems"
+            :key="item.sku"
+            class="product-card clickable"
+            @click="handleProductClick(item)"
+          >
+            <img class="product-thumbnail" alt="" :src="item.image" />
+            <div class="product-info">
+              <div class="sku-info">
+                <div class="label">SKU Code : {{ item.sku }}</div>
+                <div class="product-name">{{ item.name }}</div>
+              </div>
+              <div class="brand-info">
+                <div class="label">Brand Name</div>
+                <div class="brand-name">{{ item.brand }}</div>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
 
-        <div class="product-card">
-          <img
-            class="product-thumbnail"
-            alt=""
-            src="../assets/block-img-2.png"
-          />
-          <div class="product-info">
-            <div class="sku-info">
-              <div class="label">SKU Code : U2123</div>
-              <div class="product-name">Fusion</div>
-            </div>
-            <div class="brand-info">
-              <div class="label">Brand Name</div>
-              <div class="brand-name">Firmac</div>
+        <!-- Swap Items - Dynamic based on active hotspot -->
+        <template v-if="activeTab === 'swap'">
+          <div v-for="item in swapItems" :key="item.sku" class="product-card">
+            <img class="product-thumbnail" alt="" :src="item.image" />
+            <div class="product-info">
+              <div class="sku-info">
+                <div class="label">SKU Code : {{ item.sku }}</div>
+                <div class="product-name">{{ item.name }}</div>
+              </div>
+              <div class="brand-info">
+                <div class="label">Brand Name</div>
+                <div class="brand-name">{{ item.brand }}</div>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
     <ImageUpload
@@ -216,7 +231,7 @@
 </template>
 
 <script setup>
-import { onUnmounted, ref } from "vue";
+import { onUnmounted, ref, computed } from "vue";
 import { useModalStore } from "../stores/useModalStore.js";
 import { useViewStore } from "../stores/useViewStore.js";
 import ImageUpload from "./ImageUpload.vue";
@@ -225,6 +240,73 @@ const modalStore = useModalStore();
 const viewStore = useViewStore();
 const isDayTheme = ref(true);
 const activeHotspot = ref(null);
+const activeTab = ref("in-room");
+
+// Product data for different pairs
+const productPairs = {
+  pair2: {
+    // Smooth products pair
+    selected: {
+      sku: "0146",
+      name: "Warm Sand Stone",
+      brand: "Color Coats",
+      image:
+        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/TXTLMK_0146_SLD.png",
+      pairId: "pair2",
+    },
+    alternative: {
+      sku: "01260",
+      name: "Deep Sea Green",
+      brand: "Color Coats",
+      image:
+        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/BM_BLUE_260_THUMBNAIL.png",
+      pairId: "pair2",
+    },
+  },
+  pair1: {
+    // Grain products pair
+    selected: {
+      sku: "GLX-GR01",
+      name: "Desert Dune Grain",
+      brand: "Color Coats",
+      image:
+        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
+      pairId: "pair1",
+    },
+    alternative: {
+      sku: "GLX-GR02",
+      name: "Urban Slate Grain",
+      brand: "Color Coats",
+      image:
+        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
+      pairId: "pair1",
+    },
+  },
+};
+
+// Hotspot to pair mapping
+const hotspotToPair = {
+  1: "pair2", // Hotspot 1 shows grain products
+  2: "pair1", // Hotspot 2 shows smooth products
+};
+
+// Get active items for "In room Items" tab
+const inRoomItems = computed(() => {
+  return [
+    productPairs.pair2.selected, // Warm Sand Stone
+    productPairs.pair1.selected, // Desert Dune Grain
+  ];
+});
+
+// Computed property for swap items based on active hotspot or selected product
+const swapItems = computed(() => {
+  if (activeHotspot.value && hotspotToPair[activeHotspot.value]) {
+    const pairId = hotspotToPair[activeHotspot.value];
+    const pair = productPairs[pairId];
+    return [pair.selected, pair.alternative];
+  }
+  return [productPairs.pair1.alternative, productPairs.pair1.selected];
+});
 
 const toggleTheme = () => {
   isDayTheme.value = !isDayTheme.value;
@@ -233,7 +315,40 @@ const toggleTheme = () => {
 
 const toggleHotspot = (hotspotId) => {
   activeHotspot.value = activeHotspot.value === hotspotId ? null : hotspotId;
+
+  // Switch to swap items tab when hotspot is clicked
+  if (activeHotspot.value) {
+    activeTab.value = "swap";
+  }
+
   console.log("Hotspot toggled:", hotspotId);
+};
+
+const handleProductClick = (product) => {
+  // Find which pair this product belongs to
+  const pairId = product.pairId;
+
+  // Map pair to corresponding hotspot
+  const hotspotId = Object.keys(hotspotToPair).find(
+    (key) => hotspotToPair[key] === pairId
+  );
+
+  if (hotspotId) {
+    activeHotspot.value = parseInt(hotspotId);
+    activeTab.value = "swap";
+    console.log(
+      `Product clicked: ${product.name}, switching to pair: ${pairId}`
+    );
+  }
+};
+
+const setActiveTab = (tab) => {
+  activeTab.value = tab;
+
+  // Clear hotspot selection when switching to in-room items
+  if (tab === "in-room") {
+    activeHotspot.value = null;
+  }
 };
 
 onUnmounted(() => {
@@ -287,6 +402,7 @@ onUnmounted(() => {
           align-items: center;
           justify-content: flex-start;
           gap: 0.25rem;
+          cursor: pointer;
 
           .back-arrow-icon {
             width: 1rem;
@@ -385,42 +501,6 @@ onUnmounted(() => {
         }
       }
 
-      @keyframes pulse-inactive {
-        0% {
-          width: 24px;
-          height: 24px;
-          opacity: 0.6;
-        }
-        50% {
-          width: 32px;
-          height: 32px;
-          opacity: 0.4;
-        }
-        100% {
-          width: 40px;
-          height: 40px;
-          opacity: 0.2;
-        }
-      }
-
-      @keyframes pulse-active {
-        0% {
-          width: 24px;
-          height: 24px;
-          opacity: 0.8;
-        }
-        50% {
-          width: 36px;
-          height: 36px;
-          opacity: 0.5;
-        }
-        100% {
-          width: 48px;
-          height: 48px;
-          opacity: 0;
-        }
-      }
-
       .view-room-button {
         position: absolute;
         bottom: 2rem;
@@ -513,26 +593,30 @@ onUnmounted(() => {
     .tab-navigation {
       display: flex;
       flex-direction: row;
-      gap: 1.5625rem;
+      gap: 1rem;
 
-      .active-tab {
+      .tab {
         width: 13.125rem;
         height: 2rem;
         padding: 0.5rem 2rem;
-        background-color: #2b2b2b;
-        font-size: 0.875rem;
-        color: #fff;
-        font-family: $font-nunito;
-        box-sizing: border-box;
-        border-radius: 6.25rem;
-        text-align: center;
-      }
-
-      .inactive-tab {
+        cursor: pointer;
+        transition: all 0.3s ease;
         font-size: 0.875rem;
         font-weight: 600;
         font-family: $font-nunito;
+        box-sizing: border-box;
         color: #7c7c7c;
+        text-align: center;
+
+        &:hover {
+          color: #2b2b2b;
+        }
+
+        &.active-tab {
+          background-color: #2b2b2b;
+          color: #fff;
+          border-radius: 6.25rem;
+        }
       }
     }
 
@@ -546,13 +630,31 @@ onUnmounted(() => {
         flex-direction: row;
         gap: 1.1875rem;
 
+        &.clickable {
+          cursor: pointer;
+          transition: all 0.2s ease;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+
+          &:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+        }
+
         .product-thumbnail {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+          border-radius: 0.5rem;
         }
 
         .product-info {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          flex: 1;
 
           .sku-info {
             display: flex;
@@ -565,14 +667,16 @@ onUnmounted(() => {
             .label {
               align-self: stretch;
               position: relative;
+              font-size: 0.75rem;
+              color: #666;
             }
 
             .product-name {
               align-self: stretch;
               position: relative;
-              font-size: 1.75rem;
-              letter-spacing: 0.125rem;
-              font-weight: 300;
+              font-size: 1.25rem;
+              letter-spacing: 0.05rem;
+              font-weight: 400;
               color: #121212;
               opacity: 0.8;
             }
@@ -589,13 +693,15 @@ onUnmounted(() => {
             .label {
               align-self: stretch;
               position: relative;
+              font-size: 0.75rem;
+              color: #666;
             }
 
             .brand-name {
               align-self: stretch;
               position: relative;
-              font-size: 0.75rem;
-              letter-spacing: 0.125rem;
+              font-size: 0.875rem;
+              letter-spacing: 0.05rem;
               font-weight: 300;
               color: #121212;
               font-family: $font-nunito;
