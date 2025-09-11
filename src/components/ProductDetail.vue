@@ -32,6 +32,29 @@
           src="../assets/preset-img-night.jpg"
         />
 
+        <!-- Hotspot Icons -->
+        <div
+          class="hotspot-icon"
+          @click="toggleHotspot(1)"
+          style="top: 40%; left: 65%"
+        >
+          <div
+            class="hotspot-inner"
+            :class="{ active: activeHotspot === 1 }"
+          ></div>
+        </div>
+
+        <div
+          class="hotspot-icon"
+          @click="toggleHotspot(2)"
+          style="top: 42%; left: 33%"
+        >
+          <div
+            class="hotspot-inner"
+            :class="{ active: activeHotspot === 2 }"
+          ></div>
+        </div>
+
         <div class="view-room-button" @click="viewStore.openImageUpload">
           <img class="ar-icon" alt="" src="../assets/Group 1000016524.svg" />
           <div class="view-room-text">View in your Room</div>
@@ -201,10 +224,16 @@ import ImageUpload from "./ImageUpload.vue";
 const modalStore = useModalStore();
 const viewStore = useViewStore();
 const isDayTheme = ref(true);
+const activeHotspot = ref(null);
 
 const toggleTheme = () => {
   isDayTheme.value = !isDayTheme.value;
   console.log("Theme toggled:", isDayTheme.value ? "Day" : "Night");
+};
+
+const toggleHotspot = (hotspotId) => {
+  activeHotspot.value = activeHotspot.value === hotspotId ? null : hotspotId;
+  console.log("Hotspot toggled:", hotspotId);
 };
 
 onUnmounted(() => {
@@ -314,6 +343,81 @@ onUnmounted(() => {
 
         &.visible {
           opacity: 1;
+        }
+      }
+
+      // Hotspot Icon Styles
+      .hotspot-icon {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        z-index: 15;
+        transform: translate(-50%, -50%);
+
+        .hotspot-inner {
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: hsl(0, 100%, 100%);
+          border: 5px solid hsl(0, 2%, 75%);
+          border-radius: 50%;
+          animation: all 2s ease-in-out infinite;
+          backdrop-filter: blur(5px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+          &.active {
+            border: 5px solid #516ce0;
+            box-shadow: 0 0 0 2px rgba(81, 108, 224, 0.3);
+          }
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(0.85);
+        }
+      }
+
+      @keyframes pulse-inactive {
+        0% {
+          width: 24px;
+          height: 24px;
+          opacity: 0.6;
+        }
+        50% {
+          width: 32px;
+          height: 32px;
+          opacity: 0.4;
+        }
+        100% {
+          width: 40px;
+          height: 40px;
+          opacity: 0.2;
+        }
+      }
+
+      @keyframes pulse-active {
+        0% {
+          width: 24px;
+          height: 24px;
+          opacity: 0.8;
+        }
+        50% {
+          width: 36px;
+          height: 36px;
+          opacity: 0.5;
+        }
+        100% {
+          width: 48px;
+          height: 48px;
+          opacity: 0;
         }
       }
 
