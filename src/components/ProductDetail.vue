@@ -17,22 +17,20 @@
       </div>
 
       <div class="image-container">
-        <!-- Day Image -->
         <img
           class="main-product-image day-image"
           :class="{ visible: isDayTheme }"
           alt="Day preset"
-          src="../assets/preset-img-day.jpg"
+          loading="lazy"
+          :src="currentDayImage"
         />
-        <!-- Night Image -->
         <img
           class="main-product-image night-image"
           :class="{ visible: !isDayTheme }"
           alt="Night preset"
-          src="../assets/preset-img-night.jpg"
+          loading="lazy"
+          :src="currentNightImage"
         />
-
-        <!-- Hotspot Icons -->
         <div
           class="hotspot-icon"
           @click="toggleHotspot(1)"
@@ -60,10 +58,8 @@
           <div class="view-room-text">View in your Room</div>
         </div>
 
-        <!-- Theme Toggle Container -->
         <div class="theme-toggle-container" @click="toggleTheme">
           <div class="theme-icon" :class="{ active: isDayTheme }">
-            <!-- Sun Icon SVG -->
             <svg
               width="12"
               height="12"
@@ -145,7 +141,6 @@
             </svg>
           </div>
           <div class="theme-icon" :class="{ active: !isDayTheme }">
-            <!-- Moon Icon SVG -->
             <svg
               width="12"
               height="12"
@@ -183,7 +178,6 @@
       </div>
 
       <div class="product-cards">
-        <!-- In Room Items - Selected items from each pair -->
         <template v-if="activeTab === 'in-room'">
           <div
             v-for="item in inRoomItems"
@@ -205,7 +199,6 @@
           </div>
         </template>
 
-        <!-- Swap Items - Dynamic based on active hotspot -->
         <template v-if="activeTab === 'swap'">
           <div
             v-for="item in swapItems"
@@ -274,16 +267,13 @@ const isDayTheme = ref(true);
 const activeHotspot = ref(null);
 const activeTab = ref("in-room");
 
-// Track selected items for each pair
 const selectedItems = reactive({
-  pair1: "GLX-GR01", // Default selected SKU for pair1
-  pair2: "0146", // Default selected SKU for pair2
+  pair1: "GLX-GR01",
+  pair2: "0146",
 });
 
-// Product data for different pairs
 const productPairs = {
   pair2: {
-    // Smooth products pair
     products: {
       "0146": {
         sku: "0146",
@@ -304,7 +294,6 @@ const productPairs = {
     },
   },
   pair1: {
-    // Grain products pair
     products: {
       "GLX-GR01": {
         sku: "GLX-GR01",
@@ -326,46 +315,77 @@ const productPairs = {
   },
 };
 
-// Hotspot to pair mapping
 const hotspotToPair = {
-  1: "pair2", // Hotspot 1 shows smooth products
-  2: "pair1", // Hotspot 2 shows grain products
+  1: "pair2",
+  2: "pair1",
 };
 
-// Get active items for "In room Items" tab - only selected items
 const inRoomItems = computed(() => {
   const items = [];
 
-  // Add selected item from pair2
   if (selectedItems.pair2 && productPairs.pair2.products[selectedItems.pair2]) {
     items.push(productPairs.pair2.products[selectedItems.pair2]);
   }
-
-  // Add selected item from pair1
   if (selectedItems.pair1 && productPairs.pair1.products[selectedItems.pair1]) {
     items.push(productPairs.pair1.products[selectedItems.pair1]);
   }
-
   return items;
 });
 
-// Computed property for swap items based on active hotspot
+import presetImg1Day from "../assets/preset-img-1-day.jpg";
+import presetImg1Night from "../assets/preset-img-1-night.jpg";
+import presetImg2Day from "../assets/preset-img-2-day.jpg";
+import presetImg2Night from "../assets/preset-img-2-night.jpg";
+import presetImg3Day from "../assets/preset-img-3-day.jpg";
+import presetImg3Night from "../assets/preset-img-3-night.jpg";
+import presetImg4Day from "../assets/preset-img-4-day.jpg";
+import presetImg4Night from "../assets/preset-img-4-night.jpg";
+
+const currentDayImage = computed(() => {
+  const skus = inRoomItems.value.map((item) => item.sku).sort();
+
+  if (skus.includes("0146") && skus.includes("GLX-GR01")) {
+    return presetImg1Day;
+  } else if (skus.includes("0146") && skus.includes("GLX-GR02")) {
+    return presetImg2Day;
+  } else if (skus.includes("01260") && skus.includes("GLX-GR01")) {
+    return presetImg3Day;
+  } else if (skus.includes("01260") && skus.includes("GLX-GR02")) {
+    return presetImg4Day;
+  }
+
+  return presetImg1Day;
+});
+
+const currentNightImage = computed(() => {
+  const skus = inRoomItems.value.map((item) => item.sku).sort();
+
+  if (skus.includes("0146") && skus.includes("GLX-GR01")) {
+    return presetImg1Night;
+  } else if (skus.includes("0146") && skus.includes("GLX-GR02")) {
+    return presetImg2Night;
+  } else if (skus.includes("01260") && skus.includes("GLX-GR01")) {
+    return presetImg3Night;
+  } else if (skus.includes("01260") && skus.includes("GLX-GR02")) {
+    return presetImg4Night;
+  }
+
+  return presetImg1Night;
+});
+
 const swapItems = computed(() => {
   if (activeHotspot.value && hotspotToPair[activeHotspot.value]) {
     const pairId = hotspotToPair[activeHotspot.value];
     const pair = productPairs[pairId];
     return Object.values(pair.products);
   }
-  // Default to showing pair1 products if no hotspot is active
   return Object.values(productPairs.pair1.products);
 });
 
-// Check if a product is selected
 const isSelected = (product) => {
   return selectedItems[product.pairId] === product.sku;
 };
 
-// Select a product (only one per pair can be selected)
 const selectProduct = (product) => {
   selectedItems[product.pairId] = product.sku;
   console.log(`Selected ${product.name} for ${product.pairId}`);
@@ -378,20 +398,14 @@ const toggleTheme = () => {
 
 const toggleHotspot = (hotspotId) => {
   activeHotspot.value = activeHotspot.value === hotspotId ? null : hotspotId;
-
-  // Switch to swap items tab when hotspot is clicked
   if (activeHotspot.value) {
     activeTab.value = "swap";
   }
-
   console.log("Hotspot toggled:", hotspotId);
 };
 
 const handleProductClick = (product) => {
-  // Find which pair this product belongs to
   const pairId = product.pairId;
-
-  // Map pair to corresponding hotspot
   const hotspotId = Object.keys(hotspotToPair).find(
     (key) => hotspotToPair[key] === pairId
   );
@@ -408,7 +422,6 @@ const handleProductClick = (product) => {
 const setActiveTab = (tab) => {
   activeTab.value = tab;
 
-  // Clear hotspot selection when switching to in-room items
   if (tab === "in-room") {
     activeHotspot.value = null;
   }
@@ -567,7 +580,7 @@ onUnmounted(() => {
       .view-room-button {
         position: absolute;
         bottom: 2rem;
-        left: 20rem;
+        left: 27rem;
         border-radius: 6.25rem;
         cursor: pointer;
         background-color: #fff;
