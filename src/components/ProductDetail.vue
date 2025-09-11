@@ -207,8 +207,40 @@
 
         <!-- Swap Items - Dynamic based on active hotspot -->
         <template v-if="activeTab === 'swap'">
-          <div v-for="item in swapItems" :key="item.sku" class="product-card">
-            <img class="product-thumbnail" alt="" :src="item.image" />
+          <div
+            v-for="item in swapItems"
+            :key="item.sku"
+            class="product-card selectable"
+            @click="selectProduct(item)"
+          >
+            <div class="product-card-content">
+              <img class="product-thumbnail" alt="" :src="item.image" />
+              <!-- Selection Indicator -->
+              <div class="selection-indicator" v-if="isSelected(item)">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="11"
+                    fill="white"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M8 12.5L10.5 15L16 9.5"
+                    stroke="rgba(0,0,0,0.3)"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
             <div class="product-info">
               <div class="sku-info">
                 <div class="label">SKU Code : {{ item.sku }}</div>
@@ -231,7 +263,7 @@
 </template>
 
 <script setup>
-import { onUnmounted, ref, computed } from "vue";
+import { onUnmounted, ref, computed, reactive } from "vue";
 import { useModalStore } from "../stores/useModalStore.js";
 import { useViewStore } from "../stores/useViewStore.js";
 import ImageUpload from "./ImageUpload.vue";
@@ -242,71 +274,102 @@ const isDayTheme = ref(true);
 const activeHotspot = ref(null);
 const activeTab = ref("in-room");
 
+// Track selected items for each pair
+const selectedItems = reactive({
+  pair1: "GLX-GR01", // Default selected SKU for pair1
+  pair2: "0146", // Default selected SKU for pair2
+});
+
 // Product data for different pairs
 const productPairs = {
   pair2: {
     // Smooth products pair
-    selected: {
-      sku: "0146",
-      name: "Warm Sand Stone",
-      brand: "Color Coats",
-      image:
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/TXTLMK_0146_SLD.png",
-      pairId: "pair2",
-    },
-    alternative: {
-      sku: "01260",
-      name: "Deep Sea Green",
-      brand: "Color Coats",
-      image:
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/BM_BLUE_260_THUMBNAIL.png",
-      pairId: "pair2",
+    products: {
+      "0146": {
+        sku: "0146",
+        name: "Warm Sand Stone",
+        brand: "Color Coats",
+        image:
+          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/TXTLMK_0146_SLD.png",
+        pairId: "pair2",
+      },
+      "01260": {
+        sku: "01260",
+        name: "Deep Sea Green",
+        brand: "Color Coats",
+        image:
+          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/BM_BLUE_260_THUMBNAIL.png",
+        pairId: "pair2",
+      },
     },
   },
   pair1: {
     // Grain products pair
-    selected: {
-      sku: "GLX-GR01",
-      name: "Desert Dune Grain",
-      brand: "Color Coats",
-      image:
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
-      pairId: "pair1",
-    },
-    alternative: {
-      sku: "GLX-GR02",
-      name: "Urban Slate Grain",
-      brand: "Color Coats",
-      image:
-        "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
-      pairId: "pair1",
+    products: {
+      "GLX-GR01": {
+        sku: "GLX-GR01",
+        name: "Desert Dune Grain",
+        brand: "Color Coats",
+        image:
+          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
+        pairId: "pair1",
+      },
+      "GLX-GR02": {
+        sku: "GLX-GR02",
+        name: "Urban Slate Grain",
+        brand: "Color Coats",
+        image:
+          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
+        pairId: "pair1",
+      },
     },
   },
 };
 
 // Hotspot to pair mapping
 const hotspotToPair = {
-  1: "pair2", // Hotspot 1 shows grain products
-  2: "pair1", // Hotspot 2 shows smooth products
+  1: "pair2", // Hotspot 1 shows smooth products
+  2: "pair1", // Hotspot 2 shows grain products
 };
 
-// Get active items for "In room Items" tab
+// Get active items for "In room Items" tab - only selected items
 const inRoomItems = computed(() => {
-  return [
-    productPairs.pair2.selected, // Warm Sand Stone
-    productPairs.pair1.selected, // Desert Dune Grain
-  ];
+  const items = [];
+
+  // Add selected item from pair2
+  if (selectedItems.pair2 && productPairs.pair2.products[selectedItems.pair2]) {
+    items.push(productPairs.pair2.products[selectedItems.pair2]);
+  }
+
+  // Add selected item from pair1
+  if (selectedItems.pair1 && productPairs.pair1.products[selectedItems.pair1]) {
+    items.push(productPairs.pair1.products[selectedItems.pair1]);
+  }
+
+  return items;
 });
 
-// Computed property for swap items based on active hotspot or selected product
+// Computed property for swap items based on active hotspot
 const swapItems = computed(() => {
   if (activeHotspot.value && hotspotToPair[activeHotspot.value]) {
     const pairId = hotspotToPair[activeHotspot.value];
     const pair = productPairs[pairId];
-    return [pair.selected, pair.alternative];
+    return Object.values(pair.products);
   }
-  return [productPairs.pair1.alternative, productPairs.pair1.selected];
+  // Default to showing pair1 products if no hotspot is active
+  return Object.values(productPairs.pair1.products);
 });
+
+// Check if a product is selected
+const isSelected = (product) => {
+  return selectedItems[product.pairId] === product.sku;
+};
+
+// Select a product (only one per pair can be selected)
+const selectProduct = (product) => {
+  selectedItems[product.pairId] = product.sku;
+  console.log(`Selected ${product.name} for ${product.pairId}`);
+};
 
 const toggleTheme = () => {
   isDayTheme.value = !isDayTheme.value;
@@ -640,6 +703,65 @@ onUnmounted(() => {
             background-color: #f8f9fa;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        &.selectable {
+          cursor: pointer;
+          transition: all 0.2s ease;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+
+          &:hover {
+            background-color: #f8f9fa;
+          }
+
+          .product-card-content {
+            position: relative;
+            width: 150px;
+            height: 150px;
+
+            .product-thumbnail {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 0.5rem;
+            }
+
+            .selection-indicator {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: rgba(255, 255, 255, 0.95);
+              border-radius: 50%;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+              animation: scaleIn 0.3s ease;
+
+              svg {
+                width: 100%;
+                height: 100%;
+              }
+            }
+
+            @keyframes scaleIn {
+              0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+              }
+              50% {
+                transform: translate(-50%, -50%) scale(1.1);
+              }
+              100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+              }
+            }
           }
         }
 
