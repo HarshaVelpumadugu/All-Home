@@ -27,35 +27,33 @@
           :class="{ visible: isDayTheme }"
           alt="Day preset"
           loading="lazy"
-          :src="currentDayImage"
+          :src="productStore.currentDayImage"
         />
         <img
           class="main-product-image night-image"
           :class="{ visible: !isDayTheme }"
           alt="Night preset"
           loading="lazy"
-          :src="currentNightImage"
+          :src="productStore.currentNightImage"
         />
-        <div
-          class="hotspot-icon"
-          @click="toggleHotspot(1)"
-          style="top: 40%; left: 65%"
-        >
-          <div
-            class="hotspot-inner"
-            :class="{ active: activeHotspot === 1 }"
-          ></div>
-        </div>
 
+        <!-- Dynamic Hotspots -->
         <div
+          v-for="hotspot in productStore.hotspots"
+          :key="hotspot.id"
           class="hotspot-icon"
-          @click="toggleHotspot(2)"
-          style="top: 42%; left: 33%"
+          @click="toggleHotspot(hotspot.id)"
+          :style="{ top: hotspot.position.top, left: hotspot.position.left }"
+          :title="hotspot.label"
         >
           <div
             class="hotspot-inner"
-            :class="{ active: activeHotspot === 2 }"
+            :class="{ active: activeHotspot === hotspot.id }"
           ></div>
+          <!-- Optional: Add tooltip on hover -->
+          <div class="hotspot-tooltip" v-if="hoveredHotspot === hotspot.id">
+            {{ hotspot.description }}
+          </div>
         </div>
 
         <div class="view-room-button" @click="viewStore.openImageUpload">
@@ -185,7 +183,7 @@
       <div class="product-cards">
         <template v-if="activeTab === 'in-room'">
           <div
-            v-for="item in inRoomItems"
+            v-for="item in productStore.inRoomItems"
             :key="item.sku"
             class="product-card clickable"
             @click="handleProductClick(item)"
@@ -214,7 +212,10 @@
             <div class="product-card-content">
               <img class="product-thumbnail" alt="" :src="item.image" />
               <!-- Selection Indicator -->
-              <div class="selection-indicator" v-if="isSelected(item)">
+              <div
+                class="selection-indicator"
+                v-if="productStore.isProductSelected(item)"
+              >
                 <img
                   src="https://allhome.foyr.com/assets/tick-e2d504db.svg"
                   alt="Selected"
@@ -244,137 +245,32 @@
 </template>
 
 <script setup>
-import { onUnmounted, ref, computed, reactive, watch } from "vue";
+import { onUnmounted, ref, computed, watch } from "vue";
 import { useModalStore } from "../stores/useModalStore.js";
 import { useViewStore } from "../stores/useViewStore.js";
+import { useProductStore } from "../stores/useProductStore.js";
 import ImageUpload from "./ImageUpload.vue";
 
 const modalStore = useModalStore();
 const viewStore = useViewStore();
+const productStore = useProductStore();
+
 const isDayTheme = ref(true);
 const activeHotspot = ref(null);
+const hoveredHotspot = ref(null);
 const activeTab = ref("in-room");
 const isTransitioning = ref(false);
 
-const selectedItems = reactive({
-  pair1: "GLX-GR01",
-  pair2: "0146",
-});
-
-const productPairs = {
-  pair2: {
-    products: {
-      "0146": {
-        sku: "0146",
-        name: "Warm Sand Stone",
-        brand: "Color Coats",
-        image:
-          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/TXTLMK_0146_SLD.png",
-        pairId: "pair2",
-      },
-      "01260": {
-        sku: "01260",
-        name: "Deep Sea Green",
-        brand: "Color Coats",
-        image:
-          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/preset/thumbnail/GLX-GR01%20%20GLX-GR02/BM_BLUE_260_THUMBNAIL.png",
-        pairId: "pair2",
-      },
-    },
-  },
-  pair1: {
-    products: {
-      "GLX-GR01": {
-        sku: "GLX-GR01",
-        name: "Desert Dune Grain",
-        brand: "Color Coats",
-        image:
-          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
-        pairId: "pair1",
-      },
-      "GLX-GR02": {
-        sku: "GLX-GR02",
-        name: "Urban Slate Grain",
-        brand: "Color Coats",
-        image:
-          "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
-        pairId: "pair1",
-      },
-    },
-  },
-};
-
-const hotspotToPair = {
-  1: "pair2",
-  2: "pair1",
-};
-
-const inRoomItems = computed(() => {
-  const items = [];
-
-  if (selectedItems.pair2 && productPairs.pair2.products[selectedItems.pair2]) {
-    items.push(productPairs.pair2.products[selectedItems.pair2]);
-  }
-  if (selectedItems.pair1 && productPairs.pair1.products[selectedItems.pair1]) {
-    items.push(productPairs.pair1.products[selectedItems.pair1]);
-  }
-  return items;
-});
-
-import presetImg1Day from "../assets/preset-img-1-day.jpg";
-import presetImg1Night from "../assets/preset-img-1-night.jpg";
-import presetImg2Day from "../assets/preset-img-2-day.jpg";
-import presetImg2Night from "../assets/preset-img-2-night.jpg";
-import presetImg3Day from "../assets/preset-img-3-day.jpg";
-import presetImg3Night from "../assets/preset-img-3-night.jpg";
-import presetImg4Day from "../assets/preset-img-4-day.jpg";
-import presetImg4Night from "../assets/preset-img-4-night.jpg";
-
-const currentDayImage = computed(() => {
-  const skus = inRoomItems.value.map((item) => item.sku).sort();
-
-  if (skus.includes("0146") && skus.includes("GLX-GR01")) {
-    return presetImg1Day;
-  } else if (skus.includes("0146") && skus.includes("GLX-GR02")) {
-    return presetImg2Day;
-  } else if (skus.includes("01260") && skus.includes("GLX-GR01")) {
-    return presetImg3Day;
-  } else if (skus.includes("01260") && skus.includes("GLX-GR02")) {
-    return presetImg4Day;
-  }
-
-  return presetImg1Day;
-});
-
-const currentNightImage = computed(() => {
-  const skus = inRoomItems.value.map((item) => item.sku).sort();
-
-  if (skus.includes("0146") && skus.includes("GLX-GR01")) {
-    return presetImg1Night;
-  } else if (skus.includes("0146") && skus.includes("GLX-GR02")) {
-    return presetImg2Night;
-  } else if (skus.includes("01260") && skus.includes("GLX-GR01")) {
-    return presetImg3Night;
-  } else if (skus.includes("01260") && skus.includes("GLX-GR02")) {
-    return presetImg4Night;
-  }
-
-  return presetImg1Night;
-});
-
+// Computed property for swap items based on active hotspot
 const swapItems = computed(() => {
-  if (activeHotspot.value && hotspotToPair[activeHotspot.value]) {
-    const pairId = hotspotToPair[activeHotspot.value];
-    const pair = productPairs[pairId];
-    return Object.values(pair.products);
+  if (activeHotspot.value) {
+    return productStore.getSwapItemsForHotspot(activeHotspot.value);
   }
-  return Object.values(productPairs.pair1.products);
+  // Default to first pair if no hotspot is active
+  return productStore.getSwapItemsForPair("pair1");
 });
 
-const isSelected = (product) => {
-  return selectedItems[product.pairId] === product.sku;
-};
-
+// Trigger transition animation
 const triggerTransition = () => {
   isTransitioning.value = true;
   setTimeout(() => {
@@ -382,28 +278,27 @@ const triggerTransition = () => {
   }, 600);
 };
 
+// Watch for changes in selected items
 watch(
-  selectedItems,
+  () => productStore.selectedItems,
   () => {
     triggerTransition();
   },
   { deep: true }
 );
 
+// Watch for theme changes
 watch(isDayTheme, () => {
   triggerTransition();
 });
 
-const selectProduct = (product) => {
-  selectedItems[product.pairId] = product.sku;
-  console.log(`Selected ${product.name} for ${product.pairId}`);
-};
-
+// Toggle theme between day and night
 const toggleTheme = () => {
   isDayTheme.value = !isDayTheme.value;
   console.log("Theme toggled:", isDayTheme.value ? "Day" : "Night");
 };
 
+// Toggle hotspot activation
 const toggleHotspot = (hotspotId) => {
   activeHotspot.value = activeHotspot.value === hotspotId ? null : hotspotId;
   if (activeHotspot.value) {
@@ -412,21 +307,26 @@ const toggleHotspot = (hotspotId) => {
   console.log("Hotspot toggled:", hotspotId);
 };
 
+// Handle product click in "in-room" tab
 const handleProductClick = (product) => {
-  const pairId = product.pairId;
-  const hotspotId = Object.keys(hotspotToPair).find(
-    (key) => hotspotToPair[key] === pairId
-  );
+  const hotspot = productStore.getHotspotByPairId(product.pairId);
 
-  if (hotspotId) {
-    activeHotspot.value = parseInt(hotspotId);
+  if (hotspot) {
+    activeHotspot.value = hotspot.id;
     activeTab.value = "swap";
     console.log(
-      `Product clicked: ${product.name}, switching to pair: ${pairId}`
+      `Product clicked: ${product.name}, switching to pair: ${product.pairId}`
     );
   }
 };
 
+// Select a product for swapping
+const selectProduct = (product) => {
+  productStore.selectProduct(product);
+  console.log(`Selected ${product.name} for ${product.pairId}`);
+};
+
+// Set active tab
 const setActiveTab = (tab) => {
   activeTab.value = tab;
 
@@ -435,6 +335,7 @@ const setActiveTab = (tab) => {
   }
 };
 
+// Cleanup on unmount
 onUnmounted(() => {
   viewStore.closeDetail();
 });
@@ -628,7 +529,8 @@ onUnmounted(() => {
       .view-room-button {
         position: absolute;
         bottom: 2rem;
-        left: 27rem;
+        left: 50%;
+        transform: translateX(-50%);
         border-radius: 6.25rem;
         cursor: pointer;
         background-color: #fff;

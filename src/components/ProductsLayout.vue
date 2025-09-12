@@ -8,19 +8,17 @@
       <div class="products-header">Products</div>
       <div class="frame-child"></div>
     </div>
-
     <!-- Grid -->
     <div class="products-grid">
       <div
         v-for="(product, index) in activeProducts"
-        :key="index"
+        :key="product.sku || index"
         class="product-card"
-        @click="$router.push(`/products/${index}`)"
+        @click="handleProductClick(product, index)"
       >
         <div class="product-img">
           <img :src="product.img" :alt="product.name" />
         </div>
-
         <!-- Overlay -->
         <div class="product-overlay">
           <p class="product-name">{{ product.name }}</p>
@@ -34,65 +32,33 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useExploreStore } from "../stores/useExploreStore.js";
+import { useProductStore } from "../stores/useProductStore.js";
+import { useRouter } from "vue-router";
 
 const exploreStore = useExploreStore();
+const productStore = useProductStore();
+const router = useRouter();
+
 const screenWidth = ref(window.innerWidth);
 
-const allProducts = ref({
-  "THE HOUSE OF W": [
-    {
-      name: "Modern Mirror",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/red%20vanity.png",
-    },
-    {
-      name: "Luxury Basin",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/Sanitary-ISVEA/Blue%20Vanity.png",
-    },
-    {
-      name: "Wall Klozet",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00182_THUMBNAIL.png",
-    },
-    {
-      name: "Asma Klozet",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/House%20Of%20W/thumbnail/RPTFBTLT_00184_THUMBNAIL.png",
-    },
-  ],
-  METALIA: [
-    {
-      name: "Aluminum Profile",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Aluminium%20Profile/ALPEXT%20img%201.png",
-    },
-    {
-      name: "Coin Matrix",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Metalia/Coin%20Matrix/COINEXT%20img%201.png",
-    },
-  ],
-  "COLOUR COATS": [
-    {
-      name: "Desert Dune Grain",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR01-ls.png",
-    },
-    {
-      name: "Urban Slate Grains",
-      img: "https://d1b2b4oevn2eyz.cloudfront.net/allhomes/Colour%20Coats/Granuluxe/GLX-GR02-ls.png",
-    },
-  ],
-});
-
+// Computed property to get active products based on screen size and selection
 const activeProducts = computed(() => {
   if (screenWidth.value <= 820) {
+    // Mobile view - based on slide ID
     if (exploreStore.activeSlideId === 1) {
-      return allProducts.value["COLOUR COATS"];
+      return productStore.getProductsByCategory("COLOUR COATS");
     } else if (exploreStore.activeSlideId === 2) {
-      return allProducts.value["THE HOUSE OF W"];
+      return productStore.getProductsByCategory("THE HOUSE OF W");
     }
-    return allProducts.value["METALIA"];
+    return productStore.getProductsByCategory("METALIA");
   } else if (screenWidth.value >= 1024) {
-    return allProducts.value[exploreStore.activeSection] || [];
+    // Desktop view - based on active section
+    return productStore.getProductsByCategory(exploreStore.activeSection) || [];
   }
   return [];
 });
 
+// Format section name for display
 const formattedSection = computed(() => {
   if (!exploreStore.activeSection) return "";
   return exploreStore.activeSection
@@ -101,10 +67,21 @@ const formattedSection = computed(() => {
     .join(" ");
 });
 
+// Handle product click
+const handleProductClick = (product, index) => {
+  // You can store the selected product in the store if needed
+  // productStore.setSelectedProduct(product);
+
+  // Navigate to product detail page
+  router.push(`/products/${index}`);
+};
+
+// Handle window resize
 function handleResize() {
   screenWidth.value = window.innerWidth;
 }
 
+// Lifecycle hooks
 onMounted(() => {
   window.addEventListener("resize", handleResize);
 });
